@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{title}">Sales page</title>
+    <link href="/css/style.css" rel="stylesheet"/>
+</head>
+<body>
+<div>
+    <form>
+        <fieldset>
+            <legend th:text="#{product}">Add new product</legend>
+            <p>
+                <label>
+                    <input type="text" name="articleID" placeholder="Product code" th:placeholder="#{productID}" required/>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="text" name="name" placeholder="Name" th:placeholder="#{name}" required/>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="text" name="description" placeholder="Description" th:placeholder="#{description}" required/>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="number" name="price" placeholder="Price" th:placeholder="#{price}" required/>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input type="file" name="photo" accept="image/png, image/jpeg" required/>
+                </label>
+            </p>
+            <input type="submit" name="newArticle" value="Add product" th:value="#{newProduct}">
+        </fieldset>
+    </form>
+</div>
+<div>
+    <form>
+        <fieldset>
+            <legend th:text="#{createAuction}">Create new auction</legend>
+            <table>
+                <tr>
+                    <th th:text="#{productID}">Product code</th>
+                    <th th:text="#{name}">Name</th>
+                    <th th:text="#{price}">Price</th>
+                    <th th:text="#{select}">Select product</th>
+                </tr>
+                <tr>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="select" />
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            <div>
+                <label>
+                    <input type="number" name="rise" placeholder="Minimum rise" th:placeholder="#{rise}" required/>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="datetime-local" name="name" placeholder="Expiration date" th:placeholder="#{expiry}" required/>
+                </label>
+            </div>
+            <div>
+                <input type="submit" name="create" value="Create" th:value="#{create}"/>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<div>
+    <fieldset>
+        <legend th:text="#{closedAuction}">List of closed auctions</legend>
+        <table>
+            <tr>
+                <th th:text="#{auctionID}">Closed auctions</th>
+                <th th:text="#{finalPrice}">Final Price</th>
+                <th th:text="#{offers}">Bids details</th>
+                <th th:text="#{productDetails}">Product details</th>
+            </tr>
+            <tr>
+                <td>data</td>
+                <td>data</td>
+                <td>
+                    <a href="details" th:text="#{auctionDetails}">Auction details</a>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <th th:text="#{productID}">Product code</th>
+                            <th th:text="#{name}">Name</th>
+                        </tr>
+                        <tr>
+                            <td>data</td>
+                            <td>data</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</div>
+<div>
+    <fieldset>
+        <legend th:text="#{activeAuction}">List of active auctions</legend>
+        <table>
+            <tr>
+                <th th:text="#{auctionID}">Active auctions</th>
+                <th th:text="#{actualPrice}">Current price</th>
+                <th th:text="#{missingTime}">Time left</th>
+                <th th:text="#{offers}">Bids details</th>
+                <th th:text="#{productDetails}">Product details</th>
+            </tr>
+            <tr>
+                <td>data</td>
+                <td>data</td>
+                <td>data</td>
+                <td>
+                    <a href="details" th:text="#{auctionDetails}">Auction details</a>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <th th:text="#{productID}">Product code</th>
+                            <th th:text="#{name}">Name</th>
+                        </tr>
+                        <tr>
+                            <td>data</td>
+                            <td>data</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</div>
+<div>
+    <fieldset>
+        <a href="home" th:text="#{home}">Return to home page</a>
+    </fieldset>
+</div>
+</body>
+</html>

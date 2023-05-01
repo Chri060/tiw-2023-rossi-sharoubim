@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="#{title}">Registration page</title>
+  <link href="/css/style.css" rel="stylesheet"/>
+</head>
+<body>
+<div>
+  <form>
+    <fieldset>
+      <legend th:text="#{register}">Sign up</legend>
+      <p>
+        <label>
+        <input type="text" name="username" placeholder="Username" th:placeholder="#{username}" required/>
+        </label>
+      </p>
+      <p>
+        <label>
+        <input type="email" name="email" placeholder="Email" th:placeholder="#{email}" required/>
+        </label>
+      </p>
+      <p>
+        <label>
+        <input type="text" name="city" placeholder="City" th:placeholder="#{city}" required/>
+        </label>
+      </p>
+      <p>
+        <label>
+        <input type="text" name="province" placeholder="Province" th:placeholder="#{province}" required/>
+        </label>
+      </p>
+      <p>
+        <label>
+        <input type="text" name="address" placeholder="Address" th:placeholder="#{address}" required/>
+        </label>
+      </p>
+      <p>
+        <label>
+        <input type="password" name="password" placeholder="Password" th:placeholder="#{password}" required/>
+        </label>
+      </p>
+      <p>
+        <label>
+        <input type="password" name="password1" placeholder="Retype password" th:placeholder="#{newPassword}" required/>
+        </label>
+      </p>
+      <input type="submit" name="register" value="Sign up" th:value="#{register}"/>
+    </fieldset>
+  </form>
+  <div>
+    <a href="login" th:text="#{message}"></a>
+  </div>
+</div>
+</body>
+</html>

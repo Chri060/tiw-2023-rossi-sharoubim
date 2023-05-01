@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{title}">Offers page</title>
+    <link href="/css/style.css" rel="stylesheet"/>
+</head>
+<body>
+<fieldset>
+    <legend th:text="#{bid}">Bids detail</legend>
+    <div>
+        <fieldset>
+            <legend th:text="#{auction}">Auction details</legend>
+            <table>
+                <tr>
+                    <th th:text="#{productID}">Product code</th>
+                    <th th:text="#{productName}">Name</th>
+                    <th th:text="#{description}">Description</th>
+                    <th th:text="#{photo}">Image</th>
+                </tr>
+                <tr>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+    <div>
+        <fieldset>
+            <legend th:text="#{offer}">Active bids</legend>
+            <table>
+                <tr>
+                    <th th:text="#{username}">User</th>
+                    <th th:text="#{price}">Offer</th>
+                    <th th:text="#{date}">Date</th>
+                </tr>
+                <tr>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+</fieldset>
+<fieldset>
+    <legend th:text="#{makeOffer}">New offer</legend>
+    <div>
+        <p>
+            <label th:text="#{setBid}">Bid (must be greater than VALUE):</label>
+        </p>
+    </div>
+    <p>
+        <label>
+            <input type="number" name="offer" placeholder="Your bid" th:placeholder="#{makeBid}" required/>
+        </label>
+    </p>
+    <input type="submit" name="offer" value="Make an offer" th:value="#{setOffer}">
+</fieldset>
+<div>
+    <fieldset>
+        <a href="buy" th:text="#{buy}">Return to previous page</a>
+    </fieldset>
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{title}">Auction detail page</title>
+    <link href="/css/style.css" rel="stylesheet"/>
+</head>
+<body>
+<fieldset>
+    <div>
+        <fieldset>
+            <legend th:text="#{auction}">Auction details</legend>
+            <table>
+                <tr>
+                    <th th:text="#{auctionID}">Auction code</th>
+                    <th th:text="#{actualPrice}">Current price</th>
+                    <th th:text="#{details}">Product details</th>
+                </tr>
+                <tr>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>
+                        <table>
+                            <tr>
+                                <th th:text="#{articleID}">Product code</th>
+                                <th th:text="#{productName}">Name</th>
+                                <th th:text="#{description}">Description</th>
+                                <th th:text="#{photo}">Image</th>
+                            </tr>
+                            <tr>
+                                <td>data</td>
+                                <td>data</td>
+                                <td>data</td>
+                                <td>data</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+    <div>
+        <fieldset>
+            <legend th:text="#{offers}">Offering details</legend>
+            <table>
+                <tr>
+                    <th th:text="#{username}">User</th>
+                    <th th:text="#{price}">Bid</th>
+                    <th th:text="#{date}">Date</th>
+                </tr>
+                <tr>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>data</td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+</fieldset>
+<div>
+    <fieldset>
+        <a href="sell" th:text="#{previous}">Return to previous page</a>
+    </fieldset>
+</div>
+</body>
+</html>

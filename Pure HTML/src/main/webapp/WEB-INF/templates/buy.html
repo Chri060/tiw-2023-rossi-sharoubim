@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{title}">Shopping page</title>
+    <link href="/css/style.css" rel="stylesheet"/>
+</head>
+<body>
+<div>
+    <form>
+        <fieldset>
+            <legend th:text="#{search}">Product search</legend>
+            <label>
+                <input type="text" name="search" placeholder="Product search" th:placeholder="#{search}" required/>
+            </label>
+            <input type="submit" name="search" th:value="#{research}" value="Search">
+            <table>
+                <tr>
+                    <th th:text="#{auctionID}">Auction code</th>
+                    <th th:text="#{offers}">Bid details</th>
+                    <th th:text="#{details}">Product details</th>
+                </tr>
+                <tr>
+                    <td>data</td>
+                    <td>
+                        <a href="offers" th:text="#{details}">Product details</a>
+                    </td>
+                    <td>
+                        <table>
+                            <tr>
+                                <th th:text="#{productID}">Product code</th>
+                                <th th:text="#{productName}">Name</th>
+                                <th th:text="#{description}">Description</th>
+                                <th th:text="#{photo}">Image</th>
+                            </tr>
+                            <tr>
+                                <td>data</td>
+                                <td>data</td>
+                                <td>data</td>
+                                <td>data</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<div>
+    <fieldset>
+        <legend th:text="#{winner}">Auctions won</legend>
+        <table>
+            <tr>
+                <th th:text="#{auctionID}">Auction code</th>
+                <th th:text="#{finalPrice}">Final Price</th>
+                <th th:text="#{details}">Product details</th>
+            </tr>
+            <tr>
+                <td>data</td>
+                <td>data</td>
+                <td>
+                    <table>
+                        <tr>
+                            <th th:text="#{productID}">Product code</th>
+                            <th th:text="#{productName}">Name</th>
+                            <th th:text="#{description}">Description</th>
+                            <th th:text="#{photo}">Image</th>
+                        </tr>
+                        <tr>
+                            <td>data</td>
+                            <td>data</td>
+                            <td>data</td>
+                            <td>data</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</div>
+<div>
+    <fieldset>
+        <a href="home" th:text="#{home}">Return to home page</a>
+    </fieldset>
+</div>
+</body>
+</html>
