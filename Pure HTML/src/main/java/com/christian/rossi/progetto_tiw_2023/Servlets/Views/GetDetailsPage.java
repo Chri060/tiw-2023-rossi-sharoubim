@@ -14,7 +14,7 @@ import java.io.IOException;
 public class GetDetailsPage extends ThymeleafHTTPServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        final String template = "productDetails";
+        final String template = "details";
         final ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         getTemplateEngine().process(template, ctx, response.getWriter());
