@@ -7,7 +7,7 @@
 </head>
 <body>
 <div>
-    <form>
+    <form action="/doaddproduct" method="post">
         <fieldset>
             <legend th:text="#{product}">Add new product</legend>
             <p>
@@ -40,26 +40,30 @@
     </form>
 </div>
 <div>
-    <form>
+    <form action="/docreateauction" method="post">
         <fieldset>
             <legend th:text="#{createAuction}">Create new auction</legend>
             <table>
-                <tr>
-                    <th th:text="#{productID}">Product code</th>
-                    <th th:text="#{name}">Name</th>
-                    <th th:text="#{price}">Price</th>
-                    <th th:text="#{select}">Select product</th>
-                </tr>
-                <tr>
-                    <td>data</td>
-                    <td>data</td>
-                    <td>data</td>
-                    <td>
-                        <label>
-                            <input type="checkbox" name="select" />
-                        </label>
-                    </td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th th:text="#{productID}">Product code</th>
+                        <th th:text="#{name}">Name</th>
+                        <th th:text="#{price}">Price</th>
+                        <th th:text="#{select}">Select product</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each ="products : ${products}">
+                        <td th:text="${products.productID}">data</td>
+                        <td th:text="${products.name}">data</td>
+                        <td th:text="${products.price}">data</td>
+                        <td>
+                            <label>
+                                <input type="checkbox" th:id="${products.productID}" name="product" th:value="${products.productID}" />
+                            </label>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
             <div>
                 <label>
@@ -68,7 +72,7 @@
             </div>
             <div>
                 <label>
-                    <input type="datetime-local" name="name" placeholder="Expiration date" th:placeholder="#{expiry}" required/>
+                    <input type="datetime-local" name="expiry" placeholder="Expiration date" th:placeholder="#{expiry}" required/>
                 </label>
             </div>
             <div>
@@ -81,31 +85,26 @@
     <fieldset>
         <legend th:text="#{closedAuction}">List of closed auctions</legend>
         <table>
-            <tr>
-                <th th:text="#{auctionID}">Closed auctions</th>
-                <th th:text="#{finalPrice}">Final Price</th>
-                <th th:text="#{offers}">Bids details</th>
-                <th th:text="#{productDetails}">Product details</th>
-            </tr>
-            <tr>
-                <td>data</td>
-                <td>data</td>
-                <td>
-                    <a href="details" th:text="#{auctionDetails}">Auction details</a>
-                </td>
-                <td>
-                    <table>
-                        <tr>
-                            <th th:text="#{productID}">Product code</th>
-                            <th th:text="#{name}">Name</th>
-                        </tr>
-                        <tr>
-                            <td>data</td>
-                            <td>data</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
+            <thead>
+                <tr>
+                    <th th:text="#{auctionID}">Closed auctions</th>
+                    <th th:text="#{finalPrice}">Final Price</th>
+                    <th th:text="#{offers}">Bids details</th>
+                    <th th:text="#{productID}">Product code</th>
+                    <th th:text="#{name}">Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>data</td>
+                    <td>data</td>
+                    <td>
+                        <a href="details" th:text="#{auctionDetails}">Auction details</a>
+                    </td>
+                    <td>data</td>
+                    <td>data</td>
+                </tr>
+            </tbody>
         </table>
     </fieldset>
 </div>
@@ -118,7 +117,8 @@
                 <th th:text="#{actualPrice}">Current price</th>
                 <th th:text="#{missingTime}">Time left</th>
                 <th th:text="#{offers}">Bids details</th>
-                <th th:text="#{productDetails}">Product details</th>
+                <th th:text="#{productID}">Product code</th>
+                <th th:text="#{name}">Name</th>
             </tr>
             <tr>
                 <td>data</td>
@@ -127,18 +127,8 @@
                 <td>
                     <a href="details" th:text="#{auctionDetails}">Auction details</a>
                 </td>
-                <td>
-                    <table>
-                        <tr>
-                            <th th:text="#{productID}">Product code</th>
-                            <th th:text="#{name}">Name</th>
-                        </tr>
-                        <tr>
-                            <td>data</td>
-                            <td>data</td>
-                        </tr>
-                    </table>
-                </td>
+                <td>data</td>
+                <td>data</td>
             </tr>
         </table>
     </fieldset>

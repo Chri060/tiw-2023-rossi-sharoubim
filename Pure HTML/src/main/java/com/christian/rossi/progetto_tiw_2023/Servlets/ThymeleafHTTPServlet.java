@@ -19,7 +19,6 @@ public abstract class ThymeleafHTTPServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-
         ServletContext servletContext = getServletContext();
         ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
         templateResolver.setTemplateMode(TemplateMode.HTML);
