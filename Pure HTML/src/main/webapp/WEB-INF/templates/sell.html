@@ -90,19 +90,21 @@
                     <th th:text="#{auctionID}">Closed auctions</th>
                     <th th:text="#{finalPrice}">Final Price</th>
                     <th th:text="#{offers}">Bids details</th>
-                    <th th:text="#{productID}">Product code</th>
                     <th th:text="#{name}">Name</th>
+                    <th th:text="#{productID}">Product code</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>data</td>
-                    <td>data</td>
+                <tr th:each ="closedauctions : ${closedauctions}">
+                    <td th:text="${closedauctions.auctionID}">data</td>
+                    <td th:text="${closedauctions.price}">data</td>
                     <td>
-                        <a href="details" th:text="#{auctionDetails}">Auction details</a>
+                        <form action="/details" method="post">
+                            <input type="submit" name="details" value="Login" th:value="${closedauctions.auctionID}"/>
+                        </form>
                     </td>
-                    <td>data</td>
-                    <td>data</td>
+                    <td th:text="${closedauctions.name}">data</td>
+                    <td th:text="${closedauctions.productID}">data</td>
                 </tr>
             </tbody>
         </table>
@@ -112,24 +114,28 @@
     <fieldset>
         <legend th:text="#{activeAuction}">List of active auctions</legend>
         <table>
-            <tr>
-                <th th:text="#{auctionID}">Active auctions</th>
-                <th th:text="#{actualPrice}">Current price</th>
-                <th th:text="#{missingTime}">Time left</th>
-                <th th:text="#{offers}">Bids details</th>
-                <th th:text="#{productID}">Product code</th>
-                <th th:text="#{name}">Name</th>
-            </tr>
-            <tr>
-                <td>data</td>
-                <td>data</td>
-                <td>data</td>
-                <td>
-                    <a href="details" th:text="#{auctionDetails}">Auction details</a>
-                </td>
-                <td>data</td>
-                <td>data</td>
-            </tr>
+            <thead>
+                <tr>
+                    <th th:text="#{auctionID}">Active auctions</th>
+                    <th th:text="#{actualPrice}">Current price</th>
+                    <th th:text="#{missingTime}">Time left</th>
+                    <th th:text="#{offers}">Bids details</th>
+                    <th th:text="#{name}">Name</th>
+                    <th th:text="#{productID}">Product code</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each ="activeauctions : ${activeauctions}">
+                    <td th:text="${activeauctions.auctionID}">data</td>
+                    <td th:text="${activeauctions.price}">data</td>
+                    <td>data</td>
+                    <td>
+                        <a href="details" th:text="#{auctionDetails}">Auction details</a>
+                    </td>
+                    <td th:text="${activeauctions.name}">data</td>
+                    <td th:text="${activeauctions.productID}">data</td>
+                </tr>
+            </tbody>
         </table>
     </fieldset>
 </div>
@@ -140,3 +146,7 @@
 </div>
 </body>
 </html>
+
+
+
+

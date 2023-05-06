@@ -8,6 +8,9 @@ public class AuctionBean {
     private boolean active;
     private Long UserID = null;
 
+    private String name = null;
+    private Long productID = null;
+
     public Long getAuctionID() {
         return auctionID;
     }
@@ -54,5 +57,21 @@ public class AuctionBean {
 
     public void setUserID(Long userID) {
         UserID = userID;
+    }
+
+    public Long getProductID() {
+        return productID;
+    }
+
+    public void setProductID(Long productID) {
+        this.productID = productID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

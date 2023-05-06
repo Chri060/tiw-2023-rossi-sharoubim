@@ -1,7 +1,11 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Views;
 
+import com.christian.rossi.progetto_tiw_2023.Beans.UserBean;
+import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
+import com.christian.rossi.progetto_tiw_2023.DAOs.UserDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
+import com.christian.rossi.progetto_tiw_2023.Utils.InputChecker;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletContext;
@@ -24,9 +28,13 @@ public class GetSellPage extends ThymeleafHTTPServlet {
 
 
             ProductDAO productDAO = null;
+            AuctionDAO auctionDAO = null;
             try {
                 productDAO = new ProductDAO();
+                auctionDAO = new AuctionDAO();
                 ctx.setVariable("products", productDAO.getUserProducts((Long) session.getAttribute("userID")));
+                ctx.setVariable("closedauctions", auctionDAO.getAuctions((Long) session.getAttribute("userID"), 0));
+                ctx.setVariable("activeauctions", auctionDAO.getAuctions((Long) session.getAttribute("userID"), 1));
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

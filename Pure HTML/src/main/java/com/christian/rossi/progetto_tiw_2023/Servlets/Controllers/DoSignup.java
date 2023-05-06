@@ -72,7 +72,8 @@ public class DoSignup extends ThymeleafHTTPServlet {
         } catch (SQLException e) {
             //TODO: pagina di errore (connessione al DB o query)
         }
-        request.getSession().setAttribute("user", u);
+        request.getSession().setAttribute("user", u.getUsername());
+        request.getSession().setAttribute("userID", u.getId());
         response.sendRedirect("/home");
     }
 }

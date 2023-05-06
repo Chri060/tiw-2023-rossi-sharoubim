@@ -1,12 +1,10 @@
 package com.christian.rossi.progetto_tiw_2023.DAOs;
 
 import com.christian.rossi.progetto_tiw_2023.Beans.AuctionBean;
-import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,4 +44,44 @@ public class AuctionDAO {
             }
         }
     }
+
+
+
+
+
+    public List<AuctionBean> getAuctions(Long userID, int active) throws SQLException{
+        String query = "SELECT auction.auctionID, winner.`max(offering)`, product.name, product.articleID " +
+                "FROM auction LEFT JOIN winner ON auction.auctionID = winner.auctionID " +
+                "             JOIN product on auction.auctionID = product.auctionID " +
+                "WHERE auction.active=? AND auction.userID=? " +
+                "ORDER BY auction.auctionID ";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setLong(1, active);
+            request.setLong(2, userID);
+            try (ResultSet result = request.executeQuery()) {
+                if (!result.isBeforeFirst())
+                    return null;
+                else {
+                    List<AuctionBean> auctionBeanList = new ArrayList<>();
+                    while (result.next()) {
+                        AuctionBean auctionBean = new AuctionBean();
+                        auctionBean.setAuctionID(Long.valueOf(result.getString("auctionID")));
+                        if (result.getString("max(offering)") != null) {
+                            auctionBean.setPrice(Integer.parseInt(result.getString("max(offering)")));
+                        }
+                        else {
+                            auctionBean.setPrice(0);
+                        }
+                        auctionBean.setName(result.getString("name"));
+                        auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
+                        auctionBeanList.add(auctionBean);
+                    }
+                    return auctionBeanList;
+                }
+            }
+        }
+    }
+
+
+
 }
