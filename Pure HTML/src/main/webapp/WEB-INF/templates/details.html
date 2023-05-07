@@ -34,7 +34,7 @@
             </table>
         </fieldset>
     </div>
-    <div>
+    <div th:if="${offer != null}">
         <fieldset>
             <legend th:text="#{offers}">Offering details</legend>
             <table>
@@ -60,9 +60,10 @@
 
 <div th:switch="${winner}">
     <fieldset th:case="null">
-        <form action="/doclose" method="post">
-            <button type="submit" name="details" value="Login" th:value="${close}">Close</button>
+        <form th:if="${active == 1}" action="/doclose" method="post">
+            <input type="submit" name="close" value="Login" th:value="${close}">
         </form>
+        <p th:if="${active == 0}">The auction is closed, but has no winner</p>
     </fieldset>
     <fieldset th:case="*">
         <legend>Winner</legend>
@@ -90,9 +91,6 @@
         </table>
     </fieldset>
 </div>
-
-
-
 <div>
     <a href="sell" th:text="#{previous}">Return to previous page</a>
 </div>

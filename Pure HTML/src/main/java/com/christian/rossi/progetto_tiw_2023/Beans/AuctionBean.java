@@ -48,8 +48,15 @@ public class AuctionBean {
         return active;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setActive(int active) {
+
+
+        if (active == 1) {
+            this.active=true;
+        }
+        else {
+            this.active=false;
+        }
     }
 
     public Long getUserID() {

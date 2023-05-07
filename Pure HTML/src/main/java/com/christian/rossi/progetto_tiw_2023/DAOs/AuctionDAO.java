@@ -85,7 +85,7 @@ public class AuctionDAO {
 
 
     public List<AuctionBean> getAuction(String details) throws SQLException{
-        String query = "SELECT auction.auctionID, winner.`max(offering)`, product.articleID, product.name, product.description " +
+        String query = "SELECT auction.auctionID, winner.`max(offering)`, product.articleID, product.name, product.description, auction.active " +
                 "FROM auction JOIN product on auction.auctionID = product.auctionID " +
                 "             LEFT JOIN winner on auction.auctionID = winner.auctionID " +
                 "WHERE auction.auctionID=?";
@@ -106,6 +106,7 @@ public class AuctionDAO {
                             auctionBean.setPrice(0);
                         }
                         auctionBean.setName(result.getString("name"));
+                        auctionBean.setActive(Integer.parseInt((result.getString("active"))));
                         auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
                         auctionBean.setDescription(result.getString("description"));
                         auctionBeanList.add(auctionBean);
@@ -201,6 +202,15 @@ public class AuctionDAO {
         }
     }
 
+
+
+    public void close(String auctionID) throws SQLException {
+        String query = "UPDATE auction SET active=0 WHERE auctionID=?";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setString(1, auctionID);
+            request.executeUpdate();
+        }
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Views;
 
+import com.christian.rossi.progetto_tiw_2023.Beans.AuctionBean;
 import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.OfferDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import static java.lang.Long.parseLong;
 
@@ -36,10 +38,16 @@ public class GetDetailsPage extends ThymeleafHTTPServlet {
                 auctionDAO = new AuctionDAO();
                 offerDAO = new OfferDAO();
                 userDAO = new UserDAO();
-                ctx.setVariable("selectedauction", auctionDAO.getAuction(details));
+
+                List<AuctionBean> auctionBeanList = auctionDAO.getAuction(details);
+
+
+
+                ctx.setVariable("selectedauction", auctionBeanList);
                 ctx.setVariable("offer", offerDAO.getOffers(details));
                 ctx.setVariable("winner", auctionDAO.getWinner(details));
                 ctx.setVariable("close", details);
+                ctx.setVariable("active", auctionBeanList.get(0).isActive());
                 if (auctionDAO.getWinner(details) != null) {
                     ctx.setVariable("user", userDAO.getUser(String.valueOf(auctionDAO.getWinner(details).getUserID())));
                 }
