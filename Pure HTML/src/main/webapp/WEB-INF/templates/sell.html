@@ -7,7 +7,7 @@
 </head>
 <body>
 <div>
-    <form action="/doaddproduct" method="post">
+    <form action="/doaddproduct" method="post" enctype='multipart/form-data'>
         <fieldset>
             <legend th:text="#{product}">Add new product</legend>
             <div>
@@ -32,7 +32,7 @@
             </div>
             <div>
                 <label>
-                    <input type="file" name="photo" accept="image/png, image/jpeg" required/>
+                    <input type="file" name="file" accept="image/png, image/jpeg, image/jpg" required/>
                 </label>
             </div>
             <div>
@@ -67,18 +67,21 @@
                     </tr>
                 </tbody>
             </table>
-            <div>
+            <div th:if="${products != null}">
                 <label>
                     <input type="number" name="rise" placeholder="Minimum rise" th:placeholder="#{rise}" required/>
                 </label>
             </div>
-            <div>
+            <div th:if="${products != null}">
                 <label>
                     <input type="datetime-local" name="expiry" placeholder="Expiration date" th:placeholder="#{expiry}" required/>
                 </label>
             </div>
-            <div>
+            <div th:if="${products != null}">
                 <input type="submit" name="create" value="Create" th:value="#{create}"/>
+            </div>
+            <div th:if="${products == null}">
+                <p>There are no products available</p>
             </div>
         </fieldset>
     </form>
@@ -86,7 +89,8 @@
 <div>
     <fieldset>
         <legend th:text="#{closedAuction}">List of closed auctions</legend>
-        <table>
+        <p th:if="${closedauctions == null}">There are no closed auctions</p>
+        <table th:if="${closedauctions != null}">
             <thead>
                 <tr>
                     <th th:text="#{auctionID}">Closed auctions</th>
@@ -115,7 +119,8 @@
 <div>
     <fieldset>
         <legend th:text="#{activeAuction}">List of active auctions</legend>
-        <table>
+        <p th:if="${activeauctions == null}">There are no active auctions</p>
+        <table th:if="${activeauctions != null}">
             <thead>
                 <tr>
                     <th th:text="#{auctionID}">Active auctions</th>

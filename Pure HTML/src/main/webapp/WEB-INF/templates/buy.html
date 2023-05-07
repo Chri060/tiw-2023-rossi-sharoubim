@@ -42,7 +42,9 @@
                         <td th:text="${auctions.productID}">data</td>
                         <td th:text="${auctions.name}">data</td>
                         <td th:text="${auctions.description}">data</td>
-                        <td>data</td>
+                        <td>
+                            <img th:src="${auctions.image}" src="" alt="">
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -74,7 +76,9 @@
                     <td th:text="${closedauctions.name}">data</td>
                     <td th:text="${closedauctions.productID}">data</td>
                     <td th:text="${closedauctions.description}">data</td>
-                    <td>data</td>
+                    <td>
+                        <img th:src="${closedauctions.image}" src="" alt="">
+                    </td>
                 </tr>
                 </tbody>
             </table>

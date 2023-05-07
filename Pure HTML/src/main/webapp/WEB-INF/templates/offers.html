@@ -11,7 +11,8 @@
     <div>
         <fieldset>
             <legend th:text="#{auction}">Auction details</legend>
-            <table>
+            <p th:if="${auction == null}">No auctions selected</p>
+            <table th:if="${auction != null}">
                 <tr>
                     <th th:text="#{productID}">Product code</th>
                     <th th:text="#{productName}">Name</th>
@@ -22,7 +23,9 @@
                     <td th:text="${auction.productID}">data</td>
                     <td th:text="${auction.name}">data</td>
                     <td th:text="${auction.description}">data</td>
-                    <td>data</td>
+                    <td>
+                        <img th:src="${auction.image}" src="" alt="">
+                    </td>
                 </tr>
             </table>
         </fieldset>
@@ -30,7 +33,8 @@
     <div>
         <fieldset>
             <legend th:text="#{offer}">Active bids</legend>
-            <table>
+            <p th:if="${offer == null}">No offers made for the selected auction</p>
+            <table th:if="${offer != null}">
                 <tr>
                     <th th:text="#{username}">User</th>
                     <th th:text="#{price}">Bid</th>

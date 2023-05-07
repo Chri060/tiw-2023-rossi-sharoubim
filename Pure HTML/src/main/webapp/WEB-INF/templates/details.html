@@ -28,7 +28,9 @@
                         <td th:text="${selectedauction.productID}">data</td>
                         <td th:text="${selectedauction.name}">data</td>
                         <td th:text="${selectedauction.description}">data</td>
-                        <td>data</td>
+                        <td>
+                            <img th:src="${selectedauction.image}" src="" alt="">
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -56,16 +58,14 @@
         </fieldset>
     </div>
 </fieldset>
-
-
-<div th:switch="${winner}">
-    <fieldset th:case="null">
+<div>
+    <fieldset th:if="${winner == null}">
         <form th:if="${active == 1}" action="/doclose" method="post">
             <input type="submit" name="close" value="Login" th:value="${close}">
         </form>
         <p th:if="${active == 0}">The auction is closed, but has no winner</p>
     </fieldset>
-    <fieldset th:case="*">
+    <fieldset th:if="${winner != null}">
         <legend>Winner</legend>
         <table>
             <thead>

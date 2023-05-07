@@ -51,7 +51,7 @@ public class AuctionDAO {
 
 
     public List<AuctionBean> getAuctions(Long userID, int active) throws SQLException{
-        String query = "SELECT auction.auctionID, winner.`max(offering)`, product.name, product.articleID " +
+        String query = "SELECT * " +
                 "FROM auction LEFT JOIN winner ON auction.auctionID = winner.auctionID " +
                 "             JOIN product on auction.auctionID = product.auctionID " +
                 "WHERE auction.active=? AND auction.userID=? " +
@@ -75,6 +75,7 @@ public class AuctionDAO {
                         }
                         auctionBean.setName(result.getString("name"));
                         auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
+                        auctionBean.setImage(result.getString("image"));
                         auctionBeanList.add(auctionBean);
                     }
                     return auctionBeanList;
@@ -85,7 +86,7 @@ public class AuctionDAO {
 
 
     public List<AuctionBean> getAuction(String details) throws SQLException{
-        String query = "SELECT auction.auctionID, winner.`max(offering)`, product.articleID, product.name, product.description, auction.active " +
+        String query = "SELECT * " +
                 "FROM auction JOIN product on auction.auctionID = product.auctionID " +
                 "             LEFT JOIN winner on auction.auctionID = winner.auctionID " +
                 "WHERE auction.auctionID=?";
@@ -109,6 +110,7 @@ public class AuctionDAO {
                         auctionBean.setActive(Integer.parseInt((result.getString("active"))));
                         auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
                         auctionBean.setDescription(result.getString("description"));
+                        auctionBean.setImage(result.getString("image"));
                         auctionBeanList.add(auctionBean);
                     }
                     return auctionBeanList;
@@ -140,7 +142,7 @@ public class AuctionDAO {
 
 
     public List<AuctionBean> getWonAuctions(Long userID) throws SQLException{
-        String query = "SELECT winner.auctionID, `max(offering)`,product.articleID, name, description " +
+        String query = "SELECT * " +
                         "FROM winner LEFT JOIN auction on winner.auctionID = auction.auctionID " +
                         "            LEFT JOIN product on auction.auctionID = product.auctionID " +
                         "WHERE winner.userID=? AND auction.active=0";
@@ -163,6 +165,7 @@ public class AuctionDAO {
                         auctionBean.setName(result.getString("name"));
                         auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
                         auctionBean.setDescription(result.getString("description"));
+                        auctionBean.setImage(result.getString("image"));
                         auctionBeanList.add(auctionBean);
                     }
                     return auctionBeanList;
@@ -176,7 +179,7 @@ public class AuctionDAO {
 
     public List<AuctionBean> getAuctionByKeyword(String article, Long userID) throws SQLException {
         String details = "%" + article + "%";
-        String query = "SELECT auction.auctionID, product.articleID, product.name, product.description " +
+        String query = "SELECT * " +
                 "FROM auction LEFT JOIN product ON auction.auctionID = product.auctionID " +
                 "WHERE auction.active=1 AND (product.name LIKE ? OR product.description LIKE ?) AND product.userID!=?";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
@@ -194,6 +197,7 @@ public class AuctionDAO {
                         auctionBean.setName(result.getString("name"));
                         auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
                         auctionBean.setDescription(result.getString("description"));
+                        auctionBean.setImage(result.getString("image"));
                         auctionBeanList.add(auctionBean);
                     }
                     return auctionBeanList;

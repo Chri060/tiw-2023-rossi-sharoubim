@@ -11,6 +11,7 @@ public class AuctionBean {
     private Long productID = null;
     private Long articleID = null;
     private String description = null;
+    private String image = null;
 
     public Long getAuctionID() {
         return auctionID;
@@ -97,5 +98,13 @@ public class AuctionBean {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
