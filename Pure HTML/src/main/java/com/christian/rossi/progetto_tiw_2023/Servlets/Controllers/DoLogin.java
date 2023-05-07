@@ -36,7 +36,7 @@ public class DoLogin extends ThymeleafHTTPServlet {
             response.sendRedirect("/login");
         } else {
             request.getSession().setAttribute("user", u.getUsername());
-            request.getSession().setAttribute("userID", u.getId());
+            request.getSession().setAttribute("userID", u.getUserID());
             response.sendRedirect("/home");
         }
     }

@@ -1,6 +1,7 @@
 package com.christian.rossi.progetto_tiw_2023.DAOs;
 
 import com.christian.rossi.progetto_tiw_2023.Beans.AuctionBean;
+import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -81,6 +82,61 @@ public class AuctionDAO {
             }
         }
     }
+
+
+    public List<AuctionBean> getAuction(String details) throws SQLException{
+        String query = "SELECT auction.auctionID, winner.`max(offering)`, product.articleID, product.name, product.description " +
+                "FROM auction JOIN product on auction.auctionID = product.auctionID " +
+                "             LEFT JOIN winner on auction.auctionID = winner.auctionID " +
+                "WHERE auction.auctionID=?";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setString(1, details);
+            try (ResultSet result = request.executeQuery()) {
+                if (!result.isBeforeFirst())
+                    return null;
+                else {
+                    List<AuctionBean> auctionBeanList = new ArrayList<>();
+                    while (result.next()) {
+                        AuctionBean auctionBean = new AuctionBean();
+                        auctionBean.setAuctionID(Long.valueOf(result.getString("auctionID")));
+                        if (result.getString("max(offering)") != null) {
+                            auctionBean.setPrice(Integer.parseInt(result.getString("max(offering)")));
+                        }
+                        else {
+                            auctionBean.setPrice(0);
+                        }
+                        auctionBean.setName(result.getString("name"));
+                        auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
+                        auctionBean.setDescription(result.getString("description"));
+                        auctionBeanList.add(auctionBean);
+                    }
+                    return auctionBeanList;
+                }
+            }
+        }
+    }
+
+
+
+    public AuctionBean getWinner(String details) throws SQLException {
+        String query = "SELECT winner.userID FROM auction LEFT JOIN winner ON auction.auctionID = winner.auctionID WHERE active = 0 AND `max(offering)` != 0 AND auction.auctionID=?";
+
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setString(1, details);
+            try (ResultSet result = request.executeQuery()) {
+                if (!result.isBeforeFirst())
+                    return null;
+                else {
+                    result.next();
+                    AuctionBean auctionBean = new AuctionBean();
+                    auctionBean.setUserID(result.getLong("userID"));
+                    return auctionBean;
+                }
+            }
+        }
+    }
+
+
 
 
 

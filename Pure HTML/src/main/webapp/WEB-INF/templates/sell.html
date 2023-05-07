@@ -130,7 +130,9 @@
                     <td th:text="${activeauctions.price}">data</td>
                     <td>data</td>
                     <td>
-                        <a href="details" th:text="#{auctionDetails}">Auction details</a>
+                        <form action="/details" method="post">
+                            <input type="submit" name="details" value="Login" th:value="${activeauctions.auctionID}"/>
+                        </form>
                     </td>
                     <td th:text="${activeauctions.name}">data</td>
                     <td th:text="${activeauctions.productID}">data</td>

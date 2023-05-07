@@ -1,18 +1,18 @@
 package com.christian.rossi.progetto_tiw_2023.Beans;
 
 public class UserBean {
-    private Long id = null;
+    private Long userID = null;
     private String username = null;
     private String email = null;
     private String city = null;
     private String address = null;
     private String province = null;
 
-    public Long getId (){
-        return id;
+    public Long getUserID(){
+        return userID;
     }
-    public void setId (Long id){
-        this.id = id;
+    public void setUserID(Long userID){
+        this.userID = userID;
     }
     public String getUsername (){
         return username;

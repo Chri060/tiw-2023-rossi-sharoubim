@@ -26,7 +26,7 @@ public class UserDAO {
                     result.next();
                     UserBean userBean = new UserBean();
                     userBean.setUsername(result.getString("username"));
-                    userBean.setId(Long.valueOf(result.getString("userID")));
+                    userBean.setUserID(Long.valueOf(result.getString("userID")));
                     return userBean;
                 }
             }
@@ -46,5 +46,30 @@ public class UserDAO {
         }
         return authenticate(username, password);
     }
+
+    public UserBean getUser(String userID) throws SQLException {
+        String query = "SELECT * FROM user WHERE userID=?";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setString(1, userID);
+            try (ResultSet result = request.executeQuery()) {
+                if (!result.isBeforeFirst())
+                    return null;
+                else {
+                    result.next();
+                    UserBean userBean = new UserBean();
+                    userBean.setUsername(result.getString("username"));
+                    userBean.setUserID(Long.valueOf(result.getString("userID")));
+                    userBean.setEmail(result.getString("email"));
+                    userBean.setCity(result.getString("city"));
+                    userBean.setAddress(result.getString("address"));
+                    userBean.setProvince(result.getString("province"));
+                    return userBean;
+                }
+            }
+        }
+    }
+
+
+
 
 }
