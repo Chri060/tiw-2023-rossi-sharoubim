@@ -10,32 +10,34 @@
     <form action="/doaddproduct" method="post">
         <fieldset>
             <legend th:text="#{product}">Add new product</legend>
-            <p>
+            <div>
                 <label>
                     <input type="text" name="articleID" placeholder="Product code" th:placeholder="#{productID}" required/>
                 </label>
-            </p>
-            <p>
+            </div>
+            <div>
                 <label>
                     <input type="text" name="name" placeholder="Name" th:placeholder="#{name}" required/>
                 </label>
-            </p>
-            <p>
+            </div>
+            <div>
                 <label>
                     <input type="text" name="description" placeholder="Description" th:placeholder="#{description}" required/>
                 </label>
-            </p>
-            <p>
+            </div>
+            <div>
                 <label>
                     <input type="number" name="price" placeholder="Price" th:placeholder="#{price}" required/>
                 </label>
-            </p>
-            <p>
+            </div>
+            <div>
                 <label>
                     <input type="file" name="photo" accept="image/png, image/jpeg" required/>
                 </label>
-            </p>
-            <input type="submit" name="newArticle" value="Add product" th:value="#{newProduct}">
+            </div>
+            <div>
+                <input type="submit" name="newArticle" value="Add product" th:value="#{newProduct}">
+            </div>
         </fieldset>
     </form>
 </div>
@@ -43,7 +45,7 @@
     <form action="/docreateauction" method="post">
         <fieldset>
             <legend th:text="#{createAuction}">Create new auction</legend>
-            <table>
+            <table th:if="${products != null}">
                 <thead>
                     <tr>
                         <th th:text="#{productID}">Product code</th>
@@ -100,7 +102,7 @@
                     <td th:text="${closedauctions.price}">data</td>
                     <td>
                         <form action="/details" method="post">
-                            <input type="submit" name="details" value="Login" th:value="${closedauctions.auctionID}"/>
+                            <button type="submit" name="details" value="Login" th:value="${closedauctions.auctionID}">Details</button>
                         </form>
                     </td>
                     <td th:text="${closedauctions.name}">data</td>
@@ -131,7 +133,7 @@
                     <td>data</td>
                     <td>
                         <form action="/details" method="post">
-                            <input type="submit" name="details" value="Login" th:value="${activeauctions.auctionID}"/>
+                            <button type="submit" name="details" value="null" th:value="${activeauctions.auctionID}">Details</button>
                         </form>
                     </td>
                     <td th:text="${activeauctions.name}">data</td>
@@ -142,9 +144,9 @@
     </fieldset>
 </div>
 <div>
-    <fieldset>
-        <a href="home" th:text="#{home}">Return to home page</a>
-    </fieldset>
+
+    <a href="home" th:text="#{home}">Return to home page</a>
+
 </div>
 </body>
 </html>

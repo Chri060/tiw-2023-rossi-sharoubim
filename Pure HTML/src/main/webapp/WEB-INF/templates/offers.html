@@ -18,10 +18,10 @@
                     <th th:text="#{description}">Description</th>
                     <th th:text="#{photo}">Image</th>
                 </tr>
-                <tr>
-                    <td>data</td>
-                    <td>data</td>
-                    <td>data</td>
+                <tr th:each="auction : ${auction}">
+                    <td th:text="${auction.productID}">data</td>
+                    <td th:text="${auction.name}">data</td>
+                    <td th:text="${auction.description}">data</td>
                     <td>data</td>
                 </tr>
             </table>
@@ -33,13 +33,13 @@
             <table>
                 <tr>
                     <th th:text="#{username}">User</th>
-                    <th th:text="#{price}">Offer</th>
+                    <th th:text="#{price}">Bid</th>
                     <th th:text="#{date}">Date</th>
                 </tr>
-                <tr>
-                    <td>data</td>
-                    <td>data</td>
-                    <td>data</td>
+                <tr th:each="offer : ${offer}">
+                    <td th:text="${offer.userID}">data</td>
+                    <td th:text="${offer.offering}">data</td>
+                    <td th:text="${offer.date}">data</td>
                 </tr>
             </table>
         </fieldset>
@@ -47,22 +47,19 @@
 </fieldset>
 <fieldset>
     <legend th:text="#{makeOffer}">New offer</legend>
-    <div>
-        <p>
-            <label th:text="#{setBid}">Bid (must be greater than VALUE):</label>
-        </p>
-    </div>
-    <p>
-        <label>
-            <input type="number" name="offer" placeholder="Your bid" th:placeholder="#{makeBid}" required/>
-        </label>
-    </p>
-    <input type="submit" name="offer" value="Make an offer" th:value="#{setOffer}">
+    <form action="/dooffer" method="post">
+        <div>
+            <label>
+                <input type="number" name="offer" placeholder="Your bid" th:placeholder="#{makeBid}" required/>
+            </label>
+        </div>
+        <div>
+            <input type="submit" name="auctionID" value="null" th:value="${actualID}">
+        </div>
+    </form>
 </fieldset>
 <div>
-    <fieldset>
-        <a href="buy" th:text="#{buy}">Return to previous page</a>
-    </fieldset>
+    <a href="buy" th:text="#{buy}">Return to previous page</a>
 </div>
 </body>
 </html>

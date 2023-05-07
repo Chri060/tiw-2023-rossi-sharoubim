@@ -138,6 +138,69 @@ public class AuctionDAO {
 
 
 
+    public List<AuctionBean> getWonAuctions(Long userID) throws SQLException{
+        String query = "SELECT winner.auctionID, `max(offering)`,product.articleID, name, description " +
+                        "FROM winner LEFT JOIN auction on winner.auctionID = auction.auctionID " +
+                        "            LEFT JOIN product on auction.auctionID = product.auctionID " +
+                        "WHERE winner.userID=? AND auction.active=0";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setLong(1, userID);
+            try (ResultSet result = request.executeQuery()) {
+                if (!result.isBeforeFirst())
+                    return null;
+                else {
+                    List<AuctionBean> auctionBeanList = new ArrayList<>();
+                    while (result.next()) {
+                        AuctionBean auctionBean = new AuctionBean();
+                        auctionBean.setAuctionID(Long.valueOf(result.getString("auctionID")));
+                        if (result.getString("max(offering)") != null) {
+                            auctionBean.setPrice(Integer.parseInt(result.getString("max(offering)")));
+                        }
+                        else {
+                            auctionBean.setPrice(0);
+                        }
+                        auctionBean.setName(result.getString("name"));
+                        auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
+                        auctionBean.setDescription(result.getString("description"));
+                        auctionBeanList.add(auctionBean);
+                    }
+                    return auctionBeanList;
+                }
+            }
+        }
+
+
+    }
+
+
+    public List<AuctionBean> getAuctionByKeyword(String article, Long userID) throws SQLException {
+        String details = "%" + article + "%";
+        String query = "SELECT auction.auctionID, product.articleID, product.name, product.description " +
+                "FROM auction LEFT JOIN product ON auction.auctionID = product.auctionID " +
+                "WHERE auction.active=1 AND (product.name LIKE ? OR product.description LIKE ?) AND product.userID!=?";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setString(1, details);
+            request.setString(2, details);
+            request.setLong(3, userID);
+            try (ResultSet result = request.executeQuery()) {
+                if (!result.isBeforeFirst())
+                    return null;
+                else {
+                    List<AuctionBean> auctionBeanList = new ArrayList<>();
+                    while (result.next()) {
+                        AuctionBean auctionBean = new AuctionBean();
+                        auctionBean.setAuctionID(Long.valueOf(result.getString("auctionID")));
+                        auctionBean.setName(result.getString("name"));
+                        auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
+                        auctionBean.setDescription(result.getString("description"));
+                        auctionBeanList.add(auctionBean);
+                    }
+                    return auctionBeanList;
+                }
+            }
+        }
+    }
+
 
 
 }

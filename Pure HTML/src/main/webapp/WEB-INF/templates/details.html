@@ -56,9 +56,18 @@
         </fieldset>
     </div>
 </fieldset>
-<fieldset th:if="${winner != null}">
-    <table>
-        <thead>
+
+
+<div th:switch="${winner}">
+    <fieldset th:case="null">
+        <form action="/doclose" method="post">
+            <button type="submit" name="details" value="Login" th:value="${close}">Close</button>
+        </form>
+    </fieldset>
+    <fieldset th:case="*">
+        <legend>Winner</legend>
+        <table>
+            <thead>
             <tr>
                 <th>UserID</th>
                 <th>Username</th>
@@ -67,8 +76,8 @@
                 <th>Address</th>
                 <th>Province</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <tr th:each="user : ${user}">
                 <td th:text="${user.userID}">data</td>
                 <td th:text="${user.username}">data</td>
@@ -77,18 +86,15 @@
                 <td th:text="${user.province}">data</td>
                 <td th:text="${user.address}">data</td>
             </tr>
-        </tbody>
-    </table>
-
-
-
-
-
-</fieldset>
-<div>
-    <fieldset>
-        <a href="sell" th:text="#{previous}">Return to previous page</a>
+            </tbody>
+        </table>
     </fieldset>
+</div>
+
+
+
+<div>
+    <a href="sell" th:text="#{previous}">Return to previous page</a>
 </div>
 </body>
 </html>

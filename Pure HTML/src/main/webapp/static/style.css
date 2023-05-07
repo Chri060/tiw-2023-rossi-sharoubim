@@ -6,12 +6,145 @@ html {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    background: #FAF7FA
 }
 
 table {
+    font-family: Futura, "Trebuchet MS", Arial, san-serif, serif;
     border-collapse: collapse;
+    margin: 1em;
 }
 
-th, td {
-    border: 1px solid black;
+th {
+    color: #FFFFFF;
+    font-weight: bold;
+    text-align: center;
+    padding: 0.6em 1em;
+    background: #404040;
+}
+
+td {
+    color: #000000;
+    padding: 0.5em 1em;
+    text-align: center;
+    background: #E0E0E0;
+}
+
+button {
+    font-family: Futura, "Trebuchet MS", Arial, san-serif, serif;
+    border-radius: 10px;
+    background-color: #E0E0E0;
+    border-color: #404040;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    text-align: center;
+    border-style: solid;
+}
+
+button:hover {
+    background-color: #404040;
+    color: #FFFFFF;
+    border-style: solid;
+}
+
+legend {
+    font-family: Futura, "Trebuchet MS", Arial, san-serif, serif;
+    text-align: center;
+    border-radius: 5px;
+    background-color: #404040;
+    color: #FFFFFF;
+    padding: 5px 50px;
+    margin: auto;
+}
+
+fieldset {
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    border-color: #404040;
+    border-radius: 5px;
+    flex-flow: column;
+    margin: 10px;
+    flex-flow: column;
+}
+
+a {
+    font-family: Futura, "Trebuchet MS", Arial, san-serif, serif;
+    background-color: #404040;
+    color: #FFFFFF;
+    padding: 7px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+}
+
+div {
+    margin: 10px 10px 10px 10px;
+}
+
+input {
+    font-family: Futura, "Trebuchet MS", Arial, san-serif, serif;
+    background-color: #404040;
+    color: #FFFFFF;
+    padding: 7px 20px;
+    border-width: 0;
+    border-radius: 5px;
+    margin:auto;
+    font-size: 16px;
+}
+
+::placeholder {
+    text-align: center;
+}
+
+input[type=file]::file-selector-button {
+    font-family: Futura, "Trebuchet MS", Arial, san-serif, serif;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    text-align: center;
+    background-color: #404040;
+    border-color: #E0E0E0;
+    color: #FFFFFF;
+    border-style: solid;
+}
+
+input[type=file]::file-selector-button:hover {
+    background-color: #E0E0E0;
+    color: #404040;
+    border-color: #E0E0E0;
+    border-style: solid;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="datetime-local"]{
+    background-color: #404040;
+    padding: 7px 20px;
+    font-family: Futura, "Trebuchet MS", Arial, san-serif, serif;
+    color: #FFFFFF;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+}
+
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+p {
+    font-family: Futura, "Trebuchet MS", Arial, san-serif, serif;
+    text-align: center;
+    color: #404040;
+    padding: 5px 50px;
+    margin: auto;
+    font-size: 16px;
 }

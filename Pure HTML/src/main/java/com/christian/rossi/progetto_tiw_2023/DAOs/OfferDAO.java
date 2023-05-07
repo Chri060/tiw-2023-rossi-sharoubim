@@ -34,4 +34,20 @@ public class OfferDAO {
             }
         }
     }
+
+
+    public void addOffer(String offer, String userID, String auctionID) throws SQLException {
+        String query = "INSERT INTO offer (offering, date, userID, auctionID) values (?, ?, ?, ?)";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setString(1, offer);
+            request.setString(2, "data");
+            request.setString(3, userID);
+            request.setString(4, auctionID);
+            request.execute();
+        }
+    }
+
+
+
+
 }

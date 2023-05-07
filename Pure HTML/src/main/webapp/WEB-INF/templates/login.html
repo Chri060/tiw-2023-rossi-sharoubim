@@ -10,17 +10,19 @@
   <form action="/dologin" method="post">
     <fieldset>
       <legend th:text="#{login}">Login</legend>
-      <p>
+      <div>
         <label>
-        <input type="text" name="username" placeholder="Username" th:placeholder="#{username}" required/>
+          <input type="text" name="username" placeholder="Username" th:placeholder="#{username}" required/>
         </label>
-      </p>
-      <p>
+      </div>
+      <div>
         <label>
-        <input type="password" name="password" placeholder="Password" th:placeholder="#{password}" required/>
+          <input type="password" name="password" placeholder="Password" th:placeholder="#{password}" required/>
         </label>
-      </p>
-      <input type="submit" name="login" value="Login" th:value="#{login}"/>
+      </div>
+      <div>
+        <input type="submit" name="login" value="Login" th:value="#{login}"/>
+      </div>
     </fieldset>
   </form>
   <div>

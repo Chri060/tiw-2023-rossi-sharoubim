@@ -39,6 +39,7 @@ public class GetDetailsPage extends ThymeleafHTTPServlet {
                 ctx.setVariable("selectedauction", auctionDAO.getAuction(details));
                 ctx.setVariable("offer", offerDAO.getOffers(details));
                 ctx.setVariable("winner", auctionDAO.getWinner(details));
+                ctx.setVariable("close", details);
                 if (auctionDAO.getWinner(details) != null) {
                     ctx.setVariable("user", userDAO.getUser(String.valueOf(auctionDAO.getWinner(details).getUserID())));
                 }
