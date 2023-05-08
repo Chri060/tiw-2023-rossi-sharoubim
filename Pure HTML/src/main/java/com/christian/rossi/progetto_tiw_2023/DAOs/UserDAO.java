@@ -1,12 +1,12 @@
 package com.christian.rossi.progetto_tiw_2023.DAOs;
 
 import com.christian.rossi.progetto_tiw_2023.Beans.UserBean;
+import static com.christian.rossi.progetto_tiw_2023.DAOs.DBConnectionPool.getConnection;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.christian.rossi.progetto_tiw_2023.DAOs.DBConnectionPool.getConnection;
 
 public class UserDAO {
 
@@ -15,7 +15,8 @@ public class UserDAO {
     }
 
     public UserBean authenticate(String username, String password) throws SQLException {
-        String query = "SELECT username, userID FROM user WHERE username=? AND password=?";
+        String query = "SELECT username, userID " +
+                       "FROM user WHERE username=? AND password=?";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setString(1, username);
             request.setString(2, password);
@@ -34,7 +35,8 @@ public class UserDAO {
     }
 
     public UserBean addUser(String username, String email, String city, String address, String province, String password) throws SQLException {
-        String query = "INSERT INTO user (username, email, city, address, province, password) values (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO user (username, email, city, address, province, password) " +
+                       "VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setString(1, username);
             request.setString(2, email);
@@ -48,7 +50,9 @@ public class UserDAO {
     }
 
     public UserBean getUser(String userID) throws SQLException {
-        String query = "SELECT * FROM user WHERE userID=?";
+        String query = "SELECT * " +
+                       "FROM user " +
+                       "WHERE userID=?";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setString(1, userID);
             try (ResultSet result = request.executeQuery()) {
@@ -68,8 +72,4 @@ public class UserDAO {
             }
         }
     }
-
-
-
-
 }

@@ -14,8 +14,15 @@ import java.util.List;
 
 public class OfferDAO {
 
+    public OfferDAO() throws SQLException {
+        super();
+    }
+
     public List<OfferBean> getOffers(String details) throws SQLException {
-        String query = "SELECT * FROM offer WHERE auctionID=? ORDER BY offering DESC";
+        String query = "SELECT * " +
+                       "FROM offer " +
+                       "WHERE auctionID=? " +
+                       "ORDER BY offering DESC";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setString(1, details);
             try (ResultSet result = request.executeQuery()) {
@@ -36,9 +43,9 @@ public class OfferDAO {
         }
     }
 
-
     public void addOffer(String offer, String userID, String auctionID, Timestamp date) throws SQLException {
-        String query = "INSERT INTO offer (offering, date, userID, auctionID) values (?, ?, ?, ?)";
+        String query = "INSERT INTO offer (offering, date, userID, auctionID) " +
+                       "VALUES (?, ?, ?, ?)";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setString(1, offer);
             request.setTimestamp(2, date);
@@ -47,8 +54,4 @@ public class OfferDAO {
             request.execute();
         }
     }
-
-
-
-
 }

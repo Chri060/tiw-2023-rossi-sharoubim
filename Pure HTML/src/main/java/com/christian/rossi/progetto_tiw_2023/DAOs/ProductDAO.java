@@ -1,17 +1,13 @@
 package com.christian.rossi.progetto_tiw_2023.DAOs;
 
 import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
-import com.christian.rossi.progetto_tiw_2023.Beans.UserBean;
+import static com.christian.rossi.progetto_tiw_2023.DAOs.DBConnectionPool.getConnection;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.christian.rossi.progetto_tiw_2023.DAOs.DBConnectionPool.getConnection;
 
 public class ProductDAO {
 
@@ -19,10 +15,9 @@ public class ProductDAO {
         super();
     }
 
-
-
     public void addProduct(String articleID, String name, String description, int price, Long userID) throws SQLException {
-        String query = "INSERT INTO product (articleID, name, description, price, sellable, userID, auctionID) values (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO product (articleID, name, description, price, sellable, userID, auctionID) " +
+                       "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setString(1, articleID);
             request.setString(2, name);
@@ -35,9 +30,10 @@ public class ProductDAO {
         }
     }
 
-
     public List<ProductBean> getUserProducts(Long userID) throws SQLException {
-        String query = "SELECT * FROM product WHERE userID=? AND sellable=1";
+        String query = "SELECT * " +
+                       "FROM product " +
+                       "WHERE userID=? AND sellable=1";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, userID);
             try (ResultSet result = request.executeQuery()) {
@@ -59,10 +55,10 @@ public class ProductDAO {
         }
     }
 
-
-
     public void update(Long articleID, Long auctionID) throws SQLException {
-        String query = "UPDATE product SET sellable=0, auctionID=? WHERE articleID=? ";
+        String query = "UPDATE product " +
+                       "SET sellable=0, auctionID=? " +
+                       "WHERE articleID=? ";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, auctionID);
             request.setLong(2, articleID);
@@ -70,9 +66,10 @@ public class ProductDAO {
         }
     }
 
-
     public int GetPrice (Long articleID) throws SQLException {
-        String query = "SELECT price FROM product WHERE articleID=?";
+        String query = "SELECT price " +
+                       "FROM product " +
+                       "WHERE articleID=?";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, articleID);
             try (ResultSet result = request.executeQuery()) {
