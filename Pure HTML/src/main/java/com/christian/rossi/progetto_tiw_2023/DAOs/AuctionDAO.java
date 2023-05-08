@@ -78,7 +78,7 @@ public class AuctionDAO {
                         auctionBean.setExpiry(result.getTimestamp("expiry"));
                         List<Integer> timeRem = TimeHandler.getTimeDifference(result.getTimestamp("expiry"), loginTime);
                         auctionBean.setRemainingDays(String.valueOf(timeRem.get(0)));
-                        auctionBean.setRemainingHours(timeRem.get(1) + ":" + timeRem.get(2));
+                        auctionBean.setRemainingHours(timeRem.get(1) + "h " + timeRem.get(2)+ "m");
                         auctionBeanList.add(auctionBean);
                     }
                     return auctionBeanList;
@@ -111,7 +111,7 @@ public class AuctionDAO {
                         auctionBean.setRise(result.getInt("rise"));
                         List<Integer> timeRem = TimeHandler.getTimeDifference(result.getTimestamp("expiry"), loginTime);
                         auctionBean.setRemainingDays(String.valueOf(timeRem.get(0)));
-                        auctionBean.setRemainingHours(timeRem.get(1) + ":" + timeRem.get(2));
+                        auctionBean.setRemainingHours(timeRem.get(1) + "h " + timeRem.get(2)+ "m");
                         auctionBeanList.add(auctionBean);
                     }
                     return auctionBeanList;
@@ -196,7 +196,7 @@ public class AuctionDAO {
                         auctionBean.setPrice(result.getInt("price"));
                         List<Integer> timeRem = TimeHandler.getTimeDifference(result.getTimestamp("expiry"), loginTime);
                         auctionBean.setRemainingDays(String.valueOf(timeRem.get(0)));
-                        auctionBean.setRemainingHours(timeRem.get(1) + ":" + timeRem.get(2));
+                        auctionBean.setRemainingHours(timeRem.get(1) + "h " + timeRem.get(2)+ "m");
                         auctionBeanList.add(auctionBean);
                     }
                     return auctionBeanList;
