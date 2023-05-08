@@ -16,11 +16,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-import static java.lang.Long.parseLong;
-
 @WebServlet("/details")
 public class GetDetailsPage extends ThymeleafHTTPServlet {
+
     private String details;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
@@ -28,38 +28,29 @@ public class GetDetailsPage extends ThymeleafHTTPServlet {
             final String template = "details";
             final ServletContext servletContext = getServletContext();
             final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-
-
-            OfferDAO offerDAO = new OfferDAO();
-            AuctionDAO auctionDAO = null;
-            UserDAO userDAO = null;
             try {
-                auctionDAO = new AuctionDAO();
-                offerDAO = new OfferDAO();
-                userDAO = new UserDAO();
-
+                AuctionDAO auctionDAO = new AuctionDAO();
+                OfferDAO offerDAO = new OfferDAO();
+                UserDAO userDAO = new UserDAO();
                 List<AuctionBean> auctionBeanList = auctionDAO.getAuctionsByID(details, session.getCreationTime());
-
-
+                AuctionBean winner = auctionDAO.getWinner(details);
 
                 ctx.setVariable("selectedauction", auctionBeanList);
                 ctx.setVariable("offer", offerDAO.getOffers(details));
-                ctx.setVariable("winner", auctionDAO.getWinner(details));
+                ctx.setVariable("winner", winner);
                 ctx.setVariable("close", details);
                 ctx.setVariable("active", auctionBeanList.get(0).isActive());
-                if (auctionDAO.getWinner(details) != null) {
-                    ctx.setVariable("user", userDAO.getUser(String.valueOf(auctionDAO.getWinner(details).getUserID())));
+                if (winner != null) {
+                    ctx.setVariable("user", userDAO.getUser(String.valueOf(winner.getUserID())));
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-
             getTemplateEngine().process(template, ctx, response.getWriter());
         } else {
             response.sendRedirect("/login");
         }
     }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

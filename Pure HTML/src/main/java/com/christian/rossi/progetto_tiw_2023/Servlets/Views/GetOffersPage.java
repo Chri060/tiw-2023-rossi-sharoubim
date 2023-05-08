@@ -16,6 +16,7 @@ import java.sql.SQLException;
 @WebServlet("/offers")
 public class GetOffersPage extends ThymeleafHTTPServlet {
     private String details;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
@@ -23,28 +24,20 @@ public class GetOffersPage extends ThymeleafHTTPServlet {
             final String template = "offers";
             final ServletContext servletContext = getServletContext();
             final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-
-
-
-            OfferDAO offerDAO = new OfferDAO();
-            AuctionDAO auctionDAO = null;
             try {
-                auctionDAO = new AuctionDAO();
-                offerDAO = new OfferDAO();
+                AuctionDAO auctionDAO = new AuctionDAO();
+                OfferDAO offerDAO = new OfferDAO();
                 ctx.setVariable("auction", auctionDAO.getAuctionsByID(details, session.getCreationTime()));
                 ctx.setVariable("offer", offerDAO.getOffers(details));
                 ctx.setVariable("actualID", details);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-
-
             getTemplateEngine().process(template, ctx, response.getWriter());
         } else {
             response.sendRedirect("/login");
         }
     }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

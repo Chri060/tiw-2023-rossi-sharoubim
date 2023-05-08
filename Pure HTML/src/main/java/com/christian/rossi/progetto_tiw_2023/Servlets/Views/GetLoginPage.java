@@ -11,6 +11,7 @@ import java.io.IOException;
 
 @WebServlet("/login")
 public class GetLoginPage extends ThymeleafHTTPServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         final String template = "login";

@@ -12,6 +12,7 @@ import java.io.IOException;
 
 @WebServlet("/home")
 public class GetHomePage extends ThymeleafHTTPServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();

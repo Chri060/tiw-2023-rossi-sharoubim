@@ -15,14 +15,12 @@ public class DoClose extends ThymeleafHTTPServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String auctionID = request.getParameter("close");
-        AuctionDAO auctionDAO = null;
+        final String auctionID = request.getParameter("close");
         try {
-            auctionDAO = new AuctionDAO();
+            AuctionDAO auctionDAO = new AuctionDAO();
             auctionDAO.close(auctionID);
         } catch (SQLException e) {
-            e.printStackTrace();
-            //TODO: pagina di errore (connessione al DB o query)
+            //TODO: pagina di errore per problemi con la query
         }
         response.sendRedirect("/details");
     }

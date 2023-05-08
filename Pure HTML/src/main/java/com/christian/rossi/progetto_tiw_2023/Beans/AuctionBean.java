@@ -53,16 +53,7 @@ public class AuctionBean {
         return active;
     }
 
-    public void setActive(int active) {
-
-
-        if (active == 1) {
-            this.active=true;
-        }
-        else {
-            this.active=false;
-        }
-    }
+    public void setActive(int active) { this.active= active == 1; }
 
     public Long getUserID() {
         return UserID;
