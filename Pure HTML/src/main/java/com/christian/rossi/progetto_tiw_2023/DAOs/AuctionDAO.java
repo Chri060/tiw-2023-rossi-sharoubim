@@ -1,30 +1,34 @@
 package com.christian.rossi.progetto_tiw_2023.DAOs;
 
 import com.christian.rossi.progetto_tiw_2023.Beans.AuctionBean;
-import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
+import com.christian.rossi.progetto_tiw_2023.Utils.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.christian.rossi.progetto_tiw_2023.DAOs.DBConnectionPool.getConnection;
 
 public class AuctionDAO {
+    private final String imgPath = "/uploads/";
+
+
 
     public AuctionDAO() throws SQLException {
         super();
     }
 
 
-    public Long createAuction(int price, int rise, String expiry, Long userID) throws SQLException{
+    public Long createAuction(int price, int rise, Timestamp expiry, Long userID) throws SQLException{
         //TODO: restituisci auct
         String query = "INSERT INTO auction (price, rise , expiry, active, userID) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setInt(1, price);
             request.setInt(2, rise);
-            request.setString(3, expiry);
+            request.setTimestamp(3, expiry);
             request.setInt(4, 1);
             request.setLong(5, userID);
             request.execute();
@@ -50,7 +54,7 @@ public class AuctionDAO {
 
 
 
-    public List<AuctionBean> getAuctions(Long userID, int active) throws SQLException{
+    public List<AuctionBean> getAuctions(Long userID, int active, long loginTime) throws SQLException{
         String query = "SELECT * " +
                 "FROM auction LEFT JOIN winner ON auction.auctionID = winner.auctionID " +
                 "             JOIN product on auction.auctionID = product.auctionID " +
@@ -75,7 +79,16 @@ public class AuctionDAO {
                         }
                         auctionBean.setName(result.getString("name"));
                         auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
-                        auctionBean.setImage(result.getString("image"));
+                        auctionBean.setImage(imgPath + result.getString("articleID") + ".jpeg");
+                        auctionBean.setExpiry(result.getTimestamp("expiry"));
+
+
+
+                        List<Integer> timeRem = TimeHandler.getTimeDifference(result.getTimestamp("expiry"), loginTime);
+                        auctionBean.setRemainingDays(String.valueOf(timeRem.get(0)));
+                        auctionBean.setRemainingHours(timeRem.get(1) + ":" + timeRem.get(2));
+
+
                         auctionBeanList.add(auctionBean);
                     }
                     return auctionBeanList;
@@ -85,7 +98,7 @@ public class AuctionDAO {
     }
 
 
-    public List<AuctionBean> getAuction(String details) throws SQLException{
+    public List<AuctionBean> getAuctionsByID(String details, long loginTime) throws SQLException{
         String query = "SELECT * " +
                 "FROM auction JOIN product on auction.auctionID = product.auctionID " +
                 "             LEFT JOIN winner on auction.auctionID = winner.auctionID " +
@@ -100,17 +113,23 @@ public class AuctionDAO {
                     while (result.next()) {
                         AuctionBean auctionBean = new AuctionBean();
                         auctionBean.setAuctionID(Long.valueOf(result.getString("auctionID")));
-                        if (result.getString("max(offering)") != null) {
-                            auctionBean.setPrice(Integer.parseInt(result.getString("max(offering)")));
-                        }
-                        else {
-                            auctionBean.setPrice(0);
-                        }
+                        auctionBean.setPrice(result.getInt("price"));
+
+
+
+
+
+
                         auctionBean.setName(result.getString("name"));
-                        auctionBean.setActive(Integer.parseInt((result.getString("active"))));
+                        auctionBean.setActive((result.getInt("active")));
                         auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
                         auctionBean.setDescription(result.getString("description"));
-                        auctionBean.setImage(result.getString("image"));
+                        auctionBean.setImage(imgPath + result.getString("articleID") + ".jpeg");
+                        auctionBean.setRise(result.getInt("rise"));
+                        List<Integer> timeRem = TimeHandler.getTimeDifference(result.getTimestamp("expiry"), loginTime);
+                        auctionBean.setRemainingDays(String.valueOf(timeRem.get(0)));
+                        auctionBean.setRemainingHours(timeRem.get(1) + ":" + timeRem.get(2));
+
                         auctionBeanList.add(auctionBean);
                     }
                     return auctionBeanList;
@@ -165,7 +184,7 @@ public class AuctionDAO {
                         auctionBean.setName(result.getString("name"));
                         auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
                         auctionBean.setDescription(result.getString("description"));
-                        auctionBean.setImage(result.getString("image"));
+                        auctionBean.setImage(imgPath + result.getString("articleID") + ".jpeg");
                         auctionBeanList.add(auctionBean);
                     }
                     return auctionBeanList;
@@ -177,7 +196,7 @@ public class AuctionDAO {
     }
 
 
-    public List<AuctionBean> getAuctionByKeyword(String article, Long userID) throws SQLException {
+    public List<AuctionBean> getAuctionByKeyword(String article, Long userID, Long loginTime) throws SQLException {
         String details = "%" + article + "%";
         String query = "SELECT * " +
                 "FROM auction LEFT JOIN product ON auction.auctionID = product.auctionID " +
@@ -197,7 +216,13 @@ public class AuctionDAO {
                         auctionBean.setName(result.getString("name"));
                         auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
                         auctionBean.setDescription(result.getString("description"));
-                        auctionBean.setImage(result.getString("image"));
+                        auctionBean.setImage(imgPath + result.getString("articleID") + ".jpeg");
+                        auctionBean.setPrice(result.getInt("price"));
+
+                        List<Integer> timeRem = TimeHandler.getTimeDifference(result.getTimestamp("expiry"), loginTime);
+                        auctionBean.setRemainingDays(String.valueOf(timeRem.get(0)));
+                        auctionBean.setRemainingHours(timeRem.get(1) + ":" + timeRem.get(2));
+
                         auctionBeanList.add(auctionBean);
                     }
                     return auctionBeanList;

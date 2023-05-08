@@ -25,6 +25,9 @@
                     <tr>
                         <th th:text="#{auctionID}">Auction code</th>
                         <th th:text="#{offers}">Bid details</th>
+                        <th th:text="#{startingPrice}">Starting price</th>
+                        <th th:text="#{remainingDays}">remainingDays</th>
+                        <th th:text="#{remainingHours}">remainingHours</th>
                         <th th:text="#{productID}">Product code</th>
                         <th th:text="#{productName}">Name</th>
                         <th th:text="#{description}">Description</th>
@@ -39,6 +42,9 @@
                                 <button type="submit" name="details" value="Login" th:value="${auctions.auctionID}">Details</button>
                             </form>
                         </td>
+                        <td th:text="${auctions.price}">actualOffer</td>
+                        <td th:text="${auctions.remainingDays}">remainingDays</td>
+                        <td th:text="${auctions.remainingHours}">remainingHours</td>
                         <td th:text="${auctions.productID}">data</td>
                         <td th:text="${auctions.name}">data</td>
                         <td th:text="${auctions.description}">data</td>

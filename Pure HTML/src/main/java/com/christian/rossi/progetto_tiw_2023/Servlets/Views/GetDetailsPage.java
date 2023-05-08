@@ -3,7 +3,6 @@ package com.christian.rossi.progetto_tiw_2023.Servlets.Views;
 import com.christian.rossi.progetto_tiw_2023.Beans.AuctionBean;
 import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.OfferDAO;
-import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.UserDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
 import org.thymeleaf.context.WebContext;
@@ -39,7 +38,7 @@ public class GetDetailsPage extends ThymeleafHTTPServlet {
                 offerDAO = new OfferDAO();
                 userDAO = new UserDAO();
 
-                List<AuctionBean> auctionBeanList = auctionDAO.getAuction(details);
+                List<AuctionBean> auctionBeanList = auctionDAO.getAuctionsByID(details, session.getCreationTime());
 
 
 

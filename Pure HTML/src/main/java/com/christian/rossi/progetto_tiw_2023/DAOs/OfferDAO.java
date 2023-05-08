@@ -7,6 +7,7 @@ import static com.christian.rossi.progetto_tiw_2023.DAOs.DBConnectionPool.getCon
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,11 +37,11 @@ public class OfferDAO {
     }
 
 
-    public void addOffer(String offer, String userID, String auctionID) throws SQLException {
+    public void addOffer(String offer, String userID, String auctionID, Timestamp date) throws SQLException {
         String query = "INSERT INTO offer (offering, date, userID, auctionID) values (?, ?, ?, ?)";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setString(1, offer);
-            request.setString(2, "data");
+            request.setTimestamp(2, date);
             request.setString(3, userID);
             request.setString(4, auctionID);
             request.execute();

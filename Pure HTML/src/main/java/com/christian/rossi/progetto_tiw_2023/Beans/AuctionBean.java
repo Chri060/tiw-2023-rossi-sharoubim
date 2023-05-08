@@ -1,10 +1,12 @@
 package com.christian.rossi.progetto_tiw_2023.Beans;
 
+import java.sql.Timestamp;
+
 public class AuctionBean {
     private Long auctionID = null;
     private int price;
     private int rise;
-    private String expiry = null;
+    private Timestamp expiry = null;
     private boolean active;
     private Long UserID = null;
     private String name = null;
@@ -12,6 +14,8 @@ public class AuctionBean {
     private Long articleID = null;
     private String description = null;
     private String image = null;
+    private String remainingDays = null;
+    private String remainingHours = null;
 
     public Long getAuctionID() {
         return auctionID;
@@ -29,11 +33,11 @@ public class AuctionBean {
         this.price = price;
     }
 
-    public String getExpiry() {
+    public Timestamp getExpiry() {
         return expiry;
     }
 
-    public void setExpiry(String expiry) {
+    public void setExpiry(Timestamp expiry) {
         this.expiry = expiry;
     }
 
@@ -106,5 +110,21 @@ public class AuctionBean {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getRemainingDays() {
+        return remainingDays;
+    }
+
+    public void setRemainingDays(String remainingDays) {
+        this.remainingDays = remainingDays;
+    }
+
+    public String getRemainingHours() {
+        return remainingHours;
+    }
+
+    public void setRemainingHours(String remainingHours) {
+        this.remainingHours = remainingHours;
     }
 }

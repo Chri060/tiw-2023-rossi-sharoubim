@@ -33,8 +33,8 @@ public class GetSellPage extends ThymeleafHTTPServlet {
                 productDAO = new ProductDAO();
                 auctionDAO = new AuctionDAO();
                 ctx.setVariable("products", productDAO.getUserProducts((Long) session.getAttribute("userID")));
-                ctx.setVariable("closedauctions", auctionDAO.getAuctions((Long) session.getAttribute("userID"), 0));
-                ctx.setVariable("activeauctions", auctionDAO.getAuctions((Long) session.getAttribute("userID"), 1));
+                ctx.setVariable("closedauctions", auctionDAO.getAuctions((Long) session.getAttribute("userID"), 0, session.getCreationTime()));
+                ctx.setVariable("activeauctions", auctionDAO.getAuctions((Long) session.getAttribute("userID"), 1, session.getCreationTime()));
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

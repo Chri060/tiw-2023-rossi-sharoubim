@@ -35,7 +35,7 @@ public class GetBuyPage extends ThymeleafHTTPServlet {
             try {
                 auctionDAO = new AuctionDAO();
                 if (article != null) {
-                    ctx.setVariable("auctions", auctionDAO.getAuctionByKeyword(article, userID));
+                    ctx.setVariable("auctions", auctionDAO.getAuctionByKeyword(article, userID, session.getCreationTime()));
                 }
                 ctx.setVariable("closedauctions", auctionDAO.getWonAuctions((Long) session.getAttribute("userID")));
             } catch (SQLException e) {

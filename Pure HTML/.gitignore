@@ -9,7 +9,7 @@
 .mvn/*
 mvnw
 mvnw.cmd
-src/main/webapp/static/images
+src/main/webapp/uploads
 
 # Gradle and Maven with auto-import
 # When using Gradle or Maven with auto-import, you should exclude module files,

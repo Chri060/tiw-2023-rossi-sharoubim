@@ -29,7 +29,7 @@ public class DoAddProduct extends ThymeleafHTTPServlet {
 
 
         final String articleID = request.getParameter("articleID");
-        String uploadPath = "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\tiw-2023-rossi-sharoubim\\Pure HTML\\src\\main\\webapp\\static\\images";
+        String uploadPath = "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\tiw-2023-rossi-sharoubim\\Pure HTML\\src\\main\\webapp\\uploads";
         File uploadDir = new File(uploadPath);
         if (!uploadDir.exists()) {
             uploadDir.mkdir();

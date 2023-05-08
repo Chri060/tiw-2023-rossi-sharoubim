@@ -125,7 +125,8 @@
                 <tr>
                     <th th:text="#{auctionID}">Active auctions</th>
                     <th th:text="#{actualPrice}">Current price</th>
-                    <th th:text="#{missingTime}">Time left</th>
+                    <th th:text="#{missingDays}">Time left</th>
+                    <th th:text="#{missingHours}">Time left</th>
                     <th th:text="#{offers}">Bids details</th>
                     <th th:text="#{name}">Name</th>
                     <th th:text="#{productID}">Product code</th>
@@ -135,7 +136,13 @@
                 <tr th:each ="activeauctions : ${activeauctions}">
                     <td th:text="${activeauctions.auctionID}">data</td>
                     <td th:text="${activeauctions.price}">data</td>
-                    <td>data</td>
+
+
+                    <td th:text="${activeauctions.remainingDays}">Time left</td>
+                    <td th:text="${activeauctions.remainingHours}">Time left</td>
+
+
+
                     <td>
                         <form action="/details" method="post">
                             <button type="submit" name="details" value="null" th:value="${activeauctions.auctionID}">Details</button>

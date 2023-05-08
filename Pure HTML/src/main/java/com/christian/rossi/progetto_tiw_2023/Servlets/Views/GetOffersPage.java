@@ -2,7 +2,6 @@ package com.christian.rossi.progetto_tiw_2023.Servlets.Views;
 
 import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.OfferDAO;
-import com.christian.rossi.progetto_tiw_2023.DAOs.UserDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
 import org.thymeleaf.context.WebContext;
 
@@ -32,7 +31,7 @@ public class GetOffersPage extends ThymeleafHTTPServlet {
             try {
                 auctionDAO = new AuctionDAO();
                 offerDAO = new OfferDAO();
-                ctx.setVariable("auction", auctionDAO.getAuction(details));
+                ctx.setVariable("auction", auctionDAO.getAuctionsByID(details, session.getCreationTime()));
                 ctx.setVariable("offer", offerDAO.getOffers(details));
                 ctx.setVariable("actualID", details);
             } catch (SQLException e) {
