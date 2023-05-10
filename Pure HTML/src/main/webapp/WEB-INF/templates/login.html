@@ -3,31 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <title th:text="#{title}">Authentication page</title>
-  <link rel="stylesheet" type="text/css" media="all" href="/static/style.css" th:href="@{/static/style.css}" />
+  <link rel="stylesheet" href="/static/style.css"/>
 </head>
 <body>
-<div>
-  <form action="/dologin" method="post">
-    <fieldset>
-      <legend th:text="#{login}">Login</legend>
-      <div>
-        <label>
-          <input type="text" name="username" placeholder="Username" th:placeholder="#{username}" required/>
-        </label>
-      </div>
-      <div>
-        <label>
-          <input type="password" name="password" placeholder="Password" th:placeholder="#{password}" required/>
-        </label>
-      </div>
-      <div>
-        <input type="submit" name="login" value="Login" th:value="#{login}"/>
-      </div>
-    </fieldset>
-  </form>
   <div>
-    <a href="signup" th:text="#{signup}">Not yet registered? Create your account</a>
+    <form action="/doLogin" method="post">
+      <fieldset>
+        <legend th:text="#{login}">Login</legend>
+        <div>
+          <label>
+            <input type="text" name="username" placeholder="Username" th:placeholder="#{username}" required/>
+          </label>
+        </div>
+        <div>
+          <label>
+            <input type="password" name="password" placeholder="Password" th:placeholder="#{password}" required/>
+          </label>
+        </div>
+        <div>
+          <input type="submit" name="login" value="Login" th:value="#{login}"/>
+        </div>
+      </fieldset>
+    </form>
+    <div>
+      <a href="signup" th:text="#{signup}">Not yet registered? Create your account</a>
+    </div>
   </div>
-</div>
 </body>
 </html>

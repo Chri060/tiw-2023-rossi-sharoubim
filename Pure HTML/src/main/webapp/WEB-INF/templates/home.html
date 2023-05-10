@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{title}">Home page</title>
-    <link rel="stylesheet" type="text/css" media="all" href="/static/style.css" th:href="@{/static/style.css}" />
+    <link rel="stylesheet" href="/static/style.css"/>
 </head>
 <body>
-<fieldset>
-    <div>
-        <a href="buy" th:text="#{buy}">Purchases page</a>
-    </div>
-    <div>
-        <a href="sell" th:text="#{sell}">Sales page</a>
-    </div>
-</fieldset>
+    <fieldset>
+        <div>
+            <a href="buy" th:text="#{buy}">Purchases page</a>
+        </div>
+        <div>
+            <a href="sell" th:text="#{sell}">Sales page</a>
+        </div>
+    </fieldset>
 </body>
 </html>

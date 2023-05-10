@@ -3,95 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{title}">Shopping page</title>
-    <link rel="stylesheet" type="text/css" media="all" href="/static/style.css" th:href="@{/static/style.css}" />
+    <link rel="stylesheet" href="/static/style.css"/>
 </head>
 <body>
-<div>
-    <fieldset>
-        <legend th:text="#{search}">Product search</legend>
-        <form action="/buy" method="post">
-            <div>
-                <label>
-                    <input type="text" name="search" placeholder="Product search" th:placeholder="#{search}" required/>
-                </label>
+    <div>
+        <fieldset>
+            <legend th:text="#{search}">Product search</legend>
+            <form action="/buy" method="post">
+                <div>
+                    <label>
+                        <input type="text" name="search" placeholder="Product search" th:placeholder="#{search}" required/>
+                    </label>
+                </div>
+                <div>
+                    <input type="submit" name="search" th:value="#{research}" value="Search">
+                </div>
+            </form>
+            <div th:if="${auctions != null}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th th:text="#{auctionID}">Auction code</th>
+                            <th th:text="#{offers}">Bid details</th>
+                            <th th:text="#{startingPrice}">Starting price</th>
+                            <th th:text="#{remainingDays}">remainingDays</th>
+                            <th th:text="#{remainingHours}">remainingHours</th>
+                            <th th:text="#{productID}">Product code</th>
+                            <th th:text="#{productName}">Name</th>
+                            <th th:text="#{description}">Description</th>
+                            <th th:text="#{photo}">Image</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each ="auctions : ${auctions}">
+                            <td th:text="${auctions.auctionID}">data</td>
+                            <td>
+                                <form action="/offers" method="post">
+                                    <button type="submit" name="details"  value="Login" th:value="${auctions.auctionID}" th:text="#{detail}">Details</button>
+                                </form>
+                            </td>
+                            <td th:text="${auctions.price}">data</td>
+                            <td th:text="${auctions.remainingDays}">data</td>
+                            <td th:text="${auctions.remainingHours}">data</td>
+                            <td th:text="${auctions.productID}">data</td>
+                            <td th:text="${auctions.name}">data</td>
+                            <td th:text="${auctions.description}">data</td>
+                            <td>
+                                <img th:src="@{${auctions.image}}" src="" alt="">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div>
-                <input type="submit" name="search" th:value="#{research}" value="Search">
-            </div>
-        </form>
-        <div th:if="${auctions != null}">
-            <table>
-                <thead>
+        </fieldset>
+    </div>
+    <div>
+        <fieldset th:if="${closedauctions} == null">
+            <legend th:text="#{winner}">Auctions won</legend>
+            <p th:text="#{noAuctions}">No auctions were found</p>
+        </fieldset>
+        <fieldset th:if="${closedauctions != null}">
+            <legend th:text="#{winner}">Auctions won</legend>
+                <table>
+                    <thead>
                     <tr>
-                        <th th:text="#{auctionID}">Auction code</th>
-                        <th th:text="#{offers}">Bid details</th>
-                        <th th:text="#{startingPrice}">Starting price</th>
-                        <th th:text="#{remainingDays}">remainingDays</th>
-                        <th th:text="#{remainingHours}">remainingHours</th>
+                        <th th:text="#{auctionID}">Closed auctions</th>
+                        <th th:text="#{finalPrice}">Final Price</th>
+                        <th th:text="#{name}">Name</th>
                         <th th:text="#{productID}">Product code</th>
-                        <th th:text="#{productName}">Name</th>
                         <th th:text="#{description}">Description</th>
                         <th th:text="#{photo}">Image</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr th:each ="auctions : ${auctions}">
-                        <td th:text="${auctions.auctionID}">data</td>
+                    </thead>
+                    <tbody>
+                    <tr th:each ="closedauctions : ${closedauctions}">
+                        <td th:text="${closedauctions.auctionID}">data</td>
+                        <td th:text="${closedauctions.price}">data</td>
+                        <td th:text="${closedauctions.name}">data</td>
+                        <td th:text="${closedauctions.productID}">data</td>
+                        <td th:text="${closedauctions.description}">data</td>
                         <td>
-                            <form action="/offers" method="post">
-                                <button type="submit" name="details" value="Login" th:value="${auctions.auctionID}">Details</button>
-                            </form>
-                        </td>
-                        <td th:text="${auctions.price}">actualOffer</td>
-                        <td th:text="${auctions.remainingDays}">remainingDays</td>
-                        <td th:text="${auctions.remainingHours}">remainingHours</td>
-                        <td th:text="${auctions.productID}">data</td>
-                        <td th:text="${auctions.name}">data</td>
-                        <td th:text="${auctions.description}">data</td>
-                        <td>
-                            <img th:src="@{${auctions.image}}" src="" alt="">
+                            <img th:src="@{${closedauctions.image}}" src="" alt="">
                         </td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
-    </fieldset>
-</div>
-<div th:switch="${closedauctions}">
-    <fieldset th:case="null">
-        <legend th:text="#{winner}">Auctions won</legend>
-        <p>No auctions were found</p>
-    </fieldset>
-    <fieldset th:case="*">
-        <legend th:text="#{winner}">Auctions won</legend>
-            <table>
-                <thead>
-                <tr>
-                    <th th:text="#{auctionID}">Closed auctions</th>
-                    <th th:text="#{finalPrice}">Final Price</th>
-                    <th th:text="#{name}">Name</th>
-                    <th th:text="#{productID}">Product code</th>
-                    <th th:text="#{description}">Description</th>
-                    <th th:text="#{photo}">Image</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each ="closedauctions : ${closedauctions}">
-                    <td th:text="${closedauctions.auctionID}">data</td>
-                    <td th:text="${closedauctions.price}">data</td>
-                    <td th:text="${closedauctions.name}">data</td>
-                    <td th:text="${closedauctions.productID}">data</td>
-                    <td th:text="${closedauctions.description}">data</td>
-                    <td>
-                        <img th:src="@{${closedauctions.image}}" src="" alt="">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-    </fieldset>
-</div>
-<div>
-    <a href="home" th:text="#{home}">Return to home page</a>
-</div>
+                    </tbody>
+                </table>
+        </fieldset>
+    </div>
+    <div>
+        <a href="home" th:text="#{home}">Return to home page</a>
+    </div>
 </body>
 </html>

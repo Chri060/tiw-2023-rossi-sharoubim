@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/GetImage/*")
+@WebServlet("/getImage/*")
 public class GetImage extends HttpServlet {
     String folderPath = "";
 

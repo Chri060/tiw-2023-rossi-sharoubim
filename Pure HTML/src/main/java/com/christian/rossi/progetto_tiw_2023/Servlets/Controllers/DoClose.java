@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 
-@WebServlet("/doclose")
+@WebServlet("/doClose")
 public class DoClose extends ThymeleafHTTPServlet {
 
     @Override

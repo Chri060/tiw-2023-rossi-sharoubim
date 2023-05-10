@@ -3,56 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <title th:text="#{title}">Registration page</title>
-  <link rel="stylesheet" type="text/css" media="all" href="/static/style.css" th:href="@{/static/style.css}" />
+  <link rel="stylesheet" href="/static/style.css"/>
 </head>
 <body>
-<div>
-  <form action="/dosignup" method="post">
-    <fieldset>
-      <legend th:text="#{register}">Sign up</legend>
-      <div>
-        <label>
-        <input type="text" name="username" placeholder="Username" th:placeholder="#{username}" required/>
-        </label>
-      </div>
-      <div>
-        <label>
-        <input type="email" name="email" placeholder="Email" th:placeholder="#{email}" required/>
-        </label>
-      </div>
-      <div>
-        <label>
-        <input type="text" name="city" placeholder="City" th:placeholder="#{city}" required/>
-        </label>
-      </div>
-      <div>
-        <label>
-        <input type="text" name="province" placeholder="Province" th:placeholder="#{province}" required/>
-        </label>
-      </div>
-      <div>
-        <label>
-        <input type="text" name="address" placeholder="Address" th:placeholder="#{address}" required/>
-        </label>
-      </div>
-      <div>
-        <label>
-        <input type="password" name="password" placeholder="Password" th:placeholder="#{password}" required/>
-        </label>
-      </div>
-      <div>
-        <label>
-        <input type="password" name="password1" placeholder="Retype password" th:placeholder="#{newPassword}" required/>
-        </label>
-      </div>
-      <div>
-      <input type="submit" name="register" value="Sign up" th:value="#{register}"/>
-      </div>
-    </fieldset>
-  </form>
   <div>
-    <a href="login" th:text="#{message}"></a>
+    <form action="/doSignup" method="post">
+      <fieldset>
+        <legend th:text="#{signup}">Sign up</legend>
+        <div>
+          <label>
+            <input type="text" name="username" placeholder="Username" th:placeholder="#{username}" required/>
+          </label>
+        </div>
+        <div>
+          <label>
+            <input type="email" name="email" placeholder="Email" th:placeholder="#{email}" required/>
+          </label>
+        </div>
+        <div>
+          <label>
+            <input type="text" name="city" placeholder="City" th:placeholder="#{city}" required/>
+          </label>
+        </div>
+        <div>
+          <label>
+            <input type="text" name="province" placeholder="Province" th:placeholder="#{province}" required/>
+          </label>
+        </div>
+        <div>
+          <label>
+            <input type="text" name="address" placeholder="Address" th:placeholder="#{address}" required/>
+          </label>
+        </div>
+        <div>
+          <label>
+            <input type="password" name="password" placeholder="Password" th:placeholder="#{password}" required/>
+          </label>
+        </div>
+        <div>
+          <label>
+            <input type="password" name="password1" placeholder="Retype password" th:placeholder="#{newPassword}" required/>
+          </label>
+        </div>
+        <div>
+          <input type="submit" name="register" value="Sign up" th:value="#{signup}"/>
+        </div>
+      </fieldset>
+    </form>
+    <div>
+      <a href="login" th:text="#{login}"></a>
+    </div>
   </div>
-</div>
 </body>
 </html>

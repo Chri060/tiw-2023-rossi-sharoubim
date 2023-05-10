@@ -3,97 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{title}">Auction detail page</title>
-    <link rel="stylesheet" type="text/css" media="all" href="/static/style.css" th:href="@{/static/style.css}" />
+    <link rel="stylesheet" href="/static/style.css"/>
 </head>
 <body>
-<fieldset>
+    <fieldset>
+        <div>
+            <fieldset>
+                <legend th:text="#{auction}">Auction details</legend>
+                <table>
+                    <thead>
+                        <tr>
+                            <th th:text="#{auctionID}">Auction code</th>
+                            <th th:text="#{actualPrice}">Current price</th>
+                            <th th:text="#{articleID}">Product code</th>
+                            <th th:text="#{productName}">Name</th>
+                            <th th:text="#{description}">Description</th>
+                            <th th:text="#{photo}">Image</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="selectedauction : ${selectedauction}">
+                            <td th:text="${selectedauction.auctionID}">data</td>
+                            <td th:text="${selectedauction.price}">data</td>
+                            <td th:text="${selectedauction.productID}">data</td>
+                            <td th:text="${selectedauction.name}">data</td>
+                            <td th:text="${selectedauction.description}">data</td>
+                            <td>
+                                <img th:src="@{${selectedauction.image}}" src="" alt=""/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+        <div th:if="${offer != null}">
+            <fieldset>
+                <legend th:text="#{offers}">Offering details</legend>
+                <table>
+                    <thead>
+                        <tr>
+                            <th th:text="#{username}">User</th>
+                            <th th:text="#{price}">Bid</th>
+                            <th th:text="#{date}">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="offer : ${offer}">
+                            <td th:text="${offer.userID}">data</td>
+                            <td th:text="${offer.offering}">data</td>
+                            <td th:text="${offer.date}">data</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+        <div th:if="${offer == null}">
+            <p th:text="#{noOffers}">There are no active offers</p>
+        </div>
+    </fieldset>
     <div>
-        <fieldset>
-            <legend th:text="#{auction}">Auction details</legend>
+        <fieldset th:if="${winner == null}">
+            <form th:if="${active == 1}" action="/doClose" method="post">
+                <button class="modButton" type="submit" name="close" value="Login" th:value="${close}" th:text="#{close}">Details</button>
+            </form>
+            <p th:if="${active == 0}" th:text="#{noWinner}">The auction is closed, but has no winner</p>
+        </fieldset>
+        <fieldset th:if="${winner != null}">
+            <legend th:text="#{winner}">Winner</legend>
             <table>
                 <thead>
-                    <tr>
-                        <th th:text="#{auctionID}">Auction code</th>
-                        <th th:text="#{actualPrice}">Current price</th>
-                        <th th:text="#{articleID}">Product code</th>
-                        <th th:text="#{productName}">Name</th>
-                        <th th:text="#{description}">Description</th>
-                        <th th:text="#{photo}">Image</th>
-                    </tr>
+                <tr>
+                    <th th:text="#{userID}">UserID</th>
+                    <th th:text="#{username}">Username</th>
+                    <th th:text="#{email}">Email</th>
+                    <th th:text="#{city}">City</th>
+                    <th th:text="#{address}">Address</th>
+                    <th th:text="#{province}">Province</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="selectedauction : ${selectedauction}">
-                        <td th:text="${selectedauction.auctionID}">data</td>
-                        <td th:text="${selectedauction.price}">data</td>
-                        <td th:text="${selectedauction.productID}">data</td>
-                        <td th:text="${selectedauction.name}">data</td>
-                        <td th:text="${selectedauction.description}">data</td>
-                        <td>
-                            <img th:src="@{${selectedauction.image}}" src="" alt=""/>
-                        </td>
-                    </tr>
+                <tr th:each="user : ${user}">
+                    <td th:text="${user.userID}">data</td>
+                    <td th:text="${user.username}">data</td>
+                    <td th:text="${user.email}">data</td>
+                    <td th:text="${user.city}">data</td>
+                    <td th:text="${user.province}">data</td>
+                    <td th:text="${user.address}">data</td>
+                </tr>
                 </tbody>
             </table>
         </fieldset>
     </div>
-    <div th:if="${offer != null}">
-        <fieldset>
-            <legend th:text="#{offers}">Offering details</legend>
-            <table>
-                <thead>
-                    <tr>
-                        <th th:text="#{username}">User</th>
-                        <th th:text="#{price}">Bid</th>
-                        <th th:text="#{date}">Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="offer : ${offer}">
-                        <td th:text="${offer.userID}">data</td>
-                        <td th:text="${offer.offering}">data</td>
-                        <td th:text="${offer.date}">data</td>
-                    </tr>
-                </tbody>
-            </table>
-        </fieldset>
+    <div>
+        <a href="sell" th:text="#{previous}">Return to previous page</a>
     </div>
-    <p th:if="${offer == null}">There are no active offers</p>
-</fieldset>
-<div>
-    <fieldset th:if="${winner == null}">
-        <form th:if="${active == 1}" action="/doclose" method="post">
-            <input type="submit" name="close" value="Login" th:value="${close}">
-        </form>
-        <p th:if="${active == 0}">The auction is closed, but has no winner</p>
-    </fieldset>
-    <fieldset th:if="${winner != null}">
-        <legend>Winner</legend>
-        <table>
-            <thead>
-            <tr>
-                <th>UserID</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>City</th>
-                <th>Address</th>
-                <th>Province</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="user : ${user}">
-                <td th:text="${user.userID}">data</td>
-                <td th:text="${user.username}">data</td>
-                <td th:text="${user.email}">data</td>
-                <td th:text="${user.city}">data</td>
-                <td th:text="${user.province}">data</td>
-                <td th:text="${user.address}">data</td>
-            </tr>
-            </tbody>
-        </table>
-    </fieldset>
-</div>
-<div>
-    <a href="sell" th:text="#{previous}">Return to previous page</a>
-</div>
 </body>
 </html>

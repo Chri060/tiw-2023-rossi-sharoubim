@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/dosignup")
+@WebServlet("/doSignup")
 public class DoSignup extends ThymeleafHTTPServlet {
 
     @Override

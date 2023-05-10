@@ -3,166 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{title}">Sales page</title>
-    <link rel="stylesheet" type="text/css" media="all" href="/static/style.css" th:href="@{/static/style.css}" />
+    <link rel="stylesheet" href="/static/style.css"/>
 </head>
 <body>
-<div>
-    <form action="/doaddproduct" method="post" enctype='multipart/form-data'>
-        <fieldset>
-            <legend th:text="#{product}">Add new product</legend>
-            <div>
-                <label>
-                    <input type="text" name="articleID" placeholder="Product code" th:placeholder="#{productID}" required/>
-                </label>
-            </div>
-            <div>
-                <label>
-                    <input type="text" name="name" placeholder="Name" th:placeholder="#{name}" required/>
-                </label>
-            </div>
-            <div>
-                <label>
-                    <input type="text" name="description" placeholder="Description" th:placeholder="#{description}" required/>
-                </label>
-            </div>
-            <div>
-                <label>
-                    <input type="number" name="price" placeholder="Price" th:placeholder="#{price}" required/>
-                </label>
-            </div>
-            <div>
-                <label>
-                    <input type="file" name="file" accept="image/png, image/jpeg, image/jpg" required/>
-                </label>
-            </div>
-            <div>
-                <input type="submit" name="newArticle" value="Add product" th:value="#{newProduct}">
-            </div>
-        </fieldset>
-    </form>
-</div>
-<div>
-    <form action="/docreateauction" method="post">
-        <fieldset>
-            <legend th:text="#{createAuction}">Create new auction</legend>
-            <table th:if="${products != null}">
-                <thead>
-                    <tr>
-                        <th th:text="#{productID}">Product code</th>
-                        <th th:text="#{name}">Name</th>
-                        <th th:text="#{price}">Price</th>
-                        <th th:text="#{select}">Select product</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each ="products : ${products}">
-                        <td th:text="${products.productID}">data</td>
-                        <td th:text="${products.name}">data</td>
-                        <td th:text="${products.price}">data</td>
-                        <td>
+    <div class="horizontal">
+        <div>
+            <form action="/doAddProduct" method="post" enctype='multipart/form-data'>
+                <fieldset>
+                    <legend th:text="#{addProduct}">Add new product</legend>
+                    <div>
+                        <label>
+                            <input type="text" name="articleID" placeholder="Product code" th:placeholder="#{productID}" required/>
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="text" name="name" placeholder="Name" th:placeholder="#{name}" required/>
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="text" name="description" placeholder="Description" th:placeholder="#{description}" required/>
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="number" name="price" placeholder="Price" th:placeholder="#{price}" required/>
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="file" name="file" accept="image/png, image/jpeg, image/jpg" required/>
+                        </label>
+                    </div>
+                    <div>
+                        <input type="submit" name="newArticle" value="Add product" th:value="#{newProduct}">
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div>
+            <form action="/doCreateAuction" method="post">
+                <fieldset>
+                    <legend th:text="#{createAuction}">Create new auction</legend>
+                    <div th:if="${products != null}">
+                        <div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th th:text="#{productID}">Product code</th>
+                                        <th th:text="#{name}">Name</th>
+                                        <th th:text="#{price}">Price</th>
+                                        <th th:text="#{select}">Select product</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each ="products : ${products}">
+                                        <td th:text="${products.productID}">data</td>
+                                        <td th:text="${products.name}">data</td>
+                                        <td th:text="${products.price}">data</td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox" th:id="${products.productID}" name="product" th:value="${products.productID}" />
+                                            </label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
                             <label>
-                                <input type="checkbox" th:id="${products.productID}" name="product" th:value="${products.productID}" />
+                                <input type="number" name="rise" placeholder="Minimum rise" th:placeholder="#{rise}" required/>
                             </label>
-                        </td>
+                        </div>
+                        <div>
+                            <p th:text="#{expiry}">Expiration date</p>
+                            <label>
+                                <input type="datetime-local" name="expiry" placeholder="Expiration date" th:placeholder="#{expiry}" required/>
+                            </label>
+                        </div>
+                        <div>
+                            <input type="submit" name="create" value="Create" th:value="#{create}"/>
+                        </div>
+                    </div>
+                    <div th:if="${products == null}">
+                        <p th:text="#{noProducts}">There are no products available</p>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <div>
+        <fieldset>
+            <legend th:text="#{closedAuction}">List of closed auctions</legend>
+            <div th:if="${closedauctions == null}">
+                <p th:text="#{noClosedAunctions}">There are no closed auctions</p>
+            </div>
+            <div th:if="${closedauctions != null}">
+                <table th:if="${closedauctions != null}">
+                    <thead>
+                    <tr>
+                        <th th:text="#{auctionID}">Closed auctions</th>
+                        <th th:text="#{finalPrice}">Final Price</th>
+                        <th th:text="#{offers}">Bids details</th>
+                        <th th:text="#{name}">Name</th>
+                        <th th:text="#{productID}">Product code</th>
                     </tr>
-                </tbody>
-            </table>
-            <div th:if="${products != null}">
-                <label>
-                    <input type="number" name="rise" placeholder="Minimum rise" th:placeholder="#{rise}" required/>
-                </label>
-            </div>
-            <div th:if="${products != null}">
-                <label>
-                    <input type="datetime-local" name="expiry" placeholder="Expiration date" th:placeholder="#{expiry}" required/>
-                </label>
-            </div>
-            <div th:if="${products != null}">
-                <input type="submit" name="create" value="Create" th:value="#{create}"/>
-            </div>
-            <div th:if="${products == null}">
-                <p>There are no products available</p>
+                    </thead>
+                    <tbody>
+                    <tr th:each ="closedauctions : ${closedauctions}">
+                        <td th:text="${closedauctions.auctionID}">data</td>
+                        <td th:text="${closedauctions.price}">data</td>
+                        <td>
+                            <form action="/details" method="post">
+                                <button type="submit" name="details" value="Login" th:value="${closedauctions.auctionID}" th:text="#{detail}">Details</button>
+                            </form>
+                        </td>
+                        <td th:text="${closedauctions.name}">data</td>
+                        <td th:text="${closedauctions.productID}">data</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </fieldset>
-    </form>
-</div>
-<div>
-    <fieldset>
-        <legend th:text="#{closedAuction}">List of closed auctions</legend>
-        <p th:if="${closedauctions == null}">There are no closed auctions</p>
-        <table th:if="${closedauctions != null}">
-            <thead>
-                <tr>
-                    <th th:text="#{auctionID}">Closed auctions</th>
-                    <th th:text="#{finalPrice}">Final Price</th>
-                    <th th:text="#{offers}">Bids details</th>
-                    <th th:text="#{name}">Name</th>
-                    <th th:text="#{productID}">Product code</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each ="closedauctions : ${closedauctions}">
-                    <td th:text="${closedauctions.auctionID}">data</td>
-                    <td th:text="${closedauctions.price}">data</td>
-                    <td>
-                        <form action="/details" method="post">
-                            <button type="submit" name="details" value="Login" th:value="${closedauctions.auctionID}">Details</button>
-                        </form>
-                    </td>
-                    <td th:text="${closedauctions.name}">data</td>
-                    <td th:text="${closedauctions.productID}">data</td>
-                </tr>
-            </tbody>
-        </table>
-    </fieldset>
-</div>
-<div>
-    <fieldset>
-        <legend th:text="#{activeAuction}">List of active auctions</legend>
-        <p th:if="${activeauctions == null}">There are no active auctions</p>
-        <table th:if="${activeauctions != null}">
-            <thead>
-                <tr>
-                    <th th:text="#{auctionID}">Active auctions</th>
-                    <th th:text="#{actualPrice}">Current price</th>
-                    <th th:text="#{missingDays}">Time left</th>
-                    <th th:text="#{missingHours}">Time left</th>
-                    <th th:text="#{offers}">Bids details</th>
-                    <th th:text="#{name}">Name</th>
-                    <th th:text="#{productID}">Product code</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each ="activeauctions : ${activeauctions}">
-                    <td th:text="${activeauctions.auctionID}">data</td>
-                    <td th:text="${activeauctions.price}">data</td>
-
-
-                    <td th:text="${activeauctions.remainingDays}">Time left</td>
-                    <td th:text="${activeauctions.remainingHours}">Time left</td>
-
-
-
-                    <td>
-                        <form action="/details" method="post">
-                            <button type="submit" name="details" value="null" th:value="${activeauctions.auctionID}">Details</button>
-                        </form>
-                    </td>
-                    <td th:text="${activeauctions.name}">data</td>
-                    <td th:text="${activeauctions.productID}">data</td>
-                </tr>
-            </tbody>
-        </table>
-    </fieldset>
-</div>
-<div>
-
-    <a href="home" th:text="#{home}">Return to home page</a>
-
-</div>
+    </div>
+    <div>
+        <fieldset>
+            <legend th:text="#{activeAuction}">List of active auctions</legend>
+            <div th:if="${activeauctions == null}">
+                <p th:text="#{noActiveAunctions}">There are no active auctions</p>
+            </div>
+            <div th:if="${activeauctions != null}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th th:text="#{auctionID}">Active auctions</th>
+                            <th th:text="#{actualPrice}">Current price</th>
+                            <th th:text="#{missingDays}">Time left</th>
+                            <th th:text="#{missingHours}">Time left</th>
+                            <th th:text="#{offers}">Bids details</th>
+                            <th th:text="#{name}">Name</th>
+                            <th th:text="#{productID}">Product code</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each ="activeauctions : ${activeauctions}">
+                            <td th:text="${activeauctions.auctionID}">data</td>
+                            <td th:text="${activeauctions.price}">data</td>
+                            <td th:text="${activeauctions.remainingDays}">Time left</td>
+                            <td th:text="${activeauctions.remainingHours}">Time left</td>
+                            <td>
+                                <form action="/details" method="post">
+                                    <button type="submit" name="details" value="null" th:value="${activeauctions.auctionID}" th:text="#{detail}">Details</button>
+                                </form>
+                            </td>
+                            <td th:text="${activeauctions.name}">data</td>
+                            <td th:text="${activeauctions.productID}">data</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+    </div>
+    <div>
+        <a href="home" th:text="#{home}">Return to home page</a>
+    </div>
 </body>
 </html>
-
-
-
-

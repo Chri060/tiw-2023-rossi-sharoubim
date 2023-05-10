@@ -14,7 +14,7 @@ import static com.christian.rossi.progetto_tiw_2023.DAOs.DBConnectionPool.getCon
 
 public class AuctionDAO {
 
-    private final String imgPath = "http://localhost:8080/GetImage/";
+    private final String imgPath = "http://localhost:8080/getImage/";
 
     public AuctionDAO() throws SQLException {
         super();

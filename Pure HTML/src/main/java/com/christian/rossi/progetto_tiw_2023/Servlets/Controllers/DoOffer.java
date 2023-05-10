@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 
-@WebServlet("/dooffer")
+@WebServlet("/doOffer")
 public class DoOffer extends ThymeleafHTTPServlet {
 
     @Override

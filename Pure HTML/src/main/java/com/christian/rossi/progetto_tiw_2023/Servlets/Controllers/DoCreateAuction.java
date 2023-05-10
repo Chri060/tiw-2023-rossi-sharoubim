@@ -16,7 +16,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@WebServlet("/docreateauction")
+@WebServlet("/doCreateAuction")
 public class DoCreateAuction extends ThymeleafHTTPServlet {
 
     @Override

@@ -7,4 +7,9 @@
         <param-name>outputPath</param-name>
         <param-value>C:\Users\chris\OneDrive\Desktop\Images\</param-value>
     </context-param>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/static/*</url-pattern>
+        <url-pattern>/favicon.ico</url-pattern>
+    </servlet-mapping>
 </web-app>

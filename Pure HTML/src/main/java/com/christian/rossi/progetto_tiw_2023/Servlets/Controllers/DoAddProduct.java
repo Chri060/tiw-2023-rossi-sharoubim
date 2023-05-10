@@ -18,7 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 
-@WebServlet("/doaddproduct")
+@WebServlet("/doAddProduct")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
 public class DoAddProduct extends ThymeleafHTTPServlet {
     String folderPath = "";
