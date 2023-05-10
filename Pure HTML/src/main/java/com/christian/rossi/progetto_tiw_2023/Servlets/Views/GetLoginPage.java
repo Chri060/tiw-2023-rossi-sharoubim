@@ -1,5 +1,6 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Views;
 
+import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
 import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
 import org.thymeleaf.context.WebContext;
 
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/login")
+@WebServlet(name = "GetLoginPage", urlPatterns = {URLs.GET_LOGIN_PAGE})
 public class GetLoginPage extends ThymeleafHTTPServlet {
 
     @Override

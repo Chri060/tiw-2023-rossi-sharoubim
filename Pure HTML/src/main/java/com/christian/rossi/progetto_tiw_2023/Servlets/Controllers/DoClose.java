@@ -1,5 +1,6 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 
+import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
 import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
 
@@ -10,7 +11,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 
-@WebServlet("/doClose")
+@WebServlet(name = "DoClose", urlPatterns = {URLs.DO_CLOSE})
 public class DoClose extends ThymeleafHTTPServlet {
 
     @Override

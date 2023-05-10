@@ -1,5 +1,6 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 
+import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
 import com.christian.rossi.progetto_tiw_2023.DAOs.*;
 import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
@@ -16,7 +17,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@WebServlet("/doCreateAuction")
+@WebServlet(name = "DoCreateAuction", urlPatterns = {URLs.DO_CREATE_AUCTION})
 public class DoCreateAuction extends ThymeleafHTTPServlet {
 
     @Override

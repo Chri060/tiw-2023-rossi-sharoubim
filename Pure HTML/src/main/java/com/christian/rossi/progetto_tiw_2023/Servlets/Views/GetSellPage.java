@@ -1,5 +1,6 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Views;
 
+import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
 import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
@@ -13,28 +14,24 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/sell")
+@WebServlet(name = "GetSellPage", urlPatterns = {URLs.GET_SELL_PAGE})
 public class GetSellPage extends ThymeleafHTTPServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        if (session.getAttribute("user") != null) {
-            final String template = "sell";
-            final ServletContext servletContext = getServletContext();
-            final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-            try {
-                ProductDAO productDAO = new ProductDAO();
-                AuctionDAO auctionDAO = new AuctionDAO();
-                ctx.setVariable("products", productDAO.getUserProducts((Long) session.getAttribute("userID")));
-                ctx.setVariable("closedauctions", auctionDAO.getAuctions((Long) session.getAttribute("userID"), 0, session.getCreationTime()));
-                ctx.setVariable("activeauctions", auctionDAO.getAuctions((Long) session.getAttribute("userID"), 1, session.getCreationTime()));
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            getTemplateEngine().process(template, ctx, response.getWriter());
-        } else {
-            response.sendRedirect("/login");
+        final String template = "sell";
+        final ServletContext servletContext = getServletContext();
+        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+        try {
+            ProductDAO productDAO = new ProductDAO();
+            AuctionDAO auctionDAO = new AuctionDAO();
+            ctx.setVariable("products", productDAO.getUserProducts((Long) session.getAttribute("userID")));
+            ctx.setVariable("closedauctions", auctionDAO.getAuctions((Long) session.getAttribute("userID"), 0, session.getCreationTime()));
+            ctx.setVariable("activeauctions", auctionDAO.getAuctions((Long) session.getAttribute("userID"), 1, session.getCreationTime()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
+        getTemplateEngine().process(template, ctx, response.getWriter());
     }
 }

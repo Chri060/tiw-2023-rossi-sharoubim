@@ -1,5 +1,7 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 
+import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -12,8 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/getImage/*")
-public class GetImage extends HttpServlet {
+@WebServlet(name = "DoGetImage", urlPatterns = {URLs.DO_GET_IMAGE})
+public class DoGetImage extends HttpServlet {
     String folderPath = "";
 
     public void init() throws ServletException {

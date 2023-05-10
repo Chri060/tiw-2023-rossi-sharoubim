@@ -1,5 +1,6 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 
+import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
 import com.christian.rossi.progetto_tiw_2023.DAOs.OfferDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
 
@@ -12,7 +13,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 
-@WebServlet("/doOffer")
+@WebServlet(name = "DoOffer", urlPatterns = {URLs.DO_OFFER})
 public class DoOffer extends ThymeleafHTTPServlet {
 
     @Override

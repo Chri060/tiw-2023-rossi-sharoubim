@@ -1,5 +1,6 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 
+import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
 import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
 import com.christian.rossi.progetto_tiw_2023.Utils.*;
@@ -18,7 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 
-@WebServlet("/doAddProduct")
+@WebServlet(name = "DoAddProduct", urlPatterns = {URLs.DO_ADD_PRODUCT})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
 public class DoAddProduct extends ThymeleafHTTPServlet {
     String folderPath = "";

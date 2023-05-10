@@ -1,6 +1,7 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 
 import com.christian.rossi.progetto_tiw_2023.Beans.UserBean;
+import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
 import com.christian.rossi.progetto_tiw_2023.DAOs.UserDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.*;
 
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/doLogin")
+@WebServlet(name = "DoLogin", urlPatterns = {URLs.DO_LOGIN})
 public class DoLogin extends ThymeleafHTTPServlet {
 
     @Override
