@@ -9,6 +9,14 @@ html {
     background: #FAF7FA
 }
 
+.homeImg {
+    width: 300px;
+    height: auto;
+    border: none;
+    padding: 10px 10px 10px 10px;
+}
+
+
 table {
     font-family: Futura, "Trebuchet MS", Arial, san-serif, serif;
     border-collapse: collapse;
@@ -85,6 +93,7 @@ a {
     border-color: #404040;
 }
 
+
 .horizontal {
     display: flex;
     justify-content: center;
@@ -106,8 +115,10 @@ div {
     border-radius: 5px;
     margin:auto;
     font-size: 16px;
+    text-align: center;
+    justify-content: center;
+    display: flex;
 }
-
 
 input {
     font-family: Futura, "Trebuchet MS", Arial, san-serif, serif;

@@ -10,6 +10,7 @@ public class URLs {
     public static final String DO_LOGIN = "/doLogin";
     public static final String DO_OFFER = "/doOffer";
     public static final String DO_SIGNUP = "/doSignup";
+    public static final String DO_LOGOUT = "/doLogout";
 
 
     //View

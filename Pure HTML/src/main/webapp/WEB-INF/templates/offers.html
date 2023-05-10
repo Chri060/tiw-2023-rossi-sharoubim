@@ -55,7 +55,7 @@
     </fieldset>
     <fieldset>
         <legend th:text="#{makeOffer}">New offer</legend>
-        <form action="/doOffer" method="post">
+        <form th:action="${@com.christian.rossi.progetto_tiw_2023.Constants.URLs@DO_OFFER}" method="post">
             <div>
                 <label>
                     <input type="number" name="offer" placeholder="Your bid" th:placeholder="#{makeBid}" required/>

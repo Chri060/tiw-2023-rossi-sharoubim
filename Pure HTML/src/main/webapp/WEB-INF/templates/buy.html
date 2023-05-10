@@ -9,7 +9,7 @@
     <div>
         <fieldset>
             <legend th:text="#{search}">Product search</legend>
-            <form action="/buy" method="post">
+            <form th:action="${@com.christian.rossi.progetto_tiw_2023.Constants.URLs@GET_BUY_PAGE}" method="post">
                 <div>
                     <label>
                         <input type="text" name="search" placeholder="Product search" th:placeholder="#{search}" required/>
@@ -38,7 +38,7 @@
                         <tr th:each ="auctions : ${auctions}">
                             <td th:text="${auctions.auctionID}">data</td>
                             <td>
-                                <form action="/offers" method="post">
+                                <form th:action="${@com.christian.rossi.progetto_tiw_2023.Constants.URLs@DO_OFFER}" method="post">
                                     <button type="submit" name="details"  value="Login" th:value="${auctions.auctionID}" th:text="#{detail}">Details</button>
                                 </form>
                             </td>

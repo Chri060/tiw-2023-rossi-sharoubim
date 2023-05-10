@@ -8,7 +8,7 @@
 <body>
     <div class="horizontal">
         <div>
-            <form action="/doAddProduct" method="post" enctype='multipart/form-data'>
+            <form th:action="${@com.christian.rossi.progetto_tiw_2023.Constants.URLs@DO_ADD_PRODUCT}" method="post" enctype='multipart/form-data'>
                 <fieldset>
                     <legend th:text="#{addProduct}">Add new product</legend>
                     <div>
@@ -43,7 +43,7 @@
             </form>
         </div>
         <div>
-            <form action="/doCreateAuction" method="post">
+            <form th:action="${@com.christian.rossi.progetto_tiw_2023.Constants.URLs@DO_CREATE_AUCTION}" method="post">
                 <fieldset>
                     <legend th:text="#{createAuction}">Create new auction</legend>
                     <div th:if="${products != null}">

@@ -7,7 +7,7 @@
 </head>
 <body>
   <div>
-    <form action="/doLogin" method="post">
+    <form th:action="${@com.christian.rossi.progetto_tiw_2023.Constants.URLs@DO_LOGIN}" method="post">
       <fieldset>
         <legend th:text="#{login}">Login</legend>
         <div>

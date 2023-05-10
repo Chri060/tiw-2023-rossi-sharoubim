@@ -6,13 +6,28 @@
     <link rel="stylesheet" href="/static/style.css"/>
 </head>
 <body>
-    <fieldset>
-        <div>
-            <a href="buy" th:text="#{buy}">Purchases page</a>
+    <div>
+        <div class="horizontal">
+            <fieldset>
+                <legend th:text="#{buyTitle}">Buy</legend>
+                <div>
+                    <img class=homeImg src="/static/images/buy.png" alt="buy">
+                    <a href="buy" th:text="#{buy}">Purchases page</a>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend th:text="#{sellTitle}">Sell</legend>
+                <div>
+                    <img class=homeImg src="/static/images/sell.png" alt="sell">
+                    <a href="sell" th:text="#{sell}">Sales page</a>
+                </div>
+            </fieldset>
         </div>
         <div>
-            <a href="sell" th:text="#{sell}">Sales page</a>
+            <form th:action="${@com.christian.rossi.progetto_tiw_2023.Constants.URLs@DO_LOGOUT}" method="post">
+                <button class="modButton" name="logout" value="" th:text="#{logout}">Logout</button>
+            </form>
         </div>
-    </fieldset>
+    </div>
 </body>
 </html>
