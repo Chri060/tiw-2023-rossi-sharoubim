@@ -13,12 +13,19 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 
 @WebServlet("/doaddproduct")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
 public class DoAddProduct extends ThymeleafHTTPServlet {
-    final String uploadPath = "C:\\Users\\chris\\OneDrive\\Documents\\GitHub\\tiw-2023-rossi-sharoubim\\Pure HTML\\src\\main\\webapp\\images";
+    String folderPath = "";
+
+    public void init() throws ServletException {
+        folderPath = getServletContext().getInitParameter("outputPath");
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -29,10 +36,24 @@ public class DoAddProduct extends ThymeleafHTTPServlet {
         final Long userID = (Long) session.getAttribute("userID");
         final String articleID = request.getParameter("articleID");
         //start of file uploading
-        File uploadDir = new File(uploadPath);
-        for (Part part : request.getParts()) {
-            String fileName = FileNameChanger.getFileName(part, articleID);
-            part.write(uploadPath + File.separator + fileName);
+        Part filePart = request.getPart("file");
+        if (filePart == null || filePart.getSize() <= 0) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing file in request!");
+            return;
+        }
+        String contentType = filePart.getContentType();
+        if (!contentType.startsWith("image")) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "File format not permitted");
+            return;
+        }
+        String fileName = articleID + ".jpeg";
+        String outputPath = folderPath + fileName;
+        File file = new File(outputPath);
+        try (InputStream fileContent = filePart.getInputStream()) {
+            Files.copy(fileContent, file.toPath());
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while saving file");
         }
         //end of file uploading
 

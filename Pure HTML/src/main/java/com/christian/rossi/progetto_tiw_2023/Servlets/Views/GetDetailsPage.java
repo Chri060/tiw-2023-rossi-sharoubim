@@ -34,7 +34,6 @@ public class GetDetailsPage extends ThymeleafHTTPServlet {
                 UserDAO userDAO = new UserDAO();
                 List<AuctionBean> auctionBeanList = auctionDAO.getAuctionsByID(details, session.getCreationTime());
                 AuctionBean winner = auctionDAO.getWinner(details);
-
                 ctx.setVariable("selectedauction", auctionBeanList);
                 ctx.setVariable("offer", offerDAO.getOffers(details));
                 ctx.setVariable("winner", winner);

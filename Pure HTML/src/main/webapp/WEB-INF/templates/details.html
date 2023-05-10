@@ -29,7 +29,7 @@
                         <td th:text="${selectedauction.name}">data</td>
                         <td th:text="${selectedauction.description}">data</td>
                         <td>
-                            <img th:src="${selectedauction.image}" src="" alt="">
+                            <img th:src="@{${selectedauction.image}}" src="" alt=""/>
                         </td>
                     </tr>
                 </tbody>

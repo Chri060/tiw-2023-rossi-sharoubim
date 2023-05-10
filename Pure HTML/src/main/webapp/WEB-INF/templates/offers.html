@@ -28,7 +28,7 @@
                     <td th:text="${auction.price}">data</td>
                     <td th:text="${auction.rise}">data</td>
                     <td>
-                        <img th:src="${auction.image}" src="" alt="">
+                        <img th:src="@{${auction.image}}" src="" alt="">
                     </td>
                 </tr>
             </table>

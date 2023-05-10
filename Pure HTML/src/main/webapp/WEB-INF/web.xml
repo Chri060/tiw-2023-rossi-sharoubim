@@ -3,4 +3,8 @@
          xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <context-param>
+        <param-name>outputPath</param-name>
+        <param-value>C:\Users\chris\OneDrive\Desktop\Images\</param-value>
+    </context-param>
 </web-app>

@@ -49,7 +49,7 @@
                         <td th:text="${auctions.name}">data</td>
                         <td th:text="${auctions.description}">data</td>
                         <td>
-                            <img th:src="${auctions.image}" src="" alt="">
+                            <img th:src="@{${auctions.image}}" src="" alt="">
                         </td>
                     </tr>
                 </tbody>
@@ -72,7 +72,7 @@
                     <th th:text="#{name}">Name</th>
                     <th th:text="#{productID}">Product code</th>
                     <th th:text="#{description}">Description</th>
-                    <th th:text="#{photo}">Description</th>
+                    <th th:text="#{photo}">Image</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -83,7 +83,7 @@
                     <td th:text="${closedauctions.productID}">data</td>
                     <td th:text="${closedauctions.description}">data</td>
                     <td>
-                        <img th:src="${closedauctions.image}" src="" alt="">
+                        <img th:src="@{${closedauctions.image}}" src="" alt="">
                     </td>
                 </tr>
                 </tbody>
