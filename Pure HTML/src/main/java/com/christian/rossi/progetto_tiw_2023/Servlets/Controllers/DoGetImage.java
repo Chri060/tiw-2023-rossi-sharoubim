@@ -24,22 +24,17 @@ public class DoGetImage extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
-
         if (pathInfo == null || pathInfo.equals("/")) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing file name!");
             return;
         }
-
         String filename = URLDecoder.decode(pathInfo.substring(1), StandardCharsets.UTF_8);
-
         File file = new File(folderPath, filename);
         System.out.println(filename);
-
         if (!file.exists() || file.isDirectory()) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "File not present");
             return;
         }
-
         Files.copy(file.toPath(), response.getOutputStream());
     }
 }

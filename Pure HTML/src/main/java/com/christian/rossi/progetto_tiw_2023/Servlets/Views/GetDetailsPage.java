@@ -43,6 +43,8 @@ public class GetDetailsPage extends ThymeleafHTTPServlet {
                 ctx.setVariable("user", userDAO.getUser(String.valueOf(winner.getUserID())));
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to set values for the page");
             throw new RuntimeException(e);
         }
         getTemplateEngine().process(template, ctx, response.getWriter());

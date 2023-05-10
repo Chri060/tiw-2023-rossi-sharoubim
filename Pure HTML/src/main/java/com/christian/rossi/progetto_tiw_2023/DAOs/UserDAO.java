@@ -10,10 +10,6 @@ import java.sql.SQLException;
 
 public class UserDAO {
 
-    public UserDAO() throws SQLException {
-        super();
-    }
-
     public UserBean authenticate(String username, String password) throws SQLException {
         String query = "SELECT username, userID " +
                        "FROM user WHERE username=? AND password=?";
@@ -27,7 +23,7 @@ public class UserDAO {
                     result.next();
                     UserBean userBean = new UserBean();
                     userBean.setUsername(result.getString("username"));
-                    userBean.setUserID(Long.valueOf(result.getString("userID")));
+                    userBean.setUserID(result.getLong("userID"));
                     return userBean;
                 }
             }
@@ -62,7 +58,7 @@ public class UserDAO {
                     result.next();
                     UserBean userBean = new UserBean();
                     userBean.setUsername(result.getString("username"));
-                    userBean.setUserID(Long.valueOf(result.getString("userID")));
+                    userBean.setUserID(result.getLong("userID"));
                     userBean.setEmail(result.getString("email"));
                     userBean.setCity(result.getString("city"));
                     userBean.setAddress(result.getString("address"));

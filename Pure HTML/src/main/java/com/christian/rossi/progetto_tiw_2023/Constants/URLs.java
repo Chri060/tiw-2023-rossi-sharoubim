@@ -1,7 +1,6 @@
 package com.christian.rossi.progetto_tiw_2023.Constants;
 
 public class URLs {
-
     //Controller
     public static final String DO_ADD_PRODUCT = "/doAddProduct";
     public static final String DO_CLOSE = "/doClose";
@@ -11,8 +10,6 @@ public class URLs {
     public static final String DO_OFFER = "/doOffer";
     public static final String DO_SIGNUP = "/doSignup";
     public static final String DO_LOGOUT = "/doLogout";
-
-
     //View
     public static final String GET_BUY_PAGE = "/buy";
     public static final String GET_DETAILS_PAGE = "/details";
@@ -21,5 +18,4 @@ public class URLs {
     public static final String GET_OFFERS_PAGE = "/offers";
     public static final String GET_SELL_PAGE = "/sell";
     public static final String GET_SIGNUP_PAGE = "/signup";
-
 }

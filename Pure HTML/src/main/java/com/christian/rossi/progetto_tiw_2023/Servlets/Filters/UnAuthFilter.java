@@ -17,7 +17,7 @@ public class UnAuthFilter implements Filter {
         HttpServletResponse hresponse = (HttpServletResponse) response;
         HttpSession session = hrequest.getSession();
         if (session.getAttribute("user") != null) {
-            //TODO: errore
+            //TODO: errore non sei loggato
             hresponse.sendRedirect("/home");
             return;
         }

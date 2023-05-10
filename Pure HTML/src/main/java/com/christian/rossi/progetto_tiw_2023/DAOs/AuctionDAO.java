@@ -16,10 +16,6 @@ public class AuctionDAO {
 
     private final String imgPath = "http://localhost:8080/getImage/";
 
-    public AuctionDAO() throws SQLException {
-        super();
-    }
-
     public Long createAuction(int price, int rise, Timestamp expiry, Long userID) throws SQLException{
         String query = "INSERT INTO auction (price, rise , expiry, active, userID) " +
                        "VALUES (?, ?, ?, ?, ?)";
@@ -65,15 +61,15 @@ public class AuctionDAO {
                     List<AuctionBean> auctionBeanList = new ArrayList<>();
                     while (result.next()) {
                         AuctionBean auctionBean = new AuctionBean();
-                        auctionBean.setAuctionID(Long.valueOf(result.getString("auctionID")));
+                        auctionBean.setAuctionID(result.getLong("auctionID"));
                         if (result.getString("max(offering)") != null) {
-                            auctionBean.setPrice(Integer.parseInt(result.getString("max(offering)")));
+                            auctionBean.setPrice(result.getInt("max(offering)"));
                         }
                         else {
                             auctionBean.setPrice(0);
                         }
                         auctionBean.setName(result.getString("name"));
-                        auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
+                        auctionBean.setProductID(result.getLong("articleID"));
                         auctionBean.setImage(imgPath + result.getString("articleID") + ".jpeg");
                         auctionBean.setExpiry(result.getTimestamp("expiry"));
                         List<Integer> timeRem = TimeHandler.getTimeDifference(result.getTimestamp("expiry"), loginTime);
@@ -101,11 +97,11 @@ public class AuctionDAO {
                     List<AuctionBean> auctionBeanList = new ArrayList<>();
                     while (result.next()) {
                         AuctionBean auctionBean = new AuctionBean();
-                        auctionBean.setAuctionID(Long.valueOf(result.getString("auctionID")));
+                        auctionBean.setAuctionID(result.getLong("auctionID"));
                         auctionBean.setPrice(result.getInt("price"));
                         auctionBean.setName(result.getString("name"));
                         auctionBean.setActive((result.getInt("active")));
-                        auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
+                        auctionBean.setProductID(result.getLong("articleID"));
                         auctionBean.setDescription(result.getString("description"));
                         auctionBean.setImage(imgPath + result.getString("articleID") + ".jpeg");
                         auctionBean.setRise(result.getInt("rise"));
@@ -153,15 +149,15 @@ public class AuctionDAO {
                     List<AuctionBean> auctionBeanList = new ArrayList<>();
                     while (result.next()) {
                         AuctionBean auctionBean = new AuctionBean();
-                        auctionBean.setAuctionID(Long.valueOf(result.getString("auctionID")));
+                        auctionBean.setAuctionID(result.getLong("auctionID"));
                         if (result.getString("max(offering)") != null) {
-                            auctionBean.setPrice(Integer.parseInt(result.getString("max(offering)")));
+                            auctionBean.setPrice(result.getInt("max(offering)"));
                         }
                         else {
                             auctionBean.setPrice(0);
                         }
                         auctionBean.setName(result.getString("name"));
-                        auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
+                        auctionBean.setProductID(result.getLong("articleID"));
                         auctionBean.setDescription(result.getString("description"));
                         auctionBean.setImage(imgPath + result.getString("articleID") + ".jpeg");
                         auctionBeanList.add(auctionBean);
@@ -188,9 +184,9 @@ public class AuctionDAO {
                     List<AuctionBean> auctionBeanList = new ArrayList<>();
                     while (result.next()) {
                         AuctionBean auctionBean = new AuctionBean();
-                        auctionBean.setAuctionID(Long.valueOf(result.getString("auctionID")));
+                        auctionBean.setAuctionID(result.getLong("auctionID"));
                         auctionBean.setName(result.getString("name"));
-                        auctionBean.setProductID(Long.valueOf(result.getString("articleID")));
+                        auctionBean.setProductID(result.getLong("articleID"));
                         auctionBean.setDescription(result.getString("description"));
                         auctionBean.setImage(imgPath + result.getString("articleID") + ".jpeg");
                         auctionBean.setPrice(result.getInt("price"));

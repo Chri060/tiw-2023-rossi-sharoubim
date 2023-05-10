@@ -16,6 +16,7 @@ public class DoLogin extends ThymeleafHTTPServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //TODO: controllo input
         final String username = request.getParameter("username");
         final String password = request.getParameter("password");
         try {
@@ -30,7 +31,8 @@ public class DoLogin extends ThymeleafHTTPServlet {
                 response.sendRedirect("/home");
             }
         } catch (SQLException e) {
-            //TODO: pagina di errore (connessione al DB o query)
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to retrieve data from the database");
         }
     }
 }

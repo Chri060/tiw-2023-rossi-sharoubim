@@ -31,6 +31,8 @@ public class GetOffersPage extends ThymeleafHTTPServlet {
             ctx.setVariable("offer", offerDAO.getOffers(details));
             ctx.setVariable("actualID", details);
         } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to set values for the page");
             throw new RuntimeException(e);
         }
         getTemplateEngine().process(template, ctx, response.getWriter());

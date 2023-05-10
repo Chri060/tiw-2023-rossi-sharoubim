@@ -16,6 +16,7 @@ public class DoSignup extends ThymeleafHTTPServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //TODO: controllo input
         final String username = request.getParameter("username");
         final String email = request.getParameter("email");
         final String city = request.getParameter("city");
@@ -29,7 +30,8 @@ public class DoSignup extends ThymeleafHTTPServlet {
             request.getSession().setAttribute("user", userBean.getUsername());
             request.getSession().setAttribute("userID", userBean.getUserID());
         } catch (SQLException e) {
-            //TODO: pagina di errore (connessione al DB o query)
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to retrieve data from the database");
         }
         response.sendRedirect("/home");
     }

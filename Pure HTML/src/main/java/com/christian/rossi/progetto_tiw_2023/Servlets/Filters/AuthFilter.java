@@ -18,7 +18,7 @@ public class AuthFilter implements Filter {
         HttpServletResponse hresponse = (HttpServletResponse) response;
         HttpSession session = hrequest.getSession();
         if (session.isNew() || session.getAttribute("user") == null) {
-            //TODO:errore
+            //TODO: errore sei già loggato
             hresponse.sendRedirect("/login");
             return;
         }

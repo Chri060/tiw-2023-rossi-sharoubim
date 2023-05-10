@@ -30,6 +30,7 @@ public class DoAddProduct extends ThymeleafHTTPServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        //TODO: controllo input
         HttpSession session = request.getSession();
         final String name = request.getParameter("name");
         final String description = request.getParameter("description");
@@ -57,14 +58,12 @@ public class DoAddProduct extends ThymeleafHTTPServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while saving file");
         }
         //end of file uploading
-
-        //TODO:check for correct input
-
         try {
             ProductDAO productDAO = new ProductDAO();
             productDAO.addProduct(articleID, name, description, price, userID);
         } catch (SQLException e) {
-            //TODO: pagina di errore per problemi con la query
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to retrieve data from the database");
         }
         response.sendRedirect("/sell");
     }

@@ -21,7 +21,8 @@ public class DoClose extends ThymeleafHTTPServlet {
             AuctionDAO auctionDAO = new AuctionDAO();
             auctionDAO.close(auctionID);
         } catch (SQLException e) {
-            //TODO: pagina di errore per problemi con la query
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to retrieve data from the database");
         }
         response.sendRedirect("/details");
     }

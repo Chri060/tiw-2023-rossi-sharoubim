@@ -18,6 +18,7 @@ public class DoOffer extends ThymeleafHTTPServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //TODO: controllo input
         HttpSession session = request.getSession();
         final String offer = request.getParameter("offer");
         final Long userID = (Long) session.getAttribute("userID");
@@ -27,7 +28,8 @@ public class DoOffer extends ThymeleafHTTPServlet {
             OfferDAO offerDAO = new OfferDAO();
             offerDAO.addOffer(offer, String.valueOf(userID), String.valueOf(auctionID), date);
         } catch (SQLException e) {
-            //TODO: pagina di errore (connessione al DB o query)
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to retrieve data from the database");
         }
         response.sendRedirect("/offers");
     }

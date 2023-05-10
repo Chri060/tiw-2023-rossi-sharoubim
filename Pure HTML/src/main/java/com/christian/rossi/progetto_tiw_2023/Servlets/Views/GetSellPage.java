@@ -30,6 +30,8 @@ public class GetSellPage extends ThymeleafHTTPServlet {
             ctx.setVariable("closedauctions", auctionDAO.getAuctions((Long) session.getAttribute("userID"), 0, session.getCreationTime()));
             ctx.setVariable("activeauctions", auctionDAO.getAuctions((Long) session.getAttribute("userID"), 1, session.getCreationTime()));
         } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to set values for the page");
             throw new RuntimeException(e);
         }
         getTemplateEngine().process(template, ctx, response.getWriter());

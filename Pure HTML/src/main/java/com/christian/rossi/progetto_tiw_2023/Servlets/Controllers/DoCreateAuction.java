@@ -22,6 +22,7 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //TODO: controllo input
         HttpSession session = request.getSession();
         final Set<Long> products = Arrays.stream(request.getParameterValues("product")).map(Long::parseLong).collect(Collectors.toUnmodifiableSet());
         final int rise = Integer.parseInt(request.getParameter("rise"));
@@ -33,6 +34,16 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
         LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, formatter);
         final Timestamp expiry = Timestamp.valueOf(dateTime);
         //end of time parsing
+
+
+
+
+
+        //TODO: controllo input
+
+
+
+
         Iterator<Long> productsIterator = products.iterator();
         int price = 0;
         while (productsIterator.hasNext()) {
@@ -40,7 +51,10 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
                 ProductDAO productDAO = new ProductDAO();
                 Long articleID = productsIterator.next();
                 price += productDAO.GetPrice(articleID);
-            } catch (SQLException e) {  throw new RuntimeException(e); }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to retrieve data from the database");
+            }
         }
         productsIterator = products.iterator();
         try {
@@ -52,7 +66,8 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
                 productDAO.update(articleID, auctionID);
             }
         } catch (SQLException e) {
-            //TODO: pagina di errore per problemi con la query
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to retrieve data from the database");
         }
         response.sendRedirect("/sell");
     }

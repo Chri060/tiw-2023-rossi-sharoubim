@@ -14,10 +14,6 @@ import java.util.List;
 
 public class OfferDAO {
 
-    public OfferDAO() throws SQLException {
-        super();
-    }
-
     public List<OfferBean> getOffers(String details) throws SQLException {
         String query = "SELECT * " +
                        "FROM offer " +
@@ -32,8 +28,8 @@ public class OfferDAO {
                     List<OfferBean> offerBeanList = new ArrayList<>();
                     while (result.next()) {
                         OfferBean offerBean = new OfferBean();
-                        offerBean.setUserID(Long.valueOf(result.getString("userID")));
-                        offerBean.setOffering(Integer.parseInt(result.getString("offering")));
+                        offerBean.setUserID(result.getLong("userID"));
+                        offerBean.setOffering(result.getInt("offering"));
                         offerBean.setDate(result.getString("date"));
                         offerBeanList.add(offerBean);
                     }

@@ -11,10 +11,6 @@ import java.util.List;
 
 public class ProductDAO {
 
-    public ProductDAO() throws SQLException {
-        super();
-    }
-
     public void addProduct(String articleID, String name, String description, int price, Long userID) throws SQLException {
         String query = "INSERT INTO product (articleID, name, description, price, sellable, userID, auctionID) " +
                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -43,10 +39,10 @@ public class ProductDAO {
                     List<ProductBean> productBeanList = new ArrayList<>();
                     while (result.next()) {
                         ProductBean productBean = new ProductBean();
-                        productBean.setProductID(Long.valueOf(result.getString("articleID")));
+                        productBean.setProductID(result.getLong("articleID"));
                         productBean.setName(result.getString("name"));
                         productBean.setDescription(result.getString("description"));
-                        productBean.setPrice(Integer.parseInt(result.getString("price")));
+                        productBean.setPrice(result.getInt("price"));
                         productBeanList.add(productBean);
                     }
                     return productBeanList;
