@@ -7,42 +7,34 @@
 </head>
 <body>
   <fieldset>
-    <legend>Error found</legend>
+    <legend th:text="#{error}">Error found</legend>
     <div th:if="${errors != null}">
       <div th:each="error : ${errors}" th:switch="${error}">
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@NO_USERNAME}}">No username inserted</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@NO_PASSWORD}}">No password inserted</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@NO_USER}}">There are no users with this username and/or password</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@DB_ERROR}}">There were problems while retrieving data from the database, please retry</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@MISSING_FILE}}">Missing file in request</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@FORMAT_ERROR}}">File format not permitted</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@SAVE_ERROR}}">Error while saving file</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@NAME_ERROR}}">The product name inserted is not correct</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@DESCRIPTION_ERROR}}">The product description inserted is not correct</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@PRICE_ERROR}}">The product price inserted is not correct</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@PRODUCT_ID_ERROR}}">The product ID inserted is not correct</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@PRODUCT_ID_NOT_UNIQUE}}">The product ID inserted is already in the database</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@LOGOUT_ERROR}}">There were problem with the logout, please retry</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@RISE_ERROR}}">The price rise inserted is not correct</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@EXPIRY_ERROR}}">The expiration date inserted is not correct</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@AUTH_ERROR}}">You are not allowed to see this page, please sign in</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@UN_AUTH_ERROR}}">You are already logged in</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@USERNAME_ERROR}}">The username inserted is not correct</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@EMAIL_ERROR}}">The email inserted is not correct</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@CITY_ERROR}}">The city inserted is not correct</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@ADDRESS_ERROR}}">The address inserted is not correct</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@PROVINCE_ERROR}}">The province inserted is not correct</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@PASSWORD_ERROR}}">
-          The password inserted is not correct<br>
-          The password may contain:<br>
-          - At least one upper case letter<br>
-          - At least one lower case letter<br>
-          - At least one digit<br>
-          - At least one special character or space<br>
-          - Length must be between 8 and 16 characters<br>
-        </p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@USERNAME_NOT_UNIQUE}}">The username inserted is already in the database</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@EMAIL_NOT_UNIQUE}}">The email inserted is already in the database</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@NO_USERNAME}}" th:text="#{noUsername}">No username inserted</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@NO_PASSWORD}}" th:text="#{noPassword}">No password inserted</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@NO_USER}}" th:text="#{noUser}">There are no users with this username and/or password</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@DB_ERROR}}" th:text="#{DbError}">There were problems while retrieving data from the database, please retry</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@MISSING_FILE}}" th:text="#{missingFile}">Missing file in request</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@FORMAT_ERROR}}" th:text="#{formatError}">File format not permitted</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@SAVE_ERROR}}" th:text="#{saveError}">Error while saving file</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@NAME_ERROR}}" th:text="#{nameError}">The product name inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@DESCRIPTION_ERROR}}" th:text="#{descriptionError}">The product description inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@PRICE_ERROR}}" th:text="#{priceError}">The product price inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@PRODUCT_ID_ERROR}}" th:text="#{productIDError}">The product ID inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@PRODUCT_ID_NOT_UNIQUE}}" th:text="#{productIDNotUnique}">The product ID inserted is already in the database</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@LOGOUT_ERROR}}" th:text="#{logoutError}">There were problem with the logout, please retry</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@RISE_ERROR}}" th:text="#{riseError}">The price rise inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@EXPIRY_ERROR}}" th:text="#{expiryError}">The expiration date inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@AUTH_ERROR}}" th:text="#{authError}">You are not allowed to see this page, please sign in</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@UN_AUTH_ERROR}}" th:text="#{unAuthError}">You are already logged in</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@USERNAME_ERROR}}" th:text="#{usernameError}">The username inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@EMAIL_ERROR}}" th:text="#{emailError}">The email inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@CITY_ERROR}}" th:text="#{cityError}">The city inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@ADDRESS_ERROR}}" th:text="#{addressError}">The address inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@PROVINCE_ERROR}}" th:text="#{provinceError}">The province inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@PASSWORD_ERROR}}" th:utext="#{passwordError}">The password inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@USERNAME_NOT_UNIQUE}}" th:text="#{usernameNotUnique}">The username inserted is already in the database</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@EMAIL_NOT_UNIQUE}}" th:text="#{emailNotUnique}">The email inserted is already in the database</p>
       </div>
     </div>
     <div>
