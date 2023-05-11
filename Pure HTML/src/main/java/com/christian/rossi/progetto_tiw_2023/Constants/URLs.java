@@ -13,9 +13,11 @@ public class URLs {
     //View
     public static final String GET_BUY_PAGE = "/buy";
     public static final String GET_DETAILS_PAGE = "/details";
+    public static final String GET_ERROR_PAGE = "/error";
     public static final String GET_HOME_PAGE = "/home";
     public static final String GET_LOGIN_PAGE = "/login";
     public static final String GET_OFFERS_PAGE = "/offers";
     public static final String GET_SELL_PAGE = "/sell";
     public static final String GET_SIGNUP_PAGE = "/signup";
+
 }

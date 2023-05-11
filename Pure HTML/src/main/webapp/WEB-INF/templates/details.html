@@ -60,14 +60,14 @@
         <div th:if="${offer == null}">
             <p th:text="#{noOffers}">There are no active offers</p>
         </div>
-    </fieldset>
-    <div>
-        <fieldset th:if="${winner == null}">
+        <div th:if="${winner == null}">
             <form th:if="${active == 1}" th:action="${@com.christian.rossi.progetto_tiw_2023.Constants.URLs@DO_CLOSE}" method="post">
                 <button class="modButton" type="submit" name="close" value="Login" th:value="${close}" th:text="#{close}">Details</button>
             </form>
             <p th:if="${active == 0}" th:text="#{noWinner}">The auction is closed, but has no winner</p>
-        </fieldset>
+        </div>
+    </fieldset>
+    <div>
         <fieldset th:if="${winner != null}">
             <legend th:text="#{winner}">Winner</legend>
             <table>

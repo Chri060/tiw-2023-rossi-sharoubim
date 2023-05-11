@@ -38,7 +38,7 @@
                         <tr th:each ="auctions : ${auctions}">
                             <td th:text="${auctions.auctionID}">data</td>
                             <td>
-                                <form th:action="${@com.christian.rossi.progetto_tiw_2023.Constants.URLs@DO_OFFER}" method="post">
+                                <form th:action="${@com.christian.rossi.progetto_tiw_2023.Constants.URLs@GET_OFFERS_PAGE}" method="post">
                                     <button type="submit" name="details"  value="Login" th:value="${auctions.auctionID}" th:text="#{detail}">Details</button>
                                 </form>
                             </td>

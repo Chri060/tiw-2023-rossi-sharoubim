@@ -1,5 +1,6 @@
 package com.christian.rossi.progetto_tiw_2023.DAOs;
 
+import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
 import com.christian.rossi.progetto_tiw_2023.Beans.UserBean;
 import static com.christian.rossi.progetto_tiw_2023.DAOs.DBConnectionPool.getConnection;
 
@@ -68,4 +69,40 @@ public class UserDAO {
             }
         }
     }
+
+
+
+    public String GetUserByUsername(String username) throws SQLException {
+        String query = "SELECT * " +
+                       "FROM user " +
+                       "WHERE username=?";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setString(1, username);
+            try (ResultSet result = request.executeQuery()) {
+
+                UserBean userBean = new UserBean();
+                if (result.next()) {
+                    userBean.setUsername(result.getString("username"));
+                }
+                return userBean.getUsername();
+            }
+        }
+    }
+
+    public String GetUserByEmail(String email) throws SQLException {
+        String query = "SELECT * " +
+                       "FROM user " +
+                       "WHERE email=?";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setString(1, email);
+            try (ResultSet result = request.executeQuery()) {
+                UserBean userBean = new UserBean();
+                if (result.next()) {
+                    userBean.setEmail(result.getString("email"));
+                }
+                return userBean.getEmail();
+            }
+        }
+    }
+
 }

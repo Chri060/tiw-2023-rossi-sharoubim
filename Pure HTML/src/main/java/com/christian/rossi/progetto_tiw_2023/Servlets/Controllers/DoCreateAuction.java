@@ -1,9 +1,12 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 
+import com.christian.rossi.progetto_tiw_2023.Constants.Errors;
 import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
 import com.christian.rossi.progetto_tiw_2023.DAOs.*;
 import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
+import com.christian.rossi.progetto_tiw_2023.Utils.InputChecker;
+import com.christian.rossi.progetto_tiw_2023.Utils.PathBuilder;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -22,7 +25,6 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //TODO: controllo input
         HttpSession session = request.getSession();
         final Set<Long> products = Arrays.stream(request.getParameterValues("product")).map(Long::parseLong).collect(Collectors.toUnmodifiableSet());
         final int rise = Integer.parseInt(request.getParameter("rise"));
@@ -34,16 +36,14 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
         LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, formatter);
         final Timestamp expiry = Timestamp.valueOf(dateTime);
         //end of time parsing
-
-
-
-
-
-        //TODO: controllo input
-
-
-
-
+        if (!InputChecker.checkRise(rise)) {
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.RISE_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+            return;
+        }
+        if (!InputChecker.checkExpiry(expiry)) {
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.EXPIRY_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+            return;
+        }
         Iterator<Long> productsIterator = products.iterator();
         int price = 0;
         while (productsIterator.hasNext()) {
@@ -53,7 +53,8 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
                 price += productDAO.GetPrice(articleID);
             } catch (SQLException e) {
                 e.printStackTrace();
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to retrieve data from the database");
+                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+                return;
             }
         }
         productsIterator = products.iterator();
@@ -67,8 +68,9 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to retrieve data from the database");
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+            return;
         }
-        response.sendRedirect("/sell");
+        response.sendRedirect(URLs.GET_SELL_PAGE);
     }
 }

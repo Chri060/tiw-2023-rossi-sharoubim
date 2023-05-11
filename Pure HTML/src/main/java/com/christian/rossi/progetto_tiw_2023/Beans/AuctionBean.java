@@ -8,7 +8,7 @@ public class AuctionBean {
     private int rise;
     private Timestamp expiry = null;
     private boolean active;
-    private Long UserID = null;
+    private Long userID = null;
     private String name = null;
     private Long productID = null;
     private Long articleID = null;
@@ -56,11 +56,11 @@ public class AuctionBean {
     public void setActive(int active) { this.active= active == 1; }
 
     public Long getUserID() {
-        return UserID;
+        return userID;
     }
 
     public void setUserID(Long userID) {
-        UserID = userID;
+        this.userID = userID;
     }
 
     public Long getProductID() {

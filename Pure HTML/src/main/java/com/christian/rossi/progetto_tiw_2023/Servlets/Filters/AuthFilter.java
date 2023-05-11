@@ -1,6 +1,8 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Filters;
 
+import com.christian.rossi.progetto_tiw_2023.Constants.Errors;
 import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
+import com.christian.rossi.progetto_tiw_2023.Utils.PathBuilder;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -18,8 +20,7 @@ public class AuthFilter implements Filter {
         HttpServletResponse hresponse = (HttpServletResponse) response;
         HttpSession session = hrequest.getSession();
         if (session.isNew() || session.getAttribute("user") == null) {
-            //TODO: errore sei già loggato
-            hresponse.sendRedirect("/login");
+            hresponse.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.AUTH_ERROR).addParam("redirect", URLs.GET_LOGIN_PAGE).toString());
             return;
         }
         //filter chain pattern

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="#{title}">Error page</title>
+  <link rel="stylesheet" href="/static/style.css"/>
+</head>
+<body>
+  <fieldset>
+    <legend>Error found</legend>
+    <div th:if="${errors != null}">
+      <div th:each="error : ${errors}" th:switch="${error}">
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@NO_USERNAME}}">No username inserted</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@NO_PASSWORD}}">No password inserted</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@NO_USER}}">There are no users with this username and/or password</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@DB_ERROR}}">There were problems while retrieving data from the database, please retry</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@MISSING_FILE}}">Missing file in request</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@FORMAT_ERROR}}">File format not permitted</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@SAVE_ERROR}}">Error while saving file</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@NAME_ERROR}}">The product name inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@DESCRIPTION_ERROR}}">The product description inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@PRICE_ERROR}}">The product price inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@PRODUCT_ID_ERROR}}">The product ID inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@PRODUCT_ID_NOT_UNIQUE}}">The product ID inserted is already in the database</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@LOGOUT_ERROR}}">There were problem with the logout, please retry</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@RISE_ERROR}}">The price rise inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@EXPIRY_ERROR}}">The expiration date inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@AUTH_ERROR}}">You are not allowed to see this page, please sign in</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@UN_AUTH_ERROR}}">You are already logged in</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@USERNAME_ERROR}}">The username inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@EMAIL_ERROR}}">The email inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@CITY_ERROR}}">The city inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@ADDRESS_ERROR}}">The address inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@PROVINCE_ERROR}}">The province inserted is not correct</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@PASSWORD_ERROR}}">
+          The password inserted is not correct<br>
+          The password may contain:<br>
+          - At least one upper case letter<br>
+          - At least one lower case letter<br>
+          - At least one digit<br>
+          - At least one special character or space<br>
+          - Length must be between 8 and 16 characters<br>
+        </p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@USERNAME_NOT_UNIQUE}}">The username inserted is already in the database</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@EMAIL_NOT_UNIQUE}}">The email inserted is already in the database</p>
+      </div>
+    </div>
+    <div>
+      <a th:href="${redirect}" href="/">Return to the previous page</a>
+    </div>
+  </fieldset>
+</body>
+</html>

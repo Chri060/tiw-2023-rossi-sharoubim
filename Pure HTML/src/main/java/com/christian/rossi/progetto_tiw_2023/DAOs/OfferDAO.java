@@ -2,6 +2,8 @@ package com.christian.rossi.progetto_tiw_2023.DAOs;
 
 
 import com.christian.rossi.progetto_tiw_2023.Beans.OfferBean;
+import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
+
 import static com.christian.rossi.progetto_tiw_2023.DAOs.DBConnectionPool.getConnection;
 
 import java.sql.PreparedStatement;

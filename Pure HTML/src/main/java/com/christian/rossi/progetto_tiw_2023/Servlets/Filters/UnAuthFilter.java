@@ -1,6 +1,8 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Filters;
 
+import com.christian.rossi.progetto_tiw_2023.Constants.Errors;
 import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
+import com.christian.rossi.progetto_tiw_2023.Utils.PathBuilder;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -17,8 +19,7 @@ public class UnAuthFilter implements Filter {
         HttpServletResponse hresponse = (HttpServletResponse) response;
         HttpSession session = hrequest.getSession();
         if (session.getAttribute("user") != null) {
-            //TODO: errore non sei loggato
-            hresponse.sendRedirect("/home");
+            hresponse.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.UN_AUTH_ERROR).addParam("redirect", URLs.GET_HOME_PAGE).toString());
             return;
         }
         //filter chain pattern

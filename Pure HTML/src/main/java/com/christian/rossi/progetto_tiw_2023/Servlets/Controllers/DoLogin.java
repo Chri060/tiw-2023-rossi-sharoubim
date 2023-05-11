@@ -1,9 +1,11 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 
 import com.christian.rossi.progetto_tiw_2023.Beans.UserBean;
+import com.christian.rossi.progetto_tiw_2023.Constants.Errors;
 import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
 import com.christian.rossi.progetto_tiw_2023.DAOs.UserDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.*;
+import com.christian.rossi.progetto_tiw_2023.Utils.PathBuilder;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,23 +18,30 @@ public class DoLogin extends ThymeleafHTTPServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //TODO: controllo input
         final String username = request.getParameter("username");
         final String password = request.getParameter("password");
+        if (username == null || username.isEmpty()) {
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NO_USERNAME).addParam("redirect", URLs.GET_LOGIN_PAGE).toString());
+            return;
+        }
+        if (password == null || password.isEmpty()) {
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NO_PASSWORD).addParam("redirect", URLs.GET_LOGIN_PAGE).toString());
+            return;
+        }
         try {
             UserDAO userDAO = new UserDAO();
             UserBean userBean = userDAO.authenticate(username, password);
             if (userBean == null) {
-                //TODO: pagina di errore (utente non trovato)
-                response.sendRedirect("/login");
+                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NO_USER).addParam("redirect", URLs.GET_LOGIN_PAGE).toString());
             } else {
                 request.getSession().setAttribute("user", userBean.getUsername());
                 request.getSession().setAttribute("userID", userBean.getUserID());
-                response.sendRedirect("/home");
+                response.sendRedirect(URLs.GET_HOME_PAGE);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to retrieve data from the database");
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_LOGIN_PAGE).toString());
         }
+
     }
 }
