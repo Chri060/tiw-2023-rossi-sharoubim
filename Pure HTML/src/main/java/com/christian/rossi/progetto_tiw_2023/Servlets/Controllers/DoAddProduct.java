@@ -64,6 +64,7 @@ public class DoAddProduct extends ThymeleafHTTPServlet {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
             return;
         }
+
         //start of file uploading
         Part filePart = request.getPart("file");
         if (filePart == null || filePart.getSize() <= 0) {

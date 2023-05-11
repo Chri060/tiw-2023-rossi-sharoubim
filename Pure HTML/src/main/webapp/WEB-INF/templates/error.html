@@ -35,6 +35,8 @@
         <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@PASSWORD_ERROR}}" th:utext="#{passwordError}">The password inserted is not correct</p>
         <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@USERNAME_NOT_UNIQUE}}" th:text="#{usernameNotUnique}">The username inserted is already in the database</p>
         <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@EMAIL_NOT_UNIQUE}}" th:text="#{emailNotUnique}">The email inserted is already in the database</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@MISSING_PRODUCT}}" th:text="#{missingProduct}">You have to select at least one product to create an auction</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@OFFER_ERROR}}" th:text="#{offerError}">The offered value in not corrected</p>
       </div>
     </div>
     <div>

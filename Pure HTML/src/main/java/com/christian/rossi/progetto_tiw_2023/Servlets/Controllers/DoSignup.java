@@ -80,7 +80,7 @@ public class DoSignup extends ThymeleafHTTPServlet {
             request.getSession().setAttribute("userID", userBean.getUserID());
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to retrieve data from the database");
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SIGNUP_PAGE).toString());
         }
         response.sendRedirect(URLs.GET_HOME_PAGE);
     }

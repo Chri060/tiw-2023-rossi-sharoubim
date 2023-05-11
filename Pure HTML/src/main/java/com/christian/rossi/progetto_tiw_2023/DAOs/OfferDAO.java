@@ -52,4 +52,22 @@ public class OfferDAO {
             request.execute();
         }
     }
+
+
+    public int getMaxOffer (String auctionID) throws SQLException {
+        String query = "SELECT max " +
+                       "FROM winner " +
+                       "WHERE auctionID=?";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setString(1, auctionID);
+            try (ResultSet result = request.executeQuery()) {
+                if (!result.isBeforeFirst())
+                    return 0;
+                else {
+                    result.next();
+                    return result.getInt(1);
+                }
+            }
+        }
+    }
 }

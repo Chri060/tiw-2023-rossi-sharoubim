@@ -42,6 +42,5 @@ public class DoLogin extends ThymeleafHTTPServlet {
             e.printStackTrace();
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_LOGIN_PAGE).toString());
         }
-
     }
 }

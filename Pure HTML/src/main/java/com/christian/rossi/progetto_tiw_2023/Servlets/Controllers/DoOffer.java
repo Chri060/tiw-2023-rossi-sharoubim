@@ -1,7 +1,10 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 
+import com.christian.rossi.progetto_tiw_2023.Beans.AuctionBean;
+import com.christian.rossi.progetto_tiw_2023.Beans.OfferBean;
 import com.christian.rossi.progetto_tiw_2023.Constants.Errors;
 import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
+import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.OfferDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
 import com.christian.rossi.progetto_tiw_2023.Utils.InputChecker;
@@ -14,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 @WebServlet(name = "DoOffer", urlPatterns = {URLs.DO_OFFER})
@@ -25,31 +29,28 @@ public class DoOffer extends ThymeleafHTTPServlet {
         HttpSession session = request.getSession();
         final String offer = request.getParameter("offer");
         final Long userID = (Long) session.getAttribute("userID");
-        final String productID = request.getParameter("auctionID");
+        final String auctionID = request.getParameter("auctionID");
         final Timestamp date = new Timestamp(System.currentTimeMillis());
-
-
-
-
-
-
-
-        //TODO: non è controllato
-        if (!InputChecker.checkOffer(Integer.parseInt(offer), 1, 1, 1)) {
-            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DESCRIPTION_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
-            return;
-        }
-
-
-
-
-
+        try {
+            AuctionDAO auctionDAO = new AuctionDAO();
+            OfferDAO offerDAO = new OfferDAO();
+            List<AuctionBean> auctionBean = auctionDAO.getAuctionsByID(auctionID, session.getCreationTime());
+            int start = auctionBean.get(0).getPrice();
+            int rise = auctionBean.get(0).getRise();
+            int actualOffer  = offerDAO.getMaxOffer(auctionID);
+            if (!InputChecker.checkOffer(Integer.parseInt(offer), start, rise, actualOffer)) {
+                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.OFFER_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
+                return;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        };
         try {
             OfferDAO offerDAO = new OfferDAO();
-            offerDAO.addOffer(offer, String.valueOf(userID), productID, date);
+            offerDAO.addOffer(offer, String.valueOf(userID), auctionID, date);
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to retrieve data from the database");
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
         }
         response.sendRedirect(URLs.GET_OFFERS_PAGE);
     }

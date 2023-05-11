@@ -26,6 +26,10 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
+        if (request.getParameterValues("product") == null) {
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.MISSING_PRODUCT).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+            return;
+        }
         final Set<Long> products = Arrays.stream(request.getParameterValues("product")).map(Long::parseLong).collect(Collectors.toUnmodifiableSet());
         final int rise = Integer.parseInt(request.getParameter("rise"));
         final Long userID = (Long) session.getAttribute("userID");
