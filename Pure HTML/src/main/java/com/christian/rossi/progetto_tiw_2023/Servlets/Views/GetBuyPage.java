@@ -1,8 +1,10 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Views;
 
+import com.christian.rossi.progetto_tiw_2023.Constants.Errors;
 import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
 import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
+import com.christian.rossi.progetto_tiw_2023.Utils.PathBuilder;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +18,7 @@ import java.sql.SQLException;
 @WebServlet(name = "GetBuyPage", urlPatterns = {URLs.GET_BUY_PAGE})
 public class GetBuyPage extends ThymeleafHTTPServlet {
 
-    private String article;
+    public String article;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -31,7 +33,7 @@ public class GetBuyPage extends ThymeleafHTTPServlet {
              ctx.setVariable("closedauctions", auctionDAO.getWonAuctions((Long) session.getAttribute("userID")));
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to set values for the page");
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_HOME_PAGE).toString());
             throw new RuntimeException(e);
         }
         getTemplateEngine().process(template, ctx, response.getWriter());

@@ -3,7 +3,6 @@ package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 import com.christian.rossi.progetto_tiw_2023.Beans.UserBean;
 import com.christian.rossi.progetto_tiw_2023.Constants.Errors;
 import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
-import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.UserDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
 import com.christian.rossi.progetto_tiw_2023.Utils.InputChecker;

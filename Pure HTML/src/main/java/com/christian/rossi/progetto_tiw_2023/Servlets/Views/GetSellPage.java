@@ -1,9 +1,11 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Views;
 
+import com.christian.rossi.progetto_tiw_2023.Constants.Errors;
 import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
 import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
+import com.christian.rossi.progetto_tiw_2023.Utils.PathBuilder;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletContext;
@@ -31,7 +33,7 @@ public class GetSellPage extends ThymeleafHTTPServlet {
             ctx.setVariable("activeauctions", auctionDAO.getAuctions((Long) session.getAttribute("userID"), 1, session.getCreationTime()));
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while trying to set values for the page");
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_HOME_PAGE).toString());
             throw new RuntimeException(e);
         }
         getTemplateEngine().process(template, ctx, response.getWriter());

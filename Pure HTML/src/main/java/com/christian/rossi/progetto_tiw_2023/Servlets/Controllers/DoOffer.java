@@ -1,7 +1,6 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 
 import com.christian.rossi.progetto_tiw_2023.Beans.AuctionBean;
-import com.christian.rossi.progetto_tiw_2023.Beans.OfferBean;
 import com.christian.rossi.progetto_tiw_2023.Constants.Errors;
 import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
 import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
