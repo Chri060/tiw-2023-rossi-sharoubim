@@ -62,8 +62,8 @@ public class AuctionDAO {
                     while (result.next()) {
                         AuctionBean auctionBean = new AuctionBean();
                         auctionBean.setAuctionID(result.getLong("auctionID"));
-                        if (result.getString("max(offering)") != null) {
-                            auctionBean.setPrice(result.getInt("max(offering)"));
+                        if (result.getString("max") != null) {
+                            auctionBean.setPrice(result.getInt("max"));
                         }
                         else {
                             auctionBean.setPrice(0);
@@ -119,7 +119,7 @@ public class AuctionDAO {
     public AuctionBean getWinner(String details) throws SQLException {
         String query = "SELECT winner.userID " +
                        "FROM auction LEFT JOIN winner ON auction.auctionID = winner.auctionID " +
-                       "WHERE active = 0 AND `max(offering)` != 0 AND auction.auctionID=?";
+                       "WHERE active = 0 AND max != 0 AND auction.auctionID=?";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setString(1, details);
             try (ResultSet result = request.executeQuery()) {
@@ -150,8 +150,8 @@ public class AuctionDAO {
                     while (result.next()) {
                         AuctionBean auctionBean = new AuctionBean();
                         auctionBean.setAuctionID(result.getLong("auctionID"));
-                        if (result.getString("max(offering)") != null) {
-                            auctionBean.setPrice(result.getInt("max(offering)"));
+                        if (result.getString("max") != null) {
+                            auctionBean.setPrice(result.getInt("max"));
                         }
                         else {
                             auctionBean.setPrice(0);

@@ -25,7 +25,6 @@ public class DoOffer extends ThymeleafHTTPServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //TODO: controllo input
         HttpSession session = request.getSession();
         final String offer = request.getParameter("offer");
         final Long userID = (Long) session.getAttribute("userID");
@@ -44,7 +43,7 @@ public class DoOffer extends ThymeleafHTTPServlet {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        };
+        }
         try {
             OfferDAO offerDAO = new OfferDAO();
             offerDAO.addOffer(offer, String.valueOf(userID), auctionID, date);
