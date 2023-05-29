@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 
 @WebServlet(name = "DoOffer", urlPatterns = {URLs.DO_OFFER})
@@ -32,11 +33,15 @@ public class DoOffer extends ThymeleafHTTPServlet {
         try {
             AuctionDAO auctionDAO = new AuctionDAO();
             OfferDAO offerDAO = new OfferDAO();
-            List<AuctionBean> auctionBean = auctionDAO.getAuctionsByID(auctionID, session.getCreationTime());
-            int start = auctionBean.get(0).getPrice();
-            int rise = auctionBean.get(0).getRise();
-            int actualOffer  = offerDAO.getMaxOffer(auctionID);
+            List<AuctionBean> auctionBeanList = auctionDAO.getAuctionsByID(auctionID, session.getCreationTime());
+            int start = auctionBeanList.get(0).getPrice();
+            int rise = auctionBeanList.get(0).getRise();
+            int actualOffer = offerDAO.getMaxOffer(auctionID);
             if (!InputChecker.checkOffer(Integer.parseInt(offer), start, rise, actualOffer)) {
+                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.OFFER_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
+                return;
+            }
+            if (Objects.equals(auctionBeanList.get(0).getUserID(), userID)) {
                 response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.OFFER_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
                 return;
             }

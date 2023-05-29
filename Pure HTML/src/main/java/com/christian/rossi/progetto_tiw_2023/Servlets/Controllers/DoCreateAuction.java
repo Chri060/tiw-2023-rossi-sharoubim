@@ -49,6 +49,21 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
             return;
         }
         Iterator<Long> productsIterator = products.iterator();
+        while (productsIterator.hasNext()) {
+            try {
+                ProductDAO productDAO = new ProductDAO();
+                Long articleID = productsIterator.next();
+                if (productDAO.CheckProduct(articleID, userID)) {
+                    response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.PRODUCT_ID_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+                    return;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+                return;
+            }
+        }
+        productsIterator = products.iterator();
         int price = 0;
         while (productsIterator.hasNext()) {
             try {

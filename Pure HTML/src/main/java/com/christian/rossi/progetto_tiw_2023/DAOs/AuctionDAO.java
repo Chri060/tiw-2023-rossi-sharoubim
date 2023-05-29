@@ -201,10 +201,11 @@ public class AuctionDAO {
         }
     }
 
-    public void close(String auctionID) throws SQLException {
-        String query = "UPDATE auction SET active=0 WHERE auctionID=?";
+    public void close(String auctionID, String userID) throws SQLException {
+        String query = "UPDATE auction SET active=0 WHERE auctionID=? AND userID=?";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setString(1, auctionID);
+            request.setString(2, userID);
             request.executeUpdate();
         }
     }

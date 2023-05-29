@@ -99,4 +99,22 @@ public class ProductDAO {
             }
         }
     }
+
+    public boolean CheckProduct (Long productID, Long userID) throws SQLException {
+        String query = "SELECT * " +
+                       "FROM product " +
+                       "WHERE articleID=? AND userID=?";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setLong(1, productID);
+            request.setLong(2, userID);
+            try (ResultSet result = request.executeQuery()) {
+
+                ProductBean productBean = new ProductBean();
+                if (result.next()) {
+                    productBean.setName(result.getString("name"));
+                }
+                return productBean.getName() == null;
+            }
+        }
+    }
 }
