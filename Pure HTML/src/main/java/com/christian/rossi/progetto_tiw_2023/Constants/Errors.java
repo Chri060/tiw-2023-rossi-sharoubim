@@ -27,5 +27,6 @@ public enum Errors {
     USERNAME_NOT_UNIQUE,
     EMAIL_NOT_UNIQUE,
     MISSING_PRODUCT,
-    OFFER_ERROR
+    OFFER_ERROR,
+    OFFER_AUTH
 }

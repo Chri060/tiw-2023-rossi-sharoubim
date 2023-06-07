@@ -13,15 +13,13 @@ public class DBConnectionPool {
         if (dataSource == null) {
             synchronized (DBConnectionPool.class) {
                 if (dataSource == null) {
-
                     PoolProperties p = new PoolProperties();
                     p.setDriverClassName("com.mysql.cj.jdbc.Driver");
                     p.setUrl("jdbc:mysql://localhost:3306/progetto_tiw_2023");
-                    p.setUsername("root");
-                    p.setPassword("Sdp>30@pdtipiw");
+                    p.setUsername("tiw2023_user");
+                    p.setPassword("tiw2023_pass");
                     p.setMaxActive(128);
                     p.setInitialSize(10);
-
                     dataSource = new DataSource();
                     dataSource.setPoolProperties(p);
                 }

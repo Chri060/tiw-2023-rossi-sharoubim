@@ -55,23 +55,23 @@ public class ProductDAO {
         }
     }
 
-    public void update(Long articleID, Long auctionID) throws SQLException {
+    public void update(Long productID, Long auctionID) throws SQLException {
         String query = "UPDATE product " +
                        "SET sellable=0, auctionID=? " +
                        "WHERE productID=? ";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, auctionID);
-            request.setLong(2, articleID);
+            request.setLong(2, productID);
             request.executeUpdate();
         }
     }
 
-    public int GetPrice (Long articleID) throws SQLException {
+    public int GetPrice (Long productID) throws SQLException {
         String query = "SELECT price " +
                        "FROM product " +
                        "WHERE productID=?";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
-            request.setLong(1, articleID);
+            request.setLong(1, productID);
             try (ResultSet result = request.executeQuery()) {
                 if (!result.isBeforeFirst())
                     return 0;

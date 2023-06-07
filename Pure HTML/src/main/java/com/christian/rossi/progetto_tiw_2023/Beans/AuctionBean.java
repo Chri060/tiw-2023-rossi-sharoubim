@@ -11,7 +11,6 @@ public class AuctionBean {
     private Long userID = null;
     private String name = null;
     private Long productID = null;
-    private Long articleID = null;
     private String description = null;
     private String image = null;
     private String remainingDays = null;
@@ -77,14 +76,6 @@ public class AuctionBean {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getArticleID() {
-        return articleID;
-    }
-
-    public void setArticleID(Long articleID) {
-        this.articleID = articleID;
     }
 
     public String getDescription() {

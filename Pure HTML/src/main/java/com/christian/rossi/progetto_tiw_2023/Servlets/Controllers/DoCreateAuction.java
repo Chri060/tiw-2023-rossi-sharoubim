@@ -52,8 +52,8 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
         while (productsIterator.hasNext()) {
             try {
                 ProductDAO productDAO = new ProductDAO();
-                Long articleID = productsIterator.next();
-                if (productDAO.CheckProduct(articleID, userID)) {
+                Long productID = productsIterator.next();
+                if (productDAO.CheckProduct(productID, userID)) {
                     response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.PRODUCT_ID_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
                     return;
                 }
@@ -68,8 +68,8 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
         while (productsIterator.hasNext()) {
             try {
                 ProductDAO productDAO = new ProductDAO();
-                Long articleID = productsIterator.next();
-                price += productDAO.GetPrice(articleID);
+                Long productID = productsIterator.next();
+                price += productDAO.GetPrice(productID);
             } catch (SQLException e) {
                 e.printStackTrace();
                 response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
@@ -82,8 +82,8 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
             Long auctionID = auctionDAO.createAuction(price, rise, expiry, userID);
             ProductDAO productDAO = new ProductDAO();
             while (productsIterator.hasNext()) {
-                Long articleID = productsIterator.next();
-                productDAO.update(articleID, auctionID);
+                Long productID = productsIterator.next();
+                productDAO.update(productID, auctionID);
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -19,5 +19,4 @@ public class URLs {
     public static final String GET_OFFERS_PAGE = "/offers";
     public static final String GET_SELL_PAGE = "/sell";
     public static final String GET_SIGNUP_PAGE = "/signup";
-
 }

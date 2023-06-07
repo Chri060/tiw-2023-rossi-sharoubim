@@ -9,6 +9,8 @@ import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
 import com.christian.rossi.progetto_tiw_2023.Utils.InputChecker;
 import com.christian.rossi.progetto_tiw_2023.Utils.PathBuilder;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +26,7 @@ import java.util.Objects;
 public class DoOffer extends ThymeleafHTTPServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         final String offer = request.getParameter("offer");
         final Long userID = (Long) session.getAttribute("userID");
@@ -55,6 +57,9 @@ public class DoOffer extends ThymeleafHTTPServlet {
             e.printStackTrace();
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
         }
-        response.sendRedirect(URLs.GET_OFFERS_PAGE);
+        request.setAttribute("details", auctionID);
+        RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(URLs.GET_OFFERS_PAGE);
+        requestDispatcher.forward(request, response);
+
     }
 }
