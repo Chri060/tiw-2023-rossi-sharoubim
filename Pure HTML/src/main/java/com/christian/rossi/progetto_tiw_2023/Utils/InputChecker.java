@@ -7,7 +7,6 @@ public class InputChecker {
     private static final String passwordRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,16}$";
     private static final String usernameRegex = "^[a-zA-Z0-9_-]{4,16}$";
     private static final String cityProvinceRegex = "^[a-zA-Z]{1,32}$";
-    private static final String productIDRegex = "^[0-9]{6}$";
     private static final String nameRegex = "^[a-zA-Z]{1,32}$";
 
 
@@ -23,7 +22,6 @@ public class InputChecker {
     public static boolean checkProvince(String province) {
         return province.matches(cityProvinceRegex);
     }
-    public static boolean checkProductID(String productID) { return productID.matches(productIDRegex); }
     public static boolean checkName(String name) { return name.matches(nameRegex); }
     public static boolean checkDescription(String description) { return description.length() <= 256; }
     public static boolean checkPrice(int price) { return price >= 0; }

@@ -69,8 +69,8 @@ public class AuctionDAO {
                             auctionBean.setPrice(0);
                         }
                         auctionBean.setName(result.getString("name"));
-                        auctionBean.setProductID(result.getLong("articleID"));
-                        auctionBean.setImage(imgPath + result.getString("articleID") + ".jpeg");
+                        auctionBean.setProductID(result.getLong("productID"));
+                        auctionBean.setImage(imgPath + result.getString("productID") + ".jpeg");
                         auctionBean.setExpiry(result.getTimestamp("expiry"));
                         List<Integer> timeRem = TimeHandler.getTimeDifference(result.getTimestamp("expiry"), loginTime);
                         auctionBean.setRemainingDays(String.valueOf(timeRem.get(0)));
@@ -101,9 +101,9 @@ public class AuctionDAO {
                         auctionBean.setPrice(result.getInt("price"));
                         auctionBean.setName(result.getString("name"));
                         auctionBean.setActive((result.getInt("active")));
-                        auctionBean.setProductID(result.getLong("articleID"));
+                        auctionBean.setProductID(result.getLong("productID"));
                         auctionBean.setDescription(result.getString("description"));
-                        auctionBean.setImage(imgPath + result.getString("articleID") + ".jpeg");
+                        auctionBean.setImage(imgPath + result.getString("productID") + ".jpeg");
                         auctionBean.setRise(result.getInt("rise"));
                         List<Integer> timeRem = TimeHandler.getTimeDifference(result.getTimestamp("expiry"), loginTime);
                         auctionBean.setRemainingDays(String.valueOf(timeRem.get(0)));
@@ -157,9 +157,9 @@ public class AuctionDAO {
                             auctionBean.setPrice(0);
                         }
                         auctionBean.setName(result.getString("name"));
-                        auctionBean.setProductID(result.getLong("articleID"));
+                        auctionBean.setProductID(result.getLong("productID"));
                         auctionBean.setDescription(result.getString("description"));
-                        auctionBean.setImage(imgPath + result.getString("articleID") + ".jpeg");
+                        auctionBean.setImage(imgPath + result.getString("productID") + ".jpeg");
                         auctionBeanList.add(auctionBean);
                     }
                     return auctionBeanList;
@@ -186,9 +186,9 @@ public class AuctionDAO {
                         AuctionBean auctionBean = new AuctionBean();
                         auctionBean.setAuctionID(result.getLong("auctionID"));
                         auctionBean.setName(result.getString("name"));
-                        auctionBean.setProductID(result.getLong("articleID"));
+                        auctionBean.setProductID(result.getLong("productID"));
                         auctionBean.setDescription(result.getString("description"));
-                        auctionBean.setImage(imgPath + result.getString("articleID") + ".jpeg");
+                        auctionBean.setImage(imgPath + result.getString("productID") + ".jpeg");
                         auctionBean.setPrice(result.getInt("price"));
                         List<Integer> timeRem = TimeHandler.getTimeDifference(result.getTimestamp("expiry"), loginTime);
                         auctionBean.setRemainingDays(String.valueOf(timeRem.get(0)));

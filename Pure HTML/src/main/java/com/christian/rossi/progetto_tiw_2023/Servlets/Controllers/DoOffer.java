@@ -28,7 +28,7 @@ public class DoOffer extends ThymeleafHTTPServlet {
         HttpSession session = request.getSession();
         final String offer = request.getParameter("offer");
         final Long userID = (Long) session.getAttribute("userID");
-        final String auctionID = request.getParameter("auctionID");
+        final String auctionID = request.getParameter("details");
         final Timestamp date = new Timestamp(System.currentTimeMillis());
         try {
             AuctionDAO auctionDAO = new AuctionDAO();

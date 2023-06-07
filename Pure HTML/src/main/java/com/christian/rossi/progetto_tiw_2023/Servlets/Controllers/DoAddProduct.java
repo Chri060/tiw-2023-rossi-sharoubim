@@ -35,7 +35,6 @@ public class DoAddProduct extends ThymeleafHTTPServlet {
         final String description = request.getParameter("description");
         final int price = Integer.parseInt(request.getParameter("price"));
         final Long userID = (Long) session.getAttribute("userID");
-        final String productID = request.getParameter("articleID");
         if (name == null || name.isEmpty() || !InputChecker.checkName(name)) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NAME_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
             return;
@@ -46,21 +45,6 @@ public class DoAddProduct extends ThymeleafHTTPServlet {
         }
         if (!InputChecker.checkPrice(price)) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.PRICE_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
-            return;
-        }
-        if (!InputChecker.checkProductID(productID)) {
-            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.PRODUCT_ID_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
-            return;
-        }
-        try {
-            ProductDAO productDAO = new ProductDAO();
-            if (productDAO.GetProductByID(Long.valueOf(productID)) != null) {
-                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.PRODUCT_ID_NOT_UNIQUE).addParam("redirect", URLs.GET_SELL_PAGE).toString());
-                return;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
             return;
         }
 
@@ -75,24 +59,22 @@ public class DoAddProduct extends ThymeleafHTTPServlet {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.FORMAT_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
             return;
         }
-        String fileName = productID + ".jpeg";
-        String outputPath = folderPath + fileName;
-        File file = new File(outputPath);
-        try (InputStream fileContent = filePart.getInputStream()) {
-            Files.copy(fileContent, file.toPath());
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.SAVE_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
-            return;
-        }
-        //end of file uploading
+        ProductDAO productDAO = new ProductDAO();
         try {
-            ProductDAO productDAO = new ProductDAO();
-            productDAO.addProduct(productID, name, description, price, userID);
+            long productID = productDAO.addProduct(name, description, price, userID);
+            String fileName = productID + ".jpeg";
+            String outputPath = folderPath + fileName;
+            File file = new File(outputPath);
+            try (InputStream fileContent = filePart.getInputStream()) {
+                Files.copy(fileContent, file.toPath());
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.SAVE_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
-            return;
+            //end of file uploading
         }
         response.sendRedirect(URLs.GET_SELL_PAGE);
     }

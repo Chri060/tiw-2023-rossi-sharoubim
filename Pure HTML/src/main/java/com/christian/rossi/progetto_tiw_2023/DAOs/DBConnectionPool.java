@@ -17,8 +17,8 @@ public class DBConnectionPool {
                     PoolProperties p = new PoolProperties();
                     p.setDriverClassName("com.mysql.cj.jdbc.Driver");
                     p.setUrl("jdbc:mysql://localhost:3306/progetto_tiw_2023");
-                    p.setUsername("tiw2023_user");
-                    p.setPassword("tiw2023_pass");
+                    p.setUsername("root");
+                    p.setPassword("Sdp>30@pdtipiw");
                     p.setMaxActive(128);
                     p.setInitialSize(10);
 
