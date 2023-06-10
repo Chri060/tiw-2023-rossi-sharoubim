@@ -21,11 +21,17 @@ public class OfferFilter implements Filter {
         HttpServletResponse hresponse = (HttpServletResponse) response;
         try {
             AuctionDAO auctionDAO = new AuctionDAO();
-            final String auctionID = request.getParameter("details");
-            List<AuctionBean> list = auctionDAO.getAuctionsByID(auctionID, 1);
-            if (list == null || !list.get(0).isActive()) {
+            final Long auctionID;
+            try {
+                auctionID = Long.valueOf(request.getParameter("details"));
+                List<AuctionBean> list = auctionDAO.getAuctionsByID(auctionID, 1);
+                if (list == null || !list.get(0).isActive()) {
+                    hresponse.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.OFFER_AUTH).addParam("redirect", URLs.GET_BUY_PAGE).toString());
+                    return;
+                }
+            }
+            catch (NumberFormatException e) {
                 hresponse.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.OFFER_AUTH).addParam("redirect", URLs.GET_BUY_PAGE).toString());
-                return;
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -28,5 +28,6 @@ public enum Errors {
     EMAIL_NOT_UNIQUE,
     MISSING_PRODUCT,
     OFFER_ERROR,
-    OFFER_AUTH
+    OFFER_AUTH,
+    NUMBER_FORMAT_ERROR
 }

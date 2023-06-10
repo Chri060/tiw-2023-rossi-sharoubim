@@ -28,10 +28,28 @@ public class DoOffer extends ThymeleafHTTPServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
-        final String offer = request.getParameter("offer");
-        final Long userID = (Long) session.getAttribute("userID");
-        final String auctionID = request.getParameter("details");
-        final Timestamp date = new Timestamp(System.currentTimeMillis());
+        final String offer;
+        final Long userID;
+        final Long auctionID;
+        final Timestamp date;
+
+        //getting the value of offer
+        offer = request.getParameter("offer");
+
+        //getting the value of userID
+        userID = (Long) session.getAttribute("userID");
+
+        //checking problems with variable auctionID
+        try {
+            auctionID = Long.valueOf(request.getParameter("details"));
+        }
+        catch (NumberFormatException e) {
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
+            return;
+        }
+
+        //getting the current date
+        date = new Timestamp(System.currentTimeMillis());
         try {
             AuctionDAO auctionDAO = new AuctionDAO();
             OfferDAO offerDAO = new OfferDAO();
@@ -52,7 +70,7 @@ public class DoOffer extends ThymeleafHTTPServlet {
         }
         try {
             OfferDAO offerDAO = new OfferDAO();
-            offerDAO.addOffer(offer, String.valueOf(userID), auctionID, date);
+            offerDAO.addOffer(offer, userID, auctionID, date);
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
@@ -60,6 +78,5 @@ public class DoOffer extends ThymeleafHTTPServlet {
         request.setAttribute("details", auctionID);
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(URLs.GET_OFFERS_PAGE);
         requestDispatcher.forward(request, response);
-
     }
 }

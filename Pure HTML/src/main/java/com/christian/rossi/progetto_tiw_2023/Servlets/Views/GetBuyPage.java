@@ -26,13 +26,16 @@ public class GetBuyPage extends ThymeleafHTTPServlet {
         final ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         final String template = "buy";
-        final Long userID = (Long) session.getAttribute("userID");
+        final Long userID;
+
+        //getting the value of variable userID
+        userID = (Long) session.getAttribute("userID");
+
         try {
              AuctionDAO auctionDAO = new AuctionDAO();
              ctx.setVariable("auctions", auctionDAO.getAuctionByKeyword(article, userID, session.getCreationTime()));
-             ctx.setVariable("closedauctions", auctionDAO.getWonAuctions((Long) session.getAttribute("userID")));
+             ctx.setVariable("closedauctions", auctionDAO.getWonAuctions(userID));
         } catch (SQLException e) {
-            e.printStackTrace();
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_HOME_PAGE).toString());
             throw new RuntimeException(e);
         }

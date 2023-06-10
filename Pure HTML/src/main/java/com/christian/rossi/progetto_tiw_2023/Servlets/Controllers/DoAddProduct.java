@@ -22,31 +22,53 @@ import java.sql.SQLException;
 @WebServlet(name = "DoAddProduct", urlPatterns = {URLs.DO_ADD_PRODUCT})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
 public class DoAddProduct extends ThymeleafHTTPServlet {
+    /* set as global variable so if you want to access more than one time the images
+     * the path is already set
+    */
     String folderPath = "";
 
-    public void init() throws ServletException {
+    public void init() {
         folderPath = getServletContext().getInitParameter("outputPath");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
-        final String name = request.getParameter("name");
-        final String description = request.getParameter("description");
-        final int price = Integer.parseInt(request.getParameter("price"));
-        final Long userID = (Long) session.getAttribute("userID");
+        final String name;
+        final String description;
+        final int price;
+        final Long userID;
+
+        //checking problems with variable name
+        name = request.getParameter("name");
         if (name == null || name.isEmpty() || !InputChecker.checkName(name)) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NAME_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
             return;
         }
+
+        //checking problems with variable description
+        description = request.getParameter("description");
         if (description == null || description.isEmpty() || !InputChecker.checkDescription(description)) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DESCRIPTION_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
             return;
         }
-        if (!InputChecker.checkPrice(price)) {
-            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.PRICE_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+
+        //checking problems with variable price
+        try {
+            price = Integer.parseInt(request.getParameter("price"));
+            if (!InputChecker.checkPrice(price)) {
+                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.PRICE_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+                return;
+            }
+        }
+        catch (NumberFormatException e) {
+            e.printStackTrace();
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
             return;
         }
+
+        //getter for the current userID
+        userID = (Long) session.getAttribute("userID");
 
         //start of file uploading
         Part filePart = request.getPart("file");
@@ -59,22 +81,24 @@ public class DoAddProduct extends ThymeleafHTTPServlet {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.FORMAT_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
             return;
         }
-        ProductDAO productDAO = new ProductDAO();
         try {
+            //inserting products in DB
+            ProductDAO productDAO = new ProductDAO();
             long productID = productDAO.addProduct(name, description, price, userID);
+            //setting the name to the image, and save
             String fileName = productID + ".jpeg";
             String outputPath = folderPath + fileName;
             File file = new File(outputPath);
             try (InputStream fileContent = filePart.getInputStream()) {
                 Files.copy(fileContent, file.toPath());
             } catch (Exception e) {
-                e.printStackTrace();
                 response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.SAVE_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+                return;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
             //end of file uploading
+        } catch (SQLException e) {
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+            return;
         }
         response.sendRedirect(URLs.GET_SELL_PAGE);
     }
