@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link rel="stylesheet" href="/static/style.css"/>
+    <script defer src="js/home.js"></script>
+</head>
+<body>
+  <div>
+    <fieldset>
+      <legend>Product search</legend>
+      <form>
+        <div>
+          <label>
+            <input type="text" name="search" placeholder="Product search" required/>
+          </label>
+        </div>
+        <div>
+          <input type="submit" name="search" value="Search">
+        </div>
+      </form>
+      <div>
+        <table>
+          <thead>
+          <tr>
+            <th>Auction code</th>
+            <th>Bid details</th>
+            <th>Starting price</th>
+            <th>remainingDays</th>
+            <th>remainingHours</th>
+            <th>Product code</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Image</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>data</td>
+            <td>
+              <form>
+                <button type="submit" name="details"  value="Login">Details</button>
+              </form>
+            </td>
+            <td>data</td>
+            <td>data</td>
+            <td>data</td>
+            <td>data</td>
+            <td>data</td>
+            <td>data</td>
+            <td>
+              <img src="" alt="">
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </fieldset>
+  </div>
+  <div>
+    <fieldset>
+      <legend>Auctions won</legend>
+      <p>No auctions were found</p>
+    </fieldset>
+    <fieldset>
+      <legend>Auctions won</legend>
+      <table>
+        <thead>
+        <tr>
+          <th>Closed auctions</th>
+          <th>Final Price</th>
+          <th>Name</th>
+          <th>Product code</th>
+          <th>Description</th>
+          <th>Image</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>
+            <img src="" alt="">
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </fieldset>
+  </div>
+
+
+
+
+  <div class="horizontal">
+    <div>
+      <form>
+        <fieldset>
+          <legend>Add new product</legend>
+          <div>
+            <label>
+              <input type="text" name="name" placeholder="Name" required/>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="text" name="description" placeholder="Description" required/>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="number" name="price" placeholder="Price" required/>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="file" name="file" accept="image/png, image/jpeg, image/jpg" required/>
+            </label>
+          </div>
+          <div>
+            <input type="submit" name="newArticle" value="Add product">
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div>
+      <form>
+        <fieldset>
+          <legend>Create new auction</legend>
+          <div>
+            <div>
+              <table>
+                <thead>
+                <tr>
+                  <th>Product code</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Select product</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>data</td>
+                  <td>data</td>
+                  <td>data</td>
+                  <td>
+                    <label>
+                      <input type="checkbox" name="product"/>
+                    </label>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <label>
+                <input type="number" name="rise" placeholder="Minimum rise" required/>
+              </label>
+            </div>
+            <div>
+              <p>Expiration date</p>
+              <label>
+                <input type="datetime-local" name="expiry" placeholder="Expiration date" required/>
+              </label>
+            </div>
+            <div>
+              <input type="submit" name="create" value="Create"/>
+            </div>
+          </div>
+          <div>
+            <p>There are no products available</p>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+  <div>
+    <fieldset>
+      <legend>List of closed auctions</legend>
+      <div>
+        <p>There are no closed auctions</p>
+      </div>
+      <div>
+        <table>
+          <thead>
+          <tr>
+            <th>Closed auctions</th>
+            <th>Final Price</th>
+            <th>Bids details</th>
+            <th>Name</th>
+            <th>Product code</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>data</td>
+            <td>data</td>
+            <td>
+              <form>
+                <button type="submit" name="details" value="Login">Details</button>
+              </form>
+            </td>
+            <td>data</td>
+            <td>data</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </fieldset>
+  </div>
+  <div>
+    <fieldset>
+      <legend>List of active auctions</legend>
+      <div>
+        <p>There are no active auctions</p>
+      </div>
+      <div>
+        <table>
+          <thead>
+          <tr>
+            <th>Active auctions</th>
+            <th>Current price</th>
+            <th>Time left</th>
+            <th>Time left</th>
+            <th>Bids details</th>
+            <th>Name</th>
+            <th>Product code</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>data</td>
+            <td>data</td>
+            <td>Time left</td>
+            <td>Time left</td>
+            <td>
+              <form>
+                <button type="submit" name="details" value="null">Details</button>
+              </form>
+            </td>
+            <td>data</td>
+            <td>data</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </fieldset>
+  </div>
+
+
+
+
+
+  <fieldset>
+    <div>
+      <fieldset>
+        <legend>Auction details</legend>
+        <table>
+          <thead>
+          <tr>
+            <th>Auction code</th>
+            <th>Current price</th>
+            <th>Product code</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Image</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>data</td>
+            <td>data</td>
+            <td>data</td>
+            <td>data</td>
+            <td>data</td>
+            <td>
+              <img src="" alt=""/>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </fieldset>
+    </div>
+    <div>
+      <fieldset>
+        <legend>Offering details</legend>
+        <table>
+          <thead>
+          <tr>
+            <th>User</th>
+            <th>Bid</th>
+            <th>Date</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>data</td>
+            <td>data</td>
+            <td>data</td>
+          </tr>
+          </tbody>
+        </table>
+      </fieldset>
+    </div>
+    <div>
+      <p>There are no active offers</p>
+    </div>
+    <div>
+      <form>
+        <button class="modButton" type="submit" name="close" value="Login">Details</button>
+      </form>
+      <p>The auction is closed, but has no winner</p>
+    </div>
+  </fieldset>
+  <div>
+    <fieldset>
+      <legend>Winner</legend>
+      <table>
+        <thead>
+        <tr>
+          <th>UserID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>City</th>
+          <th>Address</th>
+          <th>Province</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+        </tr>
+        </tbody>
+      </table>
+    </fieldset>
+  </div>
+
+  <div>
+    <fieldset>
+      <legend>Bids detail</legend>
+      <div>
+        <fieldset>
+          <legend>Auction details</legend>
+          <p>No auctions selected</p>
+          <table>
+            <tr>
+              <th>Product code</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Description</th>
+              <th>Description</th>
+              <th>Image</th>
+            </tr>
+            <tr>
+              <td>data</td>
+              <td>data</td>
+              <td>data</td>
+              <td>data</td>
+              <td>data</td>
+              <td>
+                <img src="" alt="">
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+      </div>
+      <div>
+        <fieldset>
+          <legend>Active bids</legend>
+          <p>No offers made for the selected auction</p>
+          <table>
+            <tr>
+              <th>User</th>
+              <th>Bid</th>
+              <th>Date</th>
+            </tr>
+            <tr>
+              <td>data</td>
+              <td>data</td>
+              <td>data</td>
+            </tr>
+          </table>
+        </fieldset>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>New offer</legend>
+      <form>
+        <div>
+          <label>
+            <input type="number" name="offer" placeholder="Your bid" required/>
+          </label>
+        </div>
+        <div>
+          <button class="modButton" type="submit" name="details" value="null"></button>
+        </div>
+      </form>
+    </fieldset>
+  </div>
+</body>
+</html>

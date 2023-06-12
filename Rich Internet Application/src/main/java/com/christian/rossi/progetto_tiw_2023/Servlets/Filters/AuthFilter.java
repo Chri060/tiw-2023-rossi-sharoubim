@@ -1,7 +1,6 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Filters;
 
-import com.christian.rossi.progetto_tiw_2023.Constants.Errors;
-import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
+import com.christian.rossi.progetto_tiw_2023.Constants.Constants;
 import com.christian.rossi.progetto_tiw_2023.Utils.PathBuilder;
 
 import javax.servlet.*;
@@ -11,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(filterName = "AuthFilter", urlPatterns = {URLs.DO_ADD_PRODUCT, URLs.DO_CLOSE, URLs.DO_CREATE_AUCTION, URLs.DO_GET_IMAGE, URLs.DO_OFFER, URLs.GET_BUY_PAGE, URLs.GET_DETAILS_PAGE, URLs.GET_HOME_PAGE, URLs.GET_OFFERS_PAGE, URLs.GET_SELL_PAGE})
+@WebFilter(filterName = "AuthFilter", urlPatterns = {})
 public class AuthFilter implements Filter {
 
     @Override
@@ -19,8 +18,8 @@ public class AuthFilter implements Filter {
         HttpServletRequest hrequest = (HttpServletRequest) request;
         HttpServletResponse hresponse = (HttpServletResponse) response;
         HttpSession session = hrequest.getSession();
-        if (session.isNew() || session.getAttribute("user") == null) {
-            hresponse.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.AUTH_ERROR).addParam("redirect", URLs.GET_LOGIN_PAGE).toString());
+        if (session.isNew() || session.getAttribute("USER") == null) {
+            hresponse.sendRedirect(new PathBuilder(Constants.AUTHENTICATION_PAGE).toString());
             return;
         }
         //filter chain pattern
