@@ -15,11 +15,7 @@ public class LoadDefaultPage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        if (session.getAttribute("USER") != null) {
-            response.sendRedirect(new PathBuilder(Constants.HOME_PAGE).toString());
-        }
-        else {
-            response.sendRedirect(new PathBuilder(Constants.AUTHENTICATION_PAGE).toString());
-        }
+        if (session.getAttribute("USER") != null) response.sendRedirect(new PathBuilder(Constants.HOME_PAGE).toString());
+        else response.sendRedirect(new PathBuilder(Constants.AUTHENTICATION_PAGE).toString());
     }
 }

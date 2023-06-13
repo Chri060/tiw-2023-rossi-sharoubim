@@ -7,72 +7,76 @@
   <script defer src="js/authentication.js"></script>
 </head>
 <body>
-<div class="horizontal">
-  <div>
+  <div id="signInDiv">
     <form action="#" id="sign-in-form">
       <fieldset>
         <legend>Login</legend>
         <div>
           <label>
-            <input type="text" name="username" placeholder="Username" required/>
+            <input type="text" name="username" placeholder="Username" id="signInUsername" required/>
           </label>
         </div>
         <div>
           <label>
-            <input type="password" name="password" placeholder="Password" required/>
+            <input type="password" name="password" placeholder="Password" id="signInPassword" required/>
           </label>
         </div>
         <div>
-          <input type="submit" name="login" value="Login"/>
+          <input type="submit" value="Login"/>
         </div>
       </fieldset>
     </form>
+    <div>
+      <button class="modButton" onclick="hideAndShow()">Not yet registered? Sign up</button>
+    </div>
   </div>
-  <div>
+  <div id="signUpDiv">
     <form action="#" id="sign-up-form">
       <fieldset>
         <legend>Sign up</legend>
-        <div>
-          <label>
-            <input type="text" name="username" placeholder="Username" required/>
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="email" name="email" placeholder="Email" required/>
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="text" name="city" placeholder="City" required/>
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="text" name="province" placeholder="Province" required/>
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="text" name="address" placeholder="Address" required/>
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="password" name="password" placeholder="Password" required/>
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="password" name="password1" placeholder="Retype password" required/>
-          </label>
-        </div>
-        <div>
-          <input type="submit" name="register" value="Sign up"/>
-        </div>
+          <div>
+            <label>
+              <input type="text" name="username" placeholder="Username" id="username" required/>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="email" name="email" placeholder="Email" id="email" required/>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="text" name="city" placeholder="City" id="city" required/>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="text" name="province" placeholder="Province" id="province" required/>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="text" name="address" placeholder="Address" id="address" required/>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="password" name="password" placeholder="Password" id="password" required/>
+            </label>
+          </div>
+          <div>
+            <label>
+              <input type="password" name="password1" placeholder="Retype password" id="password1" required/>
+            </label>
+          </div>
+          <div>
+            <input type="submit" value="Sign up"/>
+          </div>
       </fieldset>
     </form>
+    <div>
+      <button class="modButton" onclick="hideAndShow()">Not yet registered? Sign up</button>
+    </div>
   </div>
-</div>
 </body>
 </html>

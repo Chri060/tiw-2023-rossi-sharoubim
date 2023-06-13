@@ -8,7 +8,7 @@ public class InputChecker {
     private static final String usernameRegex = "^[a-zA-Z0-9_-]{4,16}$";
     private static final String cityProvinceRegex = "^[a-zA-Z]{1,32}$";
     private static final String nameRegex = "^[a-zA-Z]{1,32}$";
-
+    private static final String addressRegex = "^[a-zA-Z0-9,]{1,64}$";
 
     public static boolean checkUsername(String username) { return username.matches(usernameRegex); }
     public static boolean checkEmail(String email) { return email.length() <= 256 && email.matches(emailRegex); }
