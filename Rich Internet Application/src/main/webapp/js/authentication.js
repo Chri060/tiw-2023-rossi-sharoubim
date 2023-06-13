@@ -71,7 +71,7 @@
             const value = String(elem.value);
             if (!value || value.length < 1) elem.setCustomValidity("Field is required");
             else if (value.length > 63) elem.setCustomValidity("The password inserted is too long");
-            else if (!value.match("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,16}$")) elem.setCustomValidity("The password inserted is not valid");
+            //else if (!value.match("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,16}$")) elem.setCustomValidity("The password inserted is not valid");
             else elem.setCustomValidity("");
         };
 
