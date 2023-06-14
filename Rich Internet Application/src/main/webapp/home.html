@@ -12,13 +12,13 @@
           <img class="imgIcon" src="static/images/auction_hammer.png" alt=""/>
       </div>
       <div>
-          <button class="modButton horizontal" onclick="">
+          <button class="modButton horizontal" onclick="getSell()">
               Sell
               <img style="padding: 0 20px 0 20px" class="imgIcon" src="static/images/sell.png" alt=""/>
           </button>
       </div>
       <div>
-          <button class="modButton horizontal" onclick="">
+          <button class="modButton horizontal" onclick="getBuy()">
               <img style="padding: 0 20px 0 20px" class="imgIcon" src="static/images/buy.png" alt=""/>
               Buy
           </button>
@@ -29,8 +29,6 @@
           </button>
       </div>
   </div>
-
-
 
   <div id="sell" style="padding: 60px">
       <div>
@@ -43,7 +41,7 @@
                       </label>
                   </div>
                   <div>
-                      <input type="submit" name="search" value="Search">
+                      <input type="submit" name="search" onclick="searchProduct()">
                   </div>
               </form>
               <div>
@@ -66,7 +64,7 @@
                           <td>data</td>
                           <td>
                               <form>
-                                  <button type="submit" name="details"  value="Login">Details</button>
+                                  <button type="submit" name="details"  value="Login" onclick="sellDetails()">Details</button>
                               </form>
                           </td>
                           <td>data</td>
@@ -85,9 +83,6 @@
           </fieldset>
       </div>
       <div>
-          <fieldset>
-              <legend>Auctions won</legend>
-          </fieldset>
           <fieldset>
               <legend>Auctions won</legend>
               <table>
@@ -117,9 +112,6 @@
           </fieldset>
       </div>
   </div>
-
-
-
   <div id="buy" style="padding: 60px">
       <div class="horizontal">
           <div>
@@ -147,7 +139,7 @@
                           </label>
                       </div>
                       <div>
-                          <input type="submit" name="newArticle" value="Add product">
+                          <input type="submit" name="newArticle" value="Add product" onclick="addProduct()">
                       </div>
                   </fieldset>
               </form>
@@ -193,7 +185,7 @@
                               </label>
                           </div>
                           <div>
-                              <input type="submit" name="create" value="Create"/>
+                              <input type="submit" name="create" value="Create" onclick="createAuction()"/>
                           </div>
                       </div>
                   </fieldset>
@@ -220,7 +212,7 @@
                           <td>data</td>
                           <td>
                               <form>
-                                  <button type="submit" name="details" value="Login">Details</button>
+                                  <button type="submit" name="details" value="Login" onclick="closedDetails()">Details</button>
                               </form>
                           </td>
                           <td>data</td>
@@ -255,7 +247,7 @@
                           <td>Time left</td>
                           <td>
                               <form>
-                                  <button type="submit" name="details" value="null">Details</button>
+                                  <button type="submit" name="details" value="null" onclick="openDetails()">Details</button>
                               </form>
                           </td>
                           <td>data</td>
@@ -267,9 +259,6 @@
           </fieldset>
       </div>
     </div>
-
-
-
   <div id="sellDetails" style="padding: 60px">
       <fieldset>
           <div>
@@ -324,7 +313,7 @@
           </div>
           <div>
               <form>
-                  <button class="modButton" type="submit" name="close" value="Login">Details</button>
+                  <button class="modButton" type="submit" name="close" value="Login" onclick="closeAuction()">Close this auction</button>
               </form>
           </div>
       </fieldset>
@@ -356,9 +345,6 @@
           </fieldset>
       </div>
   </div>
-
-
-
   <div id="buyDetails" style="padding: 60px">
       <fieldset>
           <legend>Bids detail</legend>
@@ -414,7 +400,7 @@
                   </label>
               </div>
               <div>
-                  <button class="modButton" type="submit" name="details" value="null"></button>
+                  <button class="modButton" type="submit" name="details" value="null" onclick="makeOffer()">Make the offer!</button>
               </div>
           </form>
       </fieldset>
