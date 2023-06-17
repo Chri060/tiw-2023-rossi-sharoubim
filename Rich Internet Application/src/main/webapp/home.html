@@ -12,13 +12,13 @@
           <img class="imgIcon" src="static/images/auction_hammer.png" alt=""/>
       </div>
       <div>
-          <button class="modButton horizontal" onclick="getSell()">
+          <button class="modButton horizontal" id="getSell">
               Sell
               <img style="padding: 0 20px 0 20px" class="imgIcon" src="static/images/sell.png" alt=""/>
           </button>
       </div>
       <div>
-          <button class="modButton horizontal" onclick="getBuy()">
+          <button class="modButton horizontal" id="getBuy">
               <img style="padding: 0 20px 0 20px" class="imgIcon" src="static/images/buy.png" alt=""/>
               Buy
           </button>
@@ -30,7 +30,7 @@
       </div>
   </div>
 
-  <div id="sell" style="padding: 60px">
+  <div id="buy" style="padding: 60px">
       <div>
           <fieldset>
               <legend>Product search</legend>
@@ -112,7 +112,8 @@
           </fieldset>
       </div>
   </div>
-  <div id="buy" style="padding: 60px">
+
+  <div id="sell" style="padding: 60px">
       <div class="horizontal">
           <div>
               <form>
@@ -150,7 +151,7 @@
                       <legend>Create new auction</legend>
                       <div>
                           <div>
-                              <table>
+                              <table id="myProducts">
                                   <thead>
                                   <tr>
                                       <th>Product code</th>

@@ -38,7 +38,6 @@
             if (!e.target.closest("form").reportValidity()) e.stopPropagation();
             else {
                 const data = new FormData(e.target.closest("form"));
-                data.delete("pass-confirm");
                 request.open("post", endpoint, true);
                 request.send(data);
             }
@@ -143,14 +142,8 @@
 function hideAndShow() {
     let signIn = document.getElementById("signInDiv");
     let signUp = document.getElementById("signUpDiv");
-    if (signIn.style.display === "none") {
-        signIn.style.display = "block";
-    } else {
-        signIn.style.display = "none";
-    }
-    if (signUp.style.display === "none") {
-        signUp.style.display = "block";
-    } else {
-        signUp.style.display = "none";
-    }
+    if (signIn.style.display === "none") signIn.style.display = "block";
+    else signIn.style.display = "none";
+    if (signUp.style.display === "none") signUp.style.display = "block";
+    else signUp.style.display = "none";
 }
