@@ -1,7 +1,6 @@
 package com.christian.rossi.progetto_tiw_2023.DAOs;
 
 import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
-import static com.christian.rossi.progetto_tiw_2023.DAOs.DBConnectionPool.getConnection;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDAO {
+public class ProductDAO extends AbstractDAO{
 
     public long addProduct(String name, String description, int price, Long userID) throws SQLException {
         String query = "INSERT INTO product (name, description, price, sellable, userID, auctionID) " +

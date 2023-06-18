@@ -9,6 +9,7 @@ import com.christian.rossi.progetto_tiw_2023.Utils.InputChecker;
 import com.christian.rossi.progetto_tiw_2023.Utils.PathBuilder;
 
 import java.sql.Timestamp;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,6 +32,7 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
         final int rise;
         final Long userID;
         final Timestamp expiry;
+        int statusCode = 0;
 
         //checking problem with variables product
         if (request.getParameterValues("product") == null) {
@@ -39,9 +42,8 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
         else {
             try {
                 products = Arrays.stream(request.getParameterValues("product")).map(Long::parseLong).collect(Collectors.toUnmodifiableSet());
-                //TODO: inputchecker
             }
-            catch (NumberFormatException e) {
+            catch (NumberFormatException | NullPointerException e) {
                 response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
                 return;
             }
@@ -65,12 +67,17 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
 
         //start of time parsing
         //TODO:check della data
-        String expiryHtml = request.getParameter("expiry");
-        String dateTimeString = expiryHtml.replace("T", " ");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, formatter);
-        expiry = Timestamp.valueOf(dateTime);
-        if (!InputChecker.checkExpiry(expiry)) {
+        try {
+            String expiryHtml = request.getParameter("expiry");
+            String dateTimeString = expiryHtml.replace("T", " ");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, formatter);
+            expiry = Timestamp.valueOf(dateTime);
+            if (!InputChecker.checkExpiry(expiry)) {
+                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.EXPIRY_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+                return;
+            }
+        } catch (DateTimeParseException | NullPointerException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.EXPIRY_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
             return;
         }
@@ -106,19 +113,32 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
         }
 
         //auction creation and setting value for the various objects
-        //TODO: fix per le query concatenate
+        AuctionDAO auctionDAO = new AuctionDAO();
         try {
             productsIterator = products.iterator();
-            AuctionDAO auctionDAO = new AuctionDAO();
+            auctionDAO.setAutoCommit(false);
+            productDAO.setAutoCommit(false);
             Long auctionID = auctionDAO.createAuction(price, rise, expiry, userID);
             while (productsIterator.hasNext()) {
                 Long productID = productsIterator.next();
                 productDAO.update(productID, auctionID);
             }
         } catch (SQLException e) {
-            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
-            return;
+            statusCode = -1;
+            try {
+                auctionDAO.rollback();
+                productDAO.rollback();
+            } catch (SQLException exception) {}
         }
-        response.sendRedirect(URLs.GET_SELL_PAGE);
+        finally {
+            try {
+            auctionDAO.setAutoCommit(true);
+            productDAO.setAutoCommit(true);
+            } catch (SQLException e) {}
+        }
+        switch (statusCode) {
+            case 0 -> response.sendRedirect(URLs.GET_SELL_PAGE);
+            case -1 -> response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+        }
     }
 }

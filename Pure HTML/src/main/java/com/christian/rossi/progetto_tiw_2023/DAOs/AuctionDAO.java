@@ -12,7 +12,7 @@ import java.util.List;
 
 import static com.christian.rossi.progetto_tiw_2023.DAOs.DBConnectionPool.getConnection;
 
-public class AuctionDAO {
+public class AuctionDAO extends AbstractDAO{
 
     private final String imgPath = "http://localhost:8080/getImage/";
 

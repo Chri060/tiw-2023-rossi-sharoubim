@@ -38,6 +38,7 @@ public class DoAddProduct extends ThymeleafHTTPServlet {
         final String description;
         final int price;
         final Long userID;
+        int statusCode = 0;
 
         //checking problems with variable name
         name = request.getParameter("name");
@@ -62,7 +63,6 @@ public class DoAddProduct extends ThymeleafHTTPServlet {
             }
         }
         catch (NumberFormatException e) {
-            e.printStackTrace();
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
             return;
         }
@@ -81,9 +81,10 @@ public class DoAddProduct extends ThymeleafHTTPServlet {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.FORMAT_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
             return;
         }
+        ProductDAO productDAO = new ProductDAO();
         try {
             //inserting products in DB
-            ProductDAO productDAO = new ProductDAO();
+            productDAO.setAutoCommit(false);
             long productID = productDAO.addProduct(name, description, price, userID);
             //setting the name to the image, and save
             String fileName = productID + ".jpeg";
@@ -92,14 +93,27 @@ public class DoAddProduct extends ThymeleafHTTPServlet {
             try (InputStream fileContent = filePart.getInputStream()) {
                 Files.copy(fileContent, file.toPath());
             } catch (Exception e) {
-                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.SAVE_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
-                return;
+                statusCode = - 1;
+                throw new SQLException();
             }
             //end of file uploading
         } catch (SQLException e) {
-            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
-            return;
+            try {
+                productDAO.rollback();
+            } catch (SQLException exception) {}
+            if (statusCode != -1) {
+                statusCode = -2;
+            }
         }
-        response.sendRedirect(URLs.GET_SELL_PAGE);
+        finally {
+            try {
+                productDAO.setAutoCommit(true);
+            } catch (SQLException e) {}
+        }
+        switch (statusCode) {
+            case 0 -> response.sendRedirect(URLs.GET_SELL_PAGE);
+            case -1 -> response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.SAVE_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+            case -2 -> response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+        }
     }
 }

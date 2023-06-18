@@ -4,14 +4,28 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public abstract class AbstractDAO implements AutoCloseable {
-    private final Connection connection;
+    protected Connection connection;
 
-    protected AbstractDAO() throws SQLException {
+   /* protected AbstractDAO() throws SQLException {
         connection = DBConnectionPool.getConnection();
+    }*/
+
+    protected Connection getConnection() throws SQLException{
+        if (connection == null || connection.isClosed()) {
+            connection = DBConnectionPool.getConnection();
+        }
+        return connection;
     }
 
-    Connection getConnection() {
-        return connection;
+    public void setAutoCommit(boolean autoCommit) throws SQLException{
+        getConnection();
+        connection.setAutoCommit(autoCommit);
+
+    }
+
+    public void rollback() throws SQLException {
+        getConnection();
+        connection.rollback();
     }
 
     @Override

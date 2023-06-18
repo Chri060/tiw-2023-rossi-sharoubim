@@ -72,7 +72,6 @@ public class DoOffer extends ThymeleafHTTPServlet {
             OfferDAO offerDAO = new OfferDAO();
             offerDAO.addOffer(offer, userID, auctionID, date);
         } catch (SQLException e) {
-            e.printStackTrace();
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
         }
         request.setAttribute("details", auctionID);

@@ -38,7 +38,6 @@ public class DoClose extends ThymeleafHTTPServlet {
             AuctionDAO auctionDAO = new AuctionDAO();
             auctionDAO.close(auctionID, userID);
         } catch (SQLException e) {
-            e.printStackTrace();
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
             return;
         }
