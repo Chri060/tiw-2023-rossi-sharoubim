@@ -34,7 +34,6 @@ public class OfferFilter implements Filter {
                 hresponse.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.OFFER_AUTH).addParam("redirect", URLs.GET_BUY_PAGE).toString());
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             hresponse.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_BUY_PAGE).toString());
             return;
         }
