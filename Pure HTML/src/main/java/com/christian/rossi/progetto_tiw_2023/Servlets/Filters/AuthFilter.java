@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(filterName = "AuthFilter", urlPatterns = {URLs.DO_ADD_PRODUCT, URLs.DO_CLOSE, URLs.DO_CREATE_AUCTION, URLs.DO_GET_IMAGE, URLs.DO_OFFER, URLs.GET_BUY_PAGE, URLs.GET_DETAILS_PAGE, URLs.GET_HOME_PAGE, URLs.GET_OFFERS_PAGE, URLs.GET_SELL_PAGE})
+@WebFilter(filterName = "AuthFilter", urlPatterns = {URLs.DO_ADD_PRODUCT, URLs.DO_CLOSE, URLs.DO_CREATE_AUCTION, URLs.DO_GET_IMAGE, URLs.DO_OFFER, URLs.GET_BUY_PAGE, URLs.GET_DETAILS_PAGE, URLs.GET_HOME_PAGE, URLs.GET_OFFERS_PAGE, URLs.GET_SELL_PAGE, URLs.DO_LOGOUT})
 public class AuthFilter implements Filter {
 
     @Override

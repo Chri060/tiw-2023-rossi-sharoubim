@@ -70,8 +70,6 @@ public class UserDAO {
         }
     }
 
-
-
     public String GetUserByUsername(String username) throws SQLException {
         String query = "SELECT * " +
                        "FROM user " +
