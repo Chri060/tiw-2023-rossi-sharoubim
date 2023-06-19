@@ -9,7 +9,6 @@ import com.christian.rossi.progetto_tiw_2023.Utils.InputChecker;
 import com.christian.rossi.progetto_tiw_2023.Utils.PathBuilder;
 
 import java.sql.Timestamp;
-import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.servlet.annotation.WebServlet;
@@ -66,7 +65,6 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
         userID = (Long) session.getAttribute("userID");
 
         //start of time parsing
-        //TODO:check della data
         try {
             String expiryHtml = request.getParameter("expiry");
             String dateTimeString = expiryHtml.replace("T", " ");

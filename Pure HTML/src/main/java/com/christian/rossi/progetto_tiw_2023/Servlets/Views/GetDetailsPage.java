@@ -43,9 +43,7 @@ public class GetDetailsPage extends ThymeleafHTTPServlet {
             ctx.setVariable("winner", winner);
             ctx.setVariable("close", auctionID);
             ctx.setVariable("active", auctionBeanList.get(0).isActive());
-            if (winner != null) {
-                ctx.setVariable("user", userDAO.getUser(String.valueOf(winner.getUserID())));
-            }
+            if (winner != null) ctx.setVariable("user", userDAO.getUser(String.valueOf(winner.getUserID())));
         } catch (SQLException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
             throw new RuntimeException(e);

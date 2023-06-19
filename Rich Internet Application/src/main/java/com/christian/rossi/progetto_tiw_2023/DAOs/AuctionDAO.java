@@ -45,7 +45,7 @@ public class AuctionDAO {
         }
     }
 
-    public List<AuctionBean> getAuctions(Long userID, int active, long loginTime) throws SQLException{
+    public List<AuctionBean> getAuctions(Long userID, int active) throws SQLException{
         String query = "SELECT * " +
                        "FROM auction LEFT JOIN winner ON auction.auctionID = winner.auctionID " +
                        "             JOIN product on auction.auctionID = product.auctionID " +

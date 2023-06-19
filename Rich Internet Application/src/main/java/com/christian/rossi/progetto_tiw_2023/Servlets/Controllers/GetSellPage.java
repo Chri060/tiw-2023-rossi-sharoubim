@@ -20,7 +20,7 @@ public class GetSellPage extends HttpServlet {
 
 
         HttpSession session = request.getSession();
-
+        /*
         try {
             ProductDAO productDAO = new ProductDAO();
             productDAO.getUserProducts((Long) session.getAttribute("userID"));
@@ -28,5 +28,7 @@ public class GetSellPage extends HttpServlet {
 
             throw new RuntimeException(e);
         }
+
+         */
     }
 }

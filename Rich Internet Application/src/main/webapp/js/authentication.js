@@ -3,7 +3,8 @@
     { document.getElementById("signUpDiv").style.display = "none"; }
 
     //login
-    {   const id = "sign-in-form";
+    {
+        const id = "sign-in-form";
         const endpoint = "/login";
         const request = new XMLHttpRequest();
         request.onreadystatechange = () => {
@@ -15,16 +16,13 @@
         document.getElementById(id).addEventListener("submit", (e) => {
             e.preventDefault();
             if (!e.target.closest("form").reportValidity()) e.stopPropagation();
-            else {
-                const data = new FormData(e.target.closest("form"));
-                request.open("post", endpoint, true);
-                request.send(data);
-            }
+            else makeCall("post", endpoint, e.target.closest("form"), true);
         });
     }
 
     //signup
-    {   const id = "sign-up-form";
+    {
+        const id = "sign-up-form";
         const endpoint = "/register";
         const request = new XMLHttpRequest();
         request.onreadystatechange = () => {
@@ -36,11 +34,7 @@
         document.getElementById(id).addEventListener("submit", (e) => {
             e.preventDefault();
             if (!e.target.closest("form").reportValidity()) e.stopPropagation();
-            else {
-                const data = new FormData(e.target.closest("form"));
-                request.open("post", endpoint, true);
-                request.send(data);
-            }
+            else makeCall("post", endpoint, e.target.closest("form"), true);
         });
     }
 

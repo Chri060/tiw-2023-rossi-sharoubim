@@ -31,35 +31,11 @@ function getSell() {
     document.getElementById("buy").style.display = "none"
     document.getElementById("buyDetails").style.display = "none";
     document.getElementById("sellDetails").style.display = "none";
-    getSellData();
 }
 
 function getSellData () {
     const data = new FormData();
     const endpoint = "/sell?type=products";
-
-
-
-
-    const request = new XMLHttpRequest();
-    request.onreadystatechange = () => {
-        if (request.readyState === 4) {
-            if (request.status === 200)
-            else alert("The signup failed");
-        }
-    };
-    document.getElementById(id).addEventListener("submit", (e) => {
-        e.preventDefault();
-        if (!e.target.closest("form").reportValidity()) e.stopPropagation();
-        else {
-            const data = new FormData(e.target.closest("form"));
-            request.open("post", endpoint, true);
-            request.send(data);
-        }
-    });
-
-
-
 
 }
 
