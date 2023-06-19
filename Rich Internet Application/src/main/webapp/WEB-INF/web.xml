@@ -3,6 +3,10 @@
          xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <context-param>
+        <param-name>outputPath</param-name>
+        <param-value>C:\Users\carlo\Desktop\Progetti\WEB\tiw-2023-rossi-sharoubim\Images\</param-value>
+    </context-param>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/static/*</url-pattern>

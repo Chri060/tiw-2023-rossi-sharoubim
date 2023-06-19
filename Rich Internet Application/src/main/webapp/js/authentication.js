@@ -1,22 +1,26 @@
 (function () {
     //hides signup form
     { document.getElementById("signUpDiv").style.display = "none"; }
+    if (sessionStorage.getItem('userName')) {
+        window.location.assign("home.html");
+    }
 
     //login
     {
         const id = "sign-in-form";
         const endpoint = "/login";
-        const request = new XMLHttpRequest();
-        request.onreadystatechange = () => {
-            if (request.readyState === 4) {
-                if (request.status === 200) window.location.assign("home.html");
-                else alert("The sign in failed");
-            }
-        };
         document.getElementById(id).addEventListener("submit", (e) => {
             e.preventDefault();
             if (!e.target.closest("form").reportValidity()) e.stopPropagation();
-            else makeCall("post", endpoint, e.target.closest("form"), true);
+            else makeCall("post", endpoint, e.target.closest("form"),
+                function(req) {
+                    if (req.readyState === 4) {
+                        if (req.status === 200) {
+                            window.location.assign("home.html");
+                            sessionStorage.setItem('userName', req.responseText);
+                        }else alert("The sign in failed");
+                    }
+                },false);
         });
     }
 
@@ -24,17 +28,20 @@
     {
         const id = "sign-up-form";
         const endpoint = "/register";
-        const request = new XMLHttpRequest();
-        request.onreadystatechange = () => {
-            if (request.readyState === 4) {
-                if (request.status === 200) window.location.assign("home.html");
-                else alert("The signup failed");
-            }
-        };
         document.getElementById(id).addEventListener("submit", (e) => {
             e.preventDefault();
             if (!e.target.closest("form").reportValidity()) e.stopPropagation();
-            else makeCall("post", endpoint, e.target.closest("form"), true);
+            else makeCall("post", endpoint, e.target.closest("form"),
+                function (req) {
+                    if (req.readyState === 4) {
+                        if (req.status === 200) {
+                            window.location.assign("home.html");
+                            sessionStorage.setItem('userName', req.responseText);
+                        }
+                        else alert("The signup failed");
+                    }
+                },
+                false);
         });
     }
 

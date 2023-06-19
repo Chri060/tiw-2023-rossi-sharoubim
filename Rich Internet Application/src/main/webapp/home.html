@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>Home page</title>
     <link rel="stylesheet" href="/static/style.css"/>
-    <script defer src="js/home.js"></script>
+    <script defer src="js/sell.js"></script>
+    <script defer src="js/utils.js"></script>
 </head>
 <body>
   <div class="top">
@@ -116,7 +117,7 @@
   <div id="sell" style="padding: 60px">
       <div class="horizontal">
           <div>
-              <form>
+              <form id="addProductForm">
                   <fieldset>
                       <legend>Add new product</legend>
                       <div>
@@ -140,7 +141,7 @@
                           </label>
                       </div>
                       <div>
-                          <input type="submit" name="newArticle" value="Add product" onclick="addProduct()">
+                          <input id="submitAddProduct" type="submit" name="newArticle" value="Add product">
                       </div>
                   </fieldset>
               </form>
@@ -197,7 +198,7 @@
           <fieldset>
               <legend>List of closed auctions</legend>
               <div>
-                  <table>
+                  <table id="closedAuctions">
                       <thead>
                       <tr>
                           <th>Closed auctions</th>
@@ -228,7 +229,7 @@
           <fieldset>
               <legend>List of active auctions</legend>
               <div>
-                  <table>
+                  <table id="activeAuctions">
                       <thead>
                       <tr>
                           <th>Active auctions</th>
