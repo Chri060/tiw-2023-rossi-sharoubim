@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class UserDAO {
+public class UserDAO extends AbstractDAO{
 
     public UserBean authenticate(String username, String password) throws SQLException {
         String query = "SELECT username, userID " +
@@ -104,5 +104,4 @@ public class UserDAO {
             }
         }
     }
-
 }
