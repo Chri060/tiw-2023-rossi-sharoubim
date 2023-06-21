@@ -23,7 +23,7 @@
               Buy
           </button>
       </div>
-      <div class="right">
+      <div class="right" id="logout">
           <button class="modButton">
             <img class="imgIcon" src="static/images/logout.png" alt="" />
           </button>
@@ -177,10 +177,11 @@
               </form>
           </div>
           <div>
-              <form>
+              <form id="createAuctionForm">
                   <fieldset>
                       <legend>Create new auction</legend>
-                      <div id="createNewAuctionDIv">
+                      <div id="noProductsDiv">No sellable products</div>
+                      <div id="createNewAuctionDiv">
                           <div>
                               <table id="myProducts">
                                   <thead>
@@ -217,7 +218,7 @@
                               </label>
                           </div>
                           <div>
-                              <input type="submit" name="create" value="Create"/>
+                              <input type="submit" name="create" value="Create" id="submitNewAuction"/>
                           </div>
                       </div>
                   </fieldset>
@@ -227,6 +228,7 @@
       <div>
           <fieldset>
               <legend>List of closed auctions</legend>
+              <div id="noAuctionClosedDiv">No closed auctions yet</div>
               <div id="closedAuctionsDiv">
                   <table id="closedAuctions">
                       <thead>
@@ -258,6 +260,7 @@
       <div>
           <fieldset>
               <legend>List of active auctions</legend>
+              <div id="noActiveAuctionsDiv">You don't have any active auction at the moment</div>
               <div id="activeAuctionsDiv">
                   <table id="activeAuctions">
                       <thead>
@@ -296,7 +299,7 @@
           <div>
               <fieldset>
                   <legend>Auction details</legend>
-                  <table>
+                  <table id="auctionDetails">
                       <thead>
                       <tr>
                           <th>Auction code</th>
@@ -345,7 +348,7 @@
           </div>
           <div>
               <form>
-                  <button class="modButton" type="submit" name="close" value="Login">Close this auction</button>
+                  <button id="closeAuctionButton" class="modButton" type="submit" name="close" value="Login">Close this auction</button>
               </form>
           </div>
       </fieldset>

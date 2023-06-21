@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(filterName = "AuthFilter", urlPatterns = {})
+@WebFilter(filterName = "AuthFilter", urlPatterns = {Constants.HOME_PAGE})
 public class AuthFilter implements Filter {
 
     @Override
@@ -18,7 +18,7 @@ public class AuthFilter implements Filter {
         HttpServletRequest hrequest = (HttpServletRequest) request;
         HttpServletResponse hresponse = (HttpServletResponse) response;
         HttpSession session = hrequest.getSession();
-        if (session.isNew() || session.getAttribute("USER") == null) {
+        if (session.isNew() || session.getAttribute("userID") == null) {
             hresponse.sendRedirect(new PathBuilder(Constants.AUTHENTICATION_PAGE).toString());
             return;
         }

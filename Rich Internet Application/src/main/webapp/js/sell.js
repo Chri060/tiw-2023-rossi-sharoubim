@@ -1,34 +1,74 @@
-(
-    function () {
-        var pageOrchestrator = new PageOrchestrator();
-        pageOrchestrator.start();
-        pageOrchestrator.hideAll();
-        pageOrchestrator.showSellPage();
-        pageOrchestrator.fillSellPage();
-    } ()
-)
+
+window.onload = function () {
+    pageOrchestrator = new PageOrchestrator();
+    pageOrchestrator.start();
+    pageOrchestrator.hideAll();
+}
 
 function PageOrchestrator() {
-
     this.sellPage = new SellPage();
     this.buyPage = new BuyPage();
     this.sellDetailspage = new SellDetailsPage();
     this.buyDetailspage = new BuyDetailPage();
 
     this.start = function () {
+
         //Adds listener to the submit new product form
-        this.sellPage.addProductForm.addEventListener("submit", (e) => {
-            if (!e.target.closest("form").reportValidity()) e.stopPropagation();
+        document.getElementById("submitAddProduct").addEventListener("click", (e) => {
+            e.preventDefault();
+            if (!e.target.closest("form").reportValidity()) {
+                alert("Data is invalid");
+                return;
+            }
             else {
                 makeCall("POST", "/addProduct", this.sellPage.addProductForm,
-                    addProductResponseHandler, false)
+                    addProductResponseHandler, true)
             }
         });
+        //Adds listener to load sellPage
+        document.getElementById("getSell").addEventListener("click", (e) => this.showSellPage());
+        //Adds listener to load buyPage
+        document.getElementById("getBuy").addEventListener("click", (e) => this.showBuyPage());
+        //Adds listener to logout
+        document.getElementById("logout").addEventListener("click", (e) => this.logout())
+        //Adds listener to create new auction button
+        document.getElementById("submitNewAuction").addEventListener("click", (e) => {
+                e.preventDefault();
+                if (!e.target.closest("form").reportValidity()) {
+                    alert("Data is invalid");
+                    return;
+                } else {
+                    makeCall("POST", "/doCreateAuction", this.sellPage.createAuctionForm,
+                        addProductResponseHandler, true)
+                }
+            }
+        )
+    }
+
+    this.logout = function () {
+        makeCall("POST", "/logout", null, function (req) {
+            if (req.readyState == 4) {
+                switch (req.status) {
+                    case (200) : {
+                        sessionStorage.removeItem('userName')
+                        window.location.assign("authentication.html");
+                        break;
+                    }
+                    default :
+                        alert("Unable to logout")
+                }
+            }
+        })
     }
 
     this.fillSellPage = function () {
-            makeCall("GET", "/getSell", null,
+            makeCall("GET", "getSell", null,
                 fillSellPageHandler, false);
+    }
+
+    this.fillSellDetailsPage = function (auctionID) {
+        makeCall("GET", "/getAuctionDetails?auctionID=" + auctionID, null,
+            fillSellDetailPageHandler, false);
     }
 
     this.hideAll = function() {
@@ -39,10 +79,13 @@ function PageOrchestrator() {
     }
 
     this.showSellPage = function () {
+        this.hideAll();
         this.sellPage.show();
+        this.fillSellPage();
     }
     this.showBuyPage = function () {
-        this.sellPage.show();
+        this.hideAll();
+        this.buyPage.show();
     }
     this.showSellDetailsPage = function () {
         this.sellDetailspage.show();
@@ -60,6 +103,7 @@ function SellPage() {
     this.myProducts = document.getElementById("myProducts");
     this.closedAuctions = document.getElementById("closedAuctions");
     this.activeAuctions = document.getElementById("activeAuctions");
+    this.createAuctionForm = document.getElementById("createAuctionForm");
 
     this.hide = function () {
         this.page.style.display = "none";
@@ -73,11 +117,13 @@ function SellPage() {
         let table = document.getElementById("myProducts")
         let myProductsArray = data.myProducts;
         if (myProductsArray && myProductsArray.length > 0) {
-            let row, nameCell, priceCell, codeCell, tickCell;
+            document.getElementById("createNewAuctionDiv").style.display = "block";
+            document.getElementById("noProductsDiv").style.display = "none";
             while (table.rows.length > 1) {
                 table.deleteRow(1);
             }
             myProductsArray.forEach(function (product) {
+                let row, nameCell, description, priceCell, codeCell, tickCell;
                 row = document.createElement("tr")
 
                 codeCell = document.createElement("td");
@@ -86,6 +132,7 @@ function SellPage() {
 
                 nameCell = document.createElement("td");
                 nameCell.textContent = product.name;
+                nameCell.title = product.description;
                 row.appendChild(nameCell);
 
                 priceCell = document.createElement("td");
@@ -95,21 +142,26 @@ function SellPage() {
                 tickCell = document.createElement("td");
                 let tick = document.createElement("input");
                 tick.setAttribute("type", "checkbox");
+                tick.setAttribute("name", "product");
                 tick.value = product.productID;
                 tickCell.appendChild(tick);
                 row.appendChild(tickCell);
+
+
 
                 this.myProducts.appendChild(row);
             })
         }
         else {
-            document.getElementById("createNewAuctionDIv").textContent = "No products"
+            document.getElementById("noProductsDiv").style.display = "block";
+            document.getElementById("createNewAuctionDiv").style.display = "none";
         }
 
         table = document.getElementById("activeAuctions")
-        while (table.rows.length > 1) table.deleteRow(1);
         let myOpenAuctionsArray = data.myOpenAuctions;
-        if (myOpenAuctionsArray && myOpenAuctionsArray) {
+        if (myOpenAuctionsArray && myOpenAuctionsArray.length > 0) {
+            document.getElementById("noActiveAuctionsDiv").style.display = "none";
+            document.getElementById("activeAuctionsDiv").style.display = "block";
             while (table.rows.length > 1) {
                 table.deleteRow(1);
             }
@@ -136,10 +188,20 @@ function SellPage() {
                 detailsButton = document.createElement("td");
                 let click = document.createElement("button");
                 click.textContent = "Details";
+                click.setAttribute("value", auction.auctionID);
                 detailsButton.appendChild(click);
                 row.appendChild(detailsButton);
 
-                name  = document.createElement("td");
+                //Adds listener to details button
+                detailsButton.addEventListener("click", (e) =>{
+                    let auctionID = e.target.value;
+                    pageOrchestrator.hideAll();
+                    pageOrchestrator.showSellDetailsPage();
+                    pageOrchestrator.fillSellDetailsPage(auctionID);
+
+                })
+
+                name = document.createElement("td");
                 name.textContent = auction.name;
                 row.appendChild(name);
 
@@ -151,13 +213,15 @@ function SellPage() {
             })
         }
         else {
-            document.getElementById("activeAuctionsDiv").textContent = "No active auctions"
+            document.getElementById("noActiveAuctionsDiv").style.display = "block";
+            document.getElementById("activeAuctionsDiv").style.display = "none";
         }
 
         table = document.getElementById("closedAuctions");
-        while (table.rows.length > 1) table.deleteRow(1);
         let myClosedAuctionsArray = data.myClosedAuctions;
-        if (myClosedAuctionsArray && myClosedAuctionsArray) {
+        if (myClosedAuctionsArray && myClosedAuctionsArray.length > 0) {
+            document.getElementById("noAuctionClosedDiv").style.display = "none";
+            document.getElementById("closedAuctionsDiv").style.display = "block";
             while (table.rows.length > 1) {
                 table.deleteRow(1);
             }
@@ -177,9 +241,18 @@ function SellPage() {
                 let click = document.createElement("button");
                 click.textContent = "Details";
                 detailsButton.appendChild(click);
+                click.setAttribute("value", auction.auctionID);
                 row.appendChild(detailsButton);
 
-                name  = document.createElement("td");
+                detailsButton.addEventListener("click", (e) =>{
+                    let auctionID = e.target.value;
+                    pageOrchestrator.hideAll();
+                    pageOrchestrator.showSellDetailsPage();
+                    pageOrchestrator.fillSellDetailsPage(auctionID);
+
+                })
+
+                name = document.createElement("td");
                 name.textContent = auction.name;
                 row.appendChild(name);
 
@@ -191,7 +264,8 @@ function SellPage() {
             })
         }
         else {
-            document.getElementById("closedAuctionsDiv").textContent = "No closed auctions"
+            document.getElementById("noAuctionClosedDiv").style.display = "block";
+            document.getElementById("closedAuctionsDiv").style.display = "none";
         }
     }
 }
@@ -205,12 +279,59 @@ function SellDetailsPage() {
     this.show = function () {
         this.page.style.display = "block";
     }
+
+    this.fill = function (data) {
+        let table = document.getElementById("auctionDetails");
+        let productList = data.productList;
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+            if (productList[0].active) {
+                let closeButton = document.getElementById("closeAuctionButton");
+                closeButton.style.display = "block";
+                //TODO
+                closeButton.addEventListener("click", (e) => {} );
+            }
+            else {
+            document.getElementById("closeAuctionButton").style.display = "none";
+            }
+            productList.forEach(function (auction) {
+                let row, codeCell, priceCell, productID, productName, productDescription, image;
+                row = document.createElement("tr")
+
+                codeCell = document.createElement("td");
+                codeCell.textContent = auction.auctionID;
+                row.appendChild(codeCell);
+
+                priceCell = document.createElement("td");
+                priceCell.textContent = auction.price;
+                row.appendChild(priceCell);
+
+                productID = document.createElement("td");
+                productID.textContent = auction.productID;
+                row.appendChild(productID);
+
+                productName = document.createElement("td");
+                productName.textContent = auction.name;
+                row.appendChild(productName);
+
+                productDescription = document.createElement("td");
+                productDescription.textContent = auction.description;
+                row.appendChild(productDescription);
+
+                table.appendChild(row);
+        })
+    }
 }
 function BuyPage() {
     this.page = document.getElementById("buy");
 
     this.hide = function () {
         this.page.style.display = "none";
+    }
+
+    this.show = function () {
+        this.page.style.display = "block";
     }
 
 }
@@ -231,6 +352,8 @@ function addProductResponseHandler(req) {
         switch (req.status) {
             case (200) : {
                 alert("Product successfully added");
+                let orchestrator = new PageOrchestrator();
+                pageOrchestrator.fillSellPage();
                 break;
             }
             case (400) : {
@@ -263,12 +386,32 @@ function fillSellPageHandler(req) {
                 break;
             }
             case (500) : {
-                alert("Product error");
+                alert("Server error: could not load Sell page");
             }
         }
     }
 }
 
+function fillSellDetailPageHandler(req) {
+    if (req.readyState == 4) {
+        switch (req.status) {
+            case (200) : {
+                const data = JSON.parse((req.responseText));
+                if (data) {
+                    let sellDetailsPage = new SellDetailsPage()
+                    sellDetailsPage.fill(data);
+                }
+                else {
+
+                }
+                break;
+            }
+            case (500) : {
+                alert("Server error: could not load Sell page");
+            }
+        }
+    }
+}
 
 function makeCall(method, url, formElement, callback, reset) {
     const req = new XMLHttpRequest();
@@ -281,7 +424,8 @@ function makeCall(method, url, formElement, callback, reset) {
         req.send();
     }
     else {
-        req.send(new FormData(formElement));
+        let x = new FormData(formElement);
+        req.send(x);
         console.log("sending...")
         if (reset) {
             formElement.reset();
