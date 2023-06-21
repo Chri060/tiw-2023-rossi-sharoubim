@@ -1,29 +1,54 @@
-(
-    function () {
-        var pageOrchestrator = new PageOrchestrator();
-        pageOrchestrator.start();
-        pageOrchestrator.hideAll();
-        pageOrchestrator.showSellPage();
-        pageOrchestrator.fillSellPage();
-    } ()
-)
+
+window.onload = function () {
+    pageOrchestrator = new PageOrchestrator();
+    pageOrchestrator.start();
+    pageOrchestrator.hideAll();
+}
 
 function PageOrchestrator() {
-
     this.sellPage = new SellPage();
     this.buyPage = new BuyPage();
     this.sellDetailspage = new SellDetailsPage();
     this.buyDetailspage = new BuyDetailPage();
 
     this.start = function () {
+
+        //If no session is active returns to home
+        if (!sessionStorage.getItem('userName')) {
+            window.location.assign("authentication.html");
+        }
+
         //Adds listener to the submit new product form
-        this.sellPage.addProductForm.addEventListener("submit", (e) => {
-            if (!e.target.closest("form").reportValidity()) e.stopPropagation();
+        document.getElementById("submitAddProduct").addEventListener("click", (e) => {
+            e.preventDefault();
+            if (!e.target.closest("form").reportValidity()) {
+                alert("Data is invalid");
+                return;
+            }
             else {
                 makeCall("POST", "/addProduct", this.sellPage.addProductForm,
-                    addProductResponseHandler, false)
+                    addProductResponseHandler, true)
             }
         });
+        document.getElementById("getSell").addEventListener("click", (e) => this.showSellPage());
+        document.getElementById("getBuy").addEventListener("click", (e) => this.showBuyPage());
+        document.getElementById("logout").addEventListener("click", (e) => this.logout())
+    }
+
+    this.logout = function () {
+        makeCall("POST", "/logout", null, function (req) {
+            if (req.readyState == 4) {
+                switch (req.status) {
+                    case (200) : {
+                        sessionStorage.removeItem('userName')
+                        window.location.assign("authentication.html");
+                        break;
+                    }
+                    default :
+                        alert("Unable to logout")
+                }
+            }
+        })
     }
 
     this.fillSellPage = function () {
@@ -39,10 +64,13 @@ function PageOrchestrator() {
     }
 
     this.showSellPage = function () {
+        this.hideAll();
         this.sellPage.show();
+        this.fillSellPage();
     }
     this.showBuyPage = function () {
-        this.sellPage.show();
+        this.hideAll();
+        this.buyPage.show();
     }
     this.showSellDetailsPage = function () {
         this.sellDetailspage.show();
@@ -73,11 +101,13 @@ function SellPage() {
         let table = document.getElementById("myProducts")
         let myProductsArray = data.myProducts;
         if (myProductsArray && myProductsArray.length > 0) {
-            let row, nameCell, priceCell, codeCell, tickCell;
+            document.getElementById("createNewAuctionDiv").style.display = "block";
+            document.getElementById("noProductsDiv").style.display = "none";
             while (table.rows.length > 1) {
                 table.deleteRow(1);
             }
             myProductsArray.forEach(function (product) {
+                let row, nameCell, description, priceCell, codeCell, tickCell;
                 row = document.createElement("tr")
 
                 codeCell = document.createElement("td");
@@ -86,6 +116,7 @@ function SellPage() {
 
                 nameCell = document.createElement("td");
                 nameCell.textContent = product.name;
+                nameCell.title = product.description;
                 row.appendChild(nameCell);
 
                 priceCell = document.createElement("td");
@@ -99,17 +130,21 @@ function SellPage() {
                 tickCell.appendChild(tick);
                 row.appendChild(tickCell);
 
+
+
                 this.myProducts.appendChild(row);
             })
         }
         else {
-            document.getElementById("createNewAuctionDIv").textContent = "No products"
+            document.getElementById("noProductsDiv").style.display = "block";
+            document.getElementById("createNewAuctionDiv").style.display = "none";
         }
 
         table = document.getElementById("activeAuctions")
-        while (table.rows.length > 1) table.deleteRow(1);
         let myOpenAuctionsArray = data.myOpenAuctions;
         if (myOpenAuctionsArray && myOpenAuctionsArray) {
+            document.getElementById("noAuctionClosedDiv").style.display = "none";
+            document.getElementById("closedAuctionsDiv").style.display = "block";
             while (table.rows.length > 1) {
                 table.deleteRow(1);
             }
@@ -151,13 +186,15 @@ function SellPage() {
             })
         }
         else {
-            document.getElementById("activeAuctionsDiv").textContent = "No active auctions"
+            document.getElementById("noAuctionClosedDiv").style.display = "block";
+            document.getElementById("closedAuctionsDiv").style.display = "none";
         }
 
         table = document.getElementById("closedAuctions");
-        while (table.rows.length > 1) table.deleteRow(1);
         let myClosedAuctionsArray = data.myClosedAuctions;
         if (myClosedAuctionsArray && myClosedAuctionsArray) {
+            document.getElementById("noActiveAuctionsDiv").style.display = "none";
+            document.getElementById("activeAuctionsDiv").style.display = "block";
             while (table.rows.length > 1) {
                 table.deleteRow(1);
             }
@@ -191,7 +228,8 @@ function SellPage() {
             })
         }
         else {
-            document.getElementById("closedAuctionsDiv").textContent = "No closed auctions"
+            document.getElementById("noActiveAuctionsDiv").style.display = "block";
+            document.getElementById("activeAuctionsDiv").style.display = "none";
         }
     }
 }
@@ -213,6 +251,10 @@ function BuyPage() {
         this.page.style.display = "none";
     }
 
+    this.show = function () {
+        this.page.style.display = "block";
+    }
+
 }
 function BuyDetailPage() {
     this.page = document.getElementById("buyDetails");
@@ -231,6 +273,8 @@ function addProductResponseHandler(req) {
         switch (req.status) {
             case (200) : {
                 alert("Product successfully added");
+                let orchestrator = new PageOrchestrator();
+                pageOrchestrator.fillSellPage();
                 break;
             }
             case (400) : {
@@ -263,7 +307,7 @@ function fillSellPageHandler(req) {
                 break;
             }
             case (500) : {
-                alert("Product error");
+                alert("Server error: could not load Sell page");
             }
         }
     }

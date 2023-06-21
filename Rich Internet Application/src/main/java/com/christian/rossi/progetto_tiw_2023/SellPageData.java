@@ -3,7 +3,6 @@ package com.christian.rossi.progetto_tiw_2023;
 import com.christian.rossi.progetto_tiw_2023.Beans.AuctionBean;
 import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SellPageData {

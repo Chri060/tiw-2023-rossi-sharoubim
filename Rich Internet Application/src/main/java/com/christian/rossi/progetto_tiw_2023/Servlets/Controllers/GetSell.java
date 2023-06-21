@@ -41,7 +41,6 @@ public class GetSell extends HttpServlet {
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(json);
 
-            //response.setStatus(HttpServletResponse.SC_OK);
 
             } catch (SQLException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

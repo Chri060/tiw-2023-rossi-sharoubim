@@ -12,7 +12,11 @@ public class DoLogout extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        request.getSession().invalidate();
-        response.setStatus(HttpServletResponse.SC_OK);
+        try {
+            request.getSession().invalidate();
+            response.setStatus(HttpServletResponse.SC_OK);
+        } catch (IllegalStateException e) {
+            response.setStatus(HttpServletResponse.SC_CONFLICT);
+        }
     }
 }

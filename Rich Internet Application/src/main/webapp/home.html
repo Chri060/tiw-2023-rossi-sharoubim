@@ -23,7 +23,7 @@
               Buy
           </button>
       </div>
-      <div class="right">
+      <div class="right" id="logout">
           <button class="modButton">
             <img class="imgIcon" src="static/images/logout.png" alt="" />
           </button>
@@ -180,7 +180,8 @@
               <form>
                   <fieldset>
                       <legend>Create new auction</legend>
-                      <div id="createNewAuctionDIv">
+                      <div id="noProductsDiv">No sellable products</div>
+                      <div id="createNewAuctionDiv">
                           <div>
                               <table id="myProducts">
                                   <thead>
@@ -227,6 +228,7 @@
       <div>
           <fieldset>
               <legend>List of closed auctions</legend>
+              <div id="noAuctionClosedDiv">No closed auctions yet</div>
               <div id="closedAuctionsDiv">
                   <table id="closedAuctions">
                       <thead>
@@ -258,6 +260,7 @@
       <div>
           <fieldset>
               <legend>List of active auctions</legend>
+              <div id="noActiveAuctionsDiv">You don't have any active auction at the moment</div>
               <div id="activeAuctionsDiv">
                   <table id="activeAuctions">
                       <thead>
