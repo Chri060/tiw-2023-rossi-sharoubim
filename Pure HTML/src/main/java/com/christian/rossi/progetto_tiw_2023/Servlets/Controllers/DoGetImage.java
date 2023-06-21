@@ -38,5 +38,3 @@ public class DoGetImage extends HttpServlet {
         Files.copy(file.toPath(), response.getOutputStream());
     }
 }
-
-

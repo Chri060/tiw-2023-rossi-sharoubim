@@ -13,7 +13,7 @@ public class ProductDAO extends AbstractDAO{
 
     public long addProduct(String name, String description, int price, Long userID) throws SQLException {
         String query = "INSERT INTO product (name, description, price, sellable, userID, auctionID) " +
-                       "VALUES (?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement request = getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             request.setString(1, name);
             request.setString(2, description);
@@ -24,8 +24,7 @@ public class ProductDAO extends AbstractDAO{
             request.execute();
             ResultSet resultSet = request.getGeneratedKeys();
             resultSet.next();
-            long ID = resultSet.getLong(1);
-            return ID;
+            return resultSet.getLong(1);
         }
     }
 

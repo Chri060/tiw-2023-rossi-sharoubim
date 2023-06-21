@@ -37,7 +37,7 @@
         <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@USERNAME_NOT_UNIQUE}}" th:text="#{usernameNotUnique}">The username inserted is already in the database</p>
         <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@MISSING_PRODUCT}}" th:text="#{missingProduct}">You have to select at least one product to create an auction</p>
         <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@OFFER_ERROR}}" th:text="#{offerError}">The offered value in not corrected</p>
-        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@OFFER_AUTH}}" th:text="#{offerAuth}">You are not allowed to make an offer because the auction is closed</p>
+        <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@AUCTION_ERROR}}" th:text="#{auctionError}">You are not allowed to see this offer</p>
         <p th:case="${{@com.christian.rossi.progetto_tiw_2023.Constants.Errors@NUMBER_FORMAT_ERROR}}" th:text="#{numberFormat}">The number that you inserted is not valid</p>
       </div>
     </div>

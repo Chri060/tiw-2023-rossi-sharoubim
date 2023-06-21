@@ -18,10 +18,9 @@ import java.sql.SQLException;
 @WebServlet(name = "GetBuyPage", urlPatterns = {URLs.GET_BUY_PAGE})
 public class GetBuyPage extends ThymeleafHTTPServlet {
 
-    public String article;
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String article = request.getParameter("search");
         HttpSession session = request.getSession();
         final ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
@@ -40,12 +39,10 @@ public class GetBuyPage extends ThymeleafHTTPServlet {
             throw new RuntimeException(e);
         }
         getTemplateEngine().process(template, ctx, response.getWriter());
-        article = null;
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        article = request.getParameter("search");
         doGet(request, response);
     }
 }

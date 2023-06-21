@@ -24,8 +24,7 @@ public class ProductDAO extends AbstractDAO{
             request.execute();
             ResultSet resultSet = request.getGeneratedKeys();
             resultSet.next();
-            long ID = resultSet.getLong(1);
-            return ID;
+            return resultSet.getLong(1);
         }
     }
 

@@ -33,6 +33,7 @@ public class GetDetailsPage extends ThymeleafHTTPServlet {
         final ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         try {
+            auctionID = Long.valueOf(request.getParameter("details"));
             AuctionDAO auctionDAO = new AuctionDAO();
             OfferDAO offerDAO = new OfferDAO();
             UserDAO userDAO = new UserDAO();
@@ -46,19 +47,14 @@ public class GetDetailsPage extends ThymeleafHTTPServlet {
             if (winner != null) ctx.setVariable("user", userDAO.getUser(String.valueOf(winner.getUserID())));
         } catch (SQLException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
-            throw new RuntimeException(e);
+        } catch (NumberFormatException e) {
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
         }
         getTemplateEngine().process(template, ctx, response.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            auctionID = Long.valueOf(request.getParameter("details"));
-        }
-        catch (NumberFormatException e) {
-            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
-        }
         this.doGet(request, response);
     }
 }

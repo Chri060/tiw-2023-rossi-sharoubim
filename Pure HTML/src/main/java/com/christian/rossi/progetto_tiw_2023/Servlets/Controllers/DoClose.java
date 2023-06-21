@@ -28,7 +28,7 @@ public class DoClose extends ThymeleafHTTPServlet {
 
         //checking parse problems with variable auctionID
         try {
-            auctionID = Long.valueOf((request.getParameter("close")));
+            auctionID = Long.valueOf((request.getParameter("details")));
         } catch (NumberFormatException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
             return;
