@@ -1,4 +1,4 @@
-package com.christian.rossi.progetto_tiw_2023;
+package com.christian.rossi.progetto_tiw_2023.JSONPrototypes;
 
 import com.christian.rossi.progetto_tiw_2023.Beans.AuctionBean;
 import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;

@@ -5,7 +5,7 @@ import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
 import com.christian.rossi.progetto_tiw_2023.Constants.Constants;
 import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
-import com.christian.rossi.progetto_tiw_2023.SellPageData;
+import com.christian.rossi.progetto_tiw_2023.JSONPrototypes.SellPageData;
 import com.google.gson.Gson;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

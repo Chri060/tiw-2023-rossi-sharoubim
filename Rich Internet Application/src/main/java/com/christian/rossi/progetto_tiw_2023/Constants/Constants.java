@@ -9,5 +9,6 @@ public class Constants {
     public static final String DO_ADD_PRODUCT = "/addProduct";
     public static final String GET_SELL = "/getSell";
     public static final String DO_CREATE_AUCTION = "/doCreateAuction";
+    public static final String GET_AUCTION_DETAILS = "/getAuctionDetails";
 
 }

@@ -1,9 +1,7 @@
 (function () {
     //hides signup form
     { document.getElementById("signUpDiv").style.display = "none"; }
-    if (sessionStorage.getItem('userName')) {
-        window.location.assign("home.html");
-    }
+
 
     //login
     {
@@ -20,7 +18,7 @@
                             sessionStorage.setItem('userName', req.responseText);
                         }else alert("The sign in failed");
                     }
-                },false);
+                },true);
         });
     }
 
@@ -147,4 +145,18 @@ function hideAndShow() {
     else signIn.style.display = "none";
     if (signUp.style.display === "none") signUp.style.display = "block";
     else signUp.style.display = "none";
+}
+
+function makeCall(method, url, formElement, callback, reset) {
+    const req = new XMLHttpRequest();
+    req.onreadystatechange = function() { callback(req) };
+
+    req.open(method, url);
+
+    if (formElement == null) { req.send(); }
+    else {
+        req.send(new FormData(formElement));
+        console.log("sending...")
+        if (reset) { formElement.reset(); }
+    }
 }

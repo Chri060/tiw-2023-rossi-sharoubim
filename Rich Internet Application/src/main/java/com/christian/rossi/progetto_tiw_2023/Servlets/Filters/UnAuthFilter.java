@@ -17,8 +17,9 @@ public class UnAuthFilter implements Filter {
         HttpServletRequest hrequest = (HttpServletRequest) request;
         HttpServletResponse hresponse = (HttpServletResponse) response;
         HttpSession session = hrequest.getSession();
-        if (session.getAttribute("user") != null) {
-            hresponse.sendRedirect(new PathBuilder(Constants.HOME_PAGE).toString());
+        if (session.getAttribute("userID") != null) {
+            session.invalidate();
+            hresponse.sendRedirect(new PathBuilder(Constants.AUTHENTICATION_PAGE).toString());
             return;
         }
         //filter chain pattern
