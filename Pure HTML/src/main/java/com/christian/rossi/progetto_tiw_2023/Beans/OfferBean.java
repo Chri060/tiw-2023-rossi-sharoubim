@@ -1,6 +1,7 @@
 package com.christian.rossi.progetto_tiw_2023.Beans;
 
 public class OfferBean {
+    private String username;
     private Long offerID = null;
     private int offering;
     private String date;
@@ -45,5 +46,13 @@ public class OfferBean {
 
     public void setAuctionID(Long auctionID) {
         this.auctionID = auctionID;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
