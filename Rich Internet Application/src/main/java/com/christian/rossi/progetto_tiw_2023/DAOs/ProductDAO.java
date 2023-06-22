@@ -108,6 +108,7 @@ public class ProductDAO extends AbstractDAO{
         String query = "SELECT * " +
                        "FROM product " +
                        "WHERE auctionID=?";
+        final String imgPath = "http://localhost:8080/getImage/";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, auctionID);
             try (ResultSet result = request.executeQuery()) {
@@ -120,7 +121,7 @@ public class ProductDAO extends AbstractDAO{
                     productBean.setSellable(result.getBoolean("sellable"));
                     productBean.setUserID(result.getLong("userID"));
                     productBean.setAuctionID(result.getLong("auctionID"));
-                    productBean.setImage("http://localhost:8080/getImage/" + result.getLong("productID") + ".jpeg");
+                    productBean.setImage(imgPath + result.getLong("productID") + ".jpeg");
                     productBeanList.add(productBean);
                 }
                 return productBeanList;
