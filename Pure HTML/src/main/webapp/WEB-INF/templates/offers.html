@@ -17,16 +17,12 @@
                         <th th:text="#{productID}">Product code</th>
                         <th th:text="#{productName}">Name</th>
                         <th th:text="#{description}">Description</th>
-                        <th th:text="#{startingPrice}">Description</th>
-                        <th th:text="#{rise}">Description</th>
                         <th th:text="#{photo}">Image</th>
                     </tr>
                     <tr th:each="auction : ${auction}">
                         <td th:text="${auction.productID}">data</td>
                         <td th:text="${auction.name}">data</td>
                         <td th:text="${auction.description}">data</td>
-                        <td th:text="${auction.price}">data</td>
-                        <td th:text="${auction.rise}">data</td>
                         <td>
                             <img th:src="@{${auction.image}}" src="" alt="">
                         </td>

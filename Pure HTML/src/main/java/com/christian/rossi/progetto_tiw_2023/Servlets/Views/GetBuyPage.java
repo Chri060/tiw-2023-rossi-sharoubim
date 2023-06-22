@@ -51,7 +51,7 @@ public class GetBuyPage extends ThymeleafHTTPServlet {
              }
 
             List<AuctionBean> closedauctions = auctionDAO.getWonAuctions(userID);
-            if (auctions != null) {
+            if (closedauctions != null) {
                 for (AuctionBean auctionBean : closedauctions) {
                     List<ProductBean> productBeanList = productDAO.getProductFromAuction(auctionBean.getAuctionID());
                     auctionBean.setProductList(productBeanList);

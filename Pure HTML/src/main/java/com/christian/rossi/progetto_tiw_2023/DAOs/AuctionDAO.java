@@ -115,7 +115,6 @@ public class AuctionDAO extends AbstractDAO{
         final String imgPath = "http://localhost:8080/getImage/";
         String query = "SELECT * " +
                        "FROM winner LEFT JOIN auction on winner.auctionID = auction.auctionID " +
-                       "            LEFT JOIN product on auction.auctionID = product.auctionID " +
                        "WHERE winner.userID=? AND auction.active=0";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, userID);
