@@ -38,6 +38,11 @@ public class DoClose extends ThymeleafHTTPServlet {
         try {
             //update query only if the owner of the action is who is closing it
             AuctionDAO auctionDAO = new AuctionDAO();
+            if (auctionDAO.isAuctionOwner(userID, auctionID)) {
+                auctionDAO.close(auctionID, userID);
+                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_BUY_PAGE).toString());
+                return;
+            }
             auctionDAO.close(auctionID, userID);
         } catch (SQLException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());

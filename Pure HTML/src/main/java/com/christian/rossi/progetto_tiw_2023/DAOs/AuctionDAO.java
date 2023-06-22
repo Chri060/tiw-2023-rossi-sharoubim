@@ -173,4 +173,17 @@ public class AuctionDAO extends AbstractDAO{
             request.executeUpdate();
         }
     }
+
+    public boolean isAuctionOwner(Long userID, Long auctionID) throws SQLException{
+        String query = "SELECT * " +
+                       "FROM auction " +
+                       "WHERE auction.userID=? AND auction.auctionID=?";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setLong(1, userID);
+            request.setLong(2, auctionID);
+            try (ResultSet result = request.executeQuery()) {
+                return (!result.isBeforeFirst());
+            }
+        }
+    }
 }

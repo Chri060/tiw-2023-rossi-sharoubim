@@ -30,14 +30,20 @@ public class GetDetailsPage extends ThymeleafHTTPServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
+        final Long userID = (Long) session.getAttribute("userID");
         final String template = "details";
         final ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         try {
             Long auctionID = Long.valueOf(request.getParameter("details"));
-            AuctionDAO auctionDAO = new AuctionDAO();
             OfferDAO offerDAO = new OfferDAO();
             UserDAO userDAO = new UserDAO();
+            AuctionDAO auctionDAO = new AuctionDAO();
+            if (auctionDAO.isAuctionOwner(userID, auctionID)) {
+                auctionDAO.close(auctionID, userID);
+                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_BUY_PAGE).toString());
+                return;
+            }
             List<AuctionBean> auctionBeanList = auctionDAO.getAuctionbyID(auctionID, session.getCreationTime());
             ProductDAO productDAO = new ProductDAO();
             List<ProductBean> productBeanList = productDAO.getProductFromAuction(auctionBeanList.get(0).getAuctionID());

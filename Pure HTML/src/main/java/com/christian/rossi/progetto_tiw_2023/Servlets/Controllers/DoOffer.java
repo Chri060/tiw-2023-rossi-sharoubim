@@ -68,7 +68,14 @@ public class DoOffer extends ThymeleafHTTPServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
         try {
+            AuctionDAO auctionDAO = new AuctionDAO();
+            if (!auctionDAO.isAuctionOwner(userID, auctionID)) {
+                auctionDAO.close(auctionID, userID);
+                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_BUY_PAGE).toString());
+                return;
+            }
             OfferDAO offerDAO = new OfferDAO();
             offerDAO.addOffer(offer, userID, auctionID, date);
         } catch (SQLException e) {
