@@ -30,7 +30,7 @@ function PageOrchestrator() {
         //Adds listener to load buyPage
         document.getElementById("getBuy").addEventListener("click", (e) => this.showBuyPage());
         //Adds listener to logout
-        document.getElementById("logout").addEventListener("click", (e) => this.logout())
+        document.getElementById("logout").addEventListener("click", (e) => this.logout());
         //Adds listener to create new auction button
         document.getElementById("submitNewAuction").addEventListener("click", (e) => {
                 e.preventDefault();
@@ -41,8 +41,13 @@ function PageOrchestrator() {
                     makeCall("POST", "/doCreateAuction", this.sellPage.createAuctionForm,
                         addProductResponseHandler, true)
                 }
-            }
-        )
+            });
+        //Adds close auction listener
+        document.getElementById("closeAuctionButton").addEventListener("click", (e) => {
+            e.preventDefault();
+            makeCall("POST", "/doClose?auctionID=" + e.target.value, null,
+                closeAuctionResponseHandler, false)
+        } );
     }
 
     this.logout = function () {
@@ -289,11 +294,10 @@ function SellDetailsPage() {
         while (table.rows.length > 1) {
             table.deleteRow(1);
         }
-        if (productList[0].active) {
+        if (data.active) {
             let closeButton = document.getElementById("closeAuctionButton");
             closeButton.style.display = "block";
-            //TODO
-            closeButton.addEventListener("click", (e) => {} );
+            closeButton.setAttribute("value", productList[0].auctionID);
         }
         else {
         document.getElementById("closeAuctionButton").style.display = "none";
@@ -492,6 +496,39 @@ function fillSellDetailPageHandler(req) {
                 else {
                     alert("Data from server is not valid")
                 }
+                break;
+            }
+            case (400) : {
+                alert("Bad request");
+                break;
+            }
+            case (403) :
+                alert("You are not the owner of this auction");
+                break;
+            case (500) : {
+                alert("Server error: could not load Sell page");
+                break;
+            }
+        }
+    }
+}
+
+function closeAuctionResponseHandler(req) {
+    if (req.readyState == 4) {
+        switch (req.status) {
+            case (200) : {/*
+                const data = JSON.parse((req.responseText));
+                if (data) {
+                    let sellDetailsPage = new SellDetailsPage()
+                    sellDetailsPage.fill(data);
+                    pageOrchestrator.hideAll();
+                    pageOrchestrator.showSellDetailsPage();
+                }
+                else {
+                    alert("Data from server is not valid")
+                }*/
+                alert("Auction closed")
+                document.getElementById("closeAuctionButton").style.display = "none";
                 break;
             }
             case (400) : {

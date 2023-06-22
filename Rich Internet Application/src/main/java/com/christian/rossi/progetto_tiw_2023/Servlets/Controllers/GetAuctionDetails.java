@@ -54,6 +54,8 @@ public class GetAuctionDetails extends HttpServlet {
                 auctionData.setWinner(winner);
             }
 
+            auctionData.setActive(auctionDAO.isAuctionActive(auctionID));
+
             Gson gson = new Gson();
             String json = gson.toJson(auctionData);
             response.setContentType("application/json");

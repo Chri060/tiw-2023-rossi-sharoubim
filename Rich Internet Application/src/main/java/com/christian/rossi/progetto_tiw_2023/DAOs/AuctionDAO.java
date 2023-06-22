@@ -49,6 +49,7 @@ public class AuctionDAO extends AbstractDAO{
                         List<Integer> timeRem = TimeHandler.getTimeDifference(result.getTimestamp("expiry"), loginTime);
                         auctionBean.setRemainingDays(String.valueOf(timeRem.get(0)));
                         auctionBean.setRemainingHours(timeRem.get(1) + "h " + timeRem.get(2)+ "m");
+                        auctionBean.setActive(result.getInt("active"));
                         auctionBeanList.add(auctionBean);
                     }
                 }
@@ -116,6 +117,24 @@ public class AuctionDAO extends AbstractDAO{
             request.setLong(2, auctionID);
             try (ResultSet result = request.executeQuery()) {
                 return (result.isBeforeFirst());
+            }
+        }
+    }
+
+    public boolean isAuctionActive(Long auctionID) throws SQLException{
+        String query = "SELECT * " +
+                "FROM auction " +
+                "WHERE auction.auctionID=?";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setLong(1, auctionID);
+            try (ResultSet result = request.executeQuery()) {
+                if (!result.isBeforeFirst()) {
+                    return false;
+                }
+                else {
+                    result.next();
+                    return result.getInt("active") == 1;
+                }
             }
         }
     }
