@@ -9,8 +9,6 @@ import java.util.List;
 
 public class AuctionDAO extends AbstractDAO{
 
-    private final String imgPath = "http://localhost:8080/getImage/";
-
     public Long createAuction(int price, int rise, Timestamp expiry, Long userID) throws SQLException{
         String query = "INSERT INTO auction (price, rise , expiry, active, userID) " +
                        "VALUES (?, ?, ?, ?, ?)";

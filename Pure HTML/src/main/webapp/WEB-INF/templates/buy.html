@@ -28,10 +28,7 @@
                             <th th:text="#{startingPrice}">Starting price</th>
                             <th th:text="#{remainingDays}">remainingDays</th>
                             <th th:text="#{remainingHours}">remainingHours</th>
-                            <th th:text="#{productID}">Product code</th>
                             <th th:text="#{productName}">Name</th>
-                            <th th:text="#{description}">Description</th>
-                            <th th:text="#{photo}">Image</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,12 +42,7 @@
                             <td th:text="${auctions.price}">data</td>
                             <td th:text="${auctions.remainingDays}">data</td>
                             <td th:text="${auctions.remainingHours}">data</td>
-                            <td th:text="${auctions.productID}">data</td>
-                            <td th:text="${auctions.name}">data</td>
-                            <td th:text="${auctions.description}">data</td>
-                            <td>
-                                <img th:src="@{${auctions.image}}" src="" alt="">
-                            </td>
+                            <td th:text="${auctions.productNames}">data</td>
                         </tr>
                     </tbody>
                 </table>
@@ -70,21 +62,13 @@
                         <th th:text="#{auctionID}">Closed auctions</th>
                         <th th:text="#{finalPrice}">Final Price</th>
                         <th th:text="#{name}">Name</th>
-                        <th th:text="#{productID}">Product code</th>
-                        <th th:text="#{description}">Description</th>
-                        <th th:text="#{photo}">Image</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each ="closedauctions : ${closedauctions}">
                         <td th:text="${closedauctions.auctionID}">data</td>
-                        <td th:text="${closedauctions.price}">data</td>
-                        <td th:text="${closedauctions.name}">data</td>
-                        <td th:text="${closedauctions.productID}">data</td>
-                        <td th:text="${closedauctions.description}">data</td>
-                        <td>
-                            <img th:src="@{${closedauctions.image}}" src="" alt="">
-                        </td>
+                        <td th:text="${closedauctions.maxOffer}">data</td>
+                        <td th:text="${closedauctions.productNames}">data</td>
                     </tr>
                     </tbody>
                 </table>

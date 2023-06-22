@@ -53,7 +53,7 @@ public class DoOffer extends ThymeleafHTTPServlet {
         try {
             AuctionDAO auctionDAO = new AuctionDAO();
             OfferDAO offerDAO = new OfferDAO();
-            List<AuctionBean> auctionBeanList = auctionDAO.getAuctionsByID(auctionID, session.getCreationTime());
+            List<AuctionBean> auctionBeanList = auctionDAO.getAuctionbyID(auctionID, session.getCreationTime());
             int start = auctionBeanList.get(0).getPrice();
             int rise = auctionBeanList.get(0).getRise();
             int actualOffer = offerDAO.getMaxOffer(auctionID);

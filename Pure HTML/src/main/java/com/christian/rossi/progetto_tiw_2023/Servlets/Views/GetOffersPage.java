@@ -31,7 +31,7 @@ public class GetOffersPage extends ThymeleafHTTPServlet {
         try {
             AuctionDAO auctionDAO = new AuctionDAO();
             OfferDAO offerDAO = new OfferDAO();
-            ctx.setVariable("auction", auctionDAO.getAuctionsByID(auctionID, session.getCreationTime()));
+            ctx.setVariable("auction", auctionDAO.getAuctionbyID(auctionID, session.getCreationTime()));
             ctx.setVariable("offer", offerDAO.getOffers(auctionID));
             ctx.setVariable("actualID", auctionID);
         } catch (SQLException e) {
