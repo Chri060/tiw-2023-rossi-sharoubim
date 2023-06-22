@@ -5,6 +5,7 @@ public class OfferBean {
     private int offering;
     private String date;
     private Long userID = null;
+    private String userName = null;
     private Long auctionID = null;
 
     public Long getOfferID() {
@@ -37,6 +38,14 @@ public class OfferBean {
 
     public void setUserID(Long userID) {
         this.userID = userID;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public Long getAuctionID() {

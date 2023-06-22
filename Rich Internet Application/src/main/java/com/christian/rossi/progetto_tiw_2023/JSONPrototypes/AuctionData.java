@@ -8,15 +8,15 @@ import com.christian.rossi.progetto_tiw_2023.Beans.UserBean;
 import java.util.List;
 
 public class AuctionData {
-    List<AuctionBean> productList;
+    List<ProductBean> productList;
     List<OfferBean> offersList;
     UserBean winner;
 
-    public List<AuctionBean> getProductList() {
+    public List<ProductBean> getProductList() {
         return productList;
     }
 
-    public void setProductList(List<AuctionBean> productList) {
+    public void setProductList(List<ProductBean> productList) {
         this.productList = productList;
     }
 

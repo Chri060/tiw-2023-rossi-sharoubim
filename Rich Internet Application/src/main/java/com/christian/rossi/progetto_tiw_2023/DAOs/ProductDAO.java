@@ -1,6 +1,7 @@
 package com.christian.rossi.progetto_tiw_2023.DAOs;
 
 import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
+import com.christian.rossi.progetto_tiw_2023.Constants.Constants;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -85,7 +86,7 @@ public class ProductDAO extends AbstractDAO{
     }
 
 
-    public boolean CheckProduct (Long productID, Long userID) throws SQLException {
+    public boolean CheckProduct(Long productID, Long userID) throws SQLException {
         String query = "SELECT * " +
                        "FROM product " +
                        "WHERE productID=? AND userID=?";
@@ -99,6 +100,30 @@ public class ProductDAO extends AbstractDAO{
                     productBean.setName(result.getString("name"));
                 }
                 return productBean.getName() == null;
+            }
+        }
+    }
+
+    public List<ProductBean> getProductFromAuction(Long auctionID) throws SQLException {
+        String query = "SELECT * " +
+                       "FROM product " +
+                       "WHERE auctionID=?";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setLong(1, auctionID);
+            try (ResultSet result = request.executeQuery()) {
+                List<ProductBean> productBeanList = new ArrayList<>();
+                while(result.next()) {
+                    ProductBean productBean = new ProductBean();
+                    productBean.setName(result.getString("name"));
+                    productBean.setDescription(result.getString("description"));
+                    productBean.setPrice(result.getInt("price"));
+                    productBean.setSellable(result.getBoolean("sellable"));
+                    productBean.setUserID(result.getLong("userID"));
+                    productBean.setAuctionID(result.getLong("auctionID"));
+                    productBean.setImage("http://localhost:8080/getImage/" + result.getLong("productID") + ".jpeg");
+                    productBeanList.add(productBean);
+                }
+                return productBeanList;
             }
         }
     }

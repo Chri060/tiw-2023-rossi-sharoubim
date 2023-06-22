@@ -166,7 +166,7 @@ function SellPage() {
                 table.deleteRow(1);
             }
             myOpenAuctionsArray.forEach(function (auction) {
-                let row, auctionID, price, days, detailsButton, time, name, productID;
+                let row, auctionID, price, days, detailsButton, time, productList;
                 row = document.createElement("tr");
 
                 auctionID = document.createElement("td");
@@ -193,7 +193,7 @@ function SellPage() {
                 row.appendChild(detailsButton);
 
                 //Adds listener to details button
-                detailsButton.addEventListener("click", (e) =>{
+                click.addEventListener("click", (e) =>{
                     let auctionID = e.target.value;
                     pageOrchestrator.hideAll();
                     pageOrchestrator.showSellDetailsPage();
@@ -201,13 +201,16 @@ function SellPage() {
 
                 })
 
-                name = document.createElement("td");
-                name.textContent = auction.name;
-                row.appendChild(name);
+                productList = document.createElement("td");
+                var temp = "";
+                auction.productList.forEach(function (product) {
+                        temp += product.name;
+                        temp += ", ";
+                    }
+                )
+                productList.textContent = temp;
+                row.appendChild(productList);
 
-                productID  = document.createElement("td");
-                productID.textContent = auction.productID;
-                row.appendChild(productID);
 
                 table.appendChild(row);
             })
@@ -226,7 +229,7 @@ function SellPage() {
                 table.deleteRow(1);
             }
             myClosedAuctionsArray.forEach(function (auction) {
-                let row, auctionID, price, detailsButton, name, productID;
+                let row, auctionID, price, detailsButton, productList;
                 row = document.createElement("tr");
 
                 auctionID = document.createElement("td");
@@ -240,11 +243,12 @@ function SellPage() {
                 detailsButton = document.createElement("td");
                 let click = document.createElement("button");
                 click.textContent = "Details";
-                detailsButton.appendChild(click);
                 click.setAttribute("value", auction.auctionID);
+                detailsButton.appendChild(click);
                 row.appendChild(detailsButton);
 
-                detailsButton.addEventListener("click", (e) =>{
+                //Adds listener to details button
+                click.addEventListener("click", (e) =>{
                     let auctionID = e.target.value;
                     pageOrchestrator.hideAll();
                     pageOrchestrator.showSellDetailsPage();
@@ -252,13 +256,16 @@ function SellPage() {
 
                 })
 
-                name = document.createElement("td");
-                name.textContent = auction.name;
-                row.appendChild(name);
+                productList = document.createElement("td");
+                var temp = "";
+                auction.productList.forEach(function (product) {
+                        temp += product.name;
+                        temp += ", ";
+                    }
+                )
+                productList.textContent = temp;
+                row.appendChild(productList);
 
-                productID  = document.createElement("td");
-                productID.textContent = auction.productID;
-                row.appendChild(productID);
 
                 table.appendChild(row);
             })
@@ -283,19 +290,19 @@ function SellDetailsPage() {
     this.fill = function (data) {
         let table = document.getElementById("auctionDetails");
         let productList = data.productList;
-            while (table.rows.length > 1) {
-                table.deleteRow(1);
-            }
-            if (productList[0].active) {
-                let closeButton = document.getElementById("closeAuctionButton");
-                closeButton.style.display = "block";
-                //TODO
-                closeButton.addEventListener("click", (e) => {} );
-            }
-            else {
-            document.getElementById("closeAuctionButton").style.display = "none";
-            }
-            productList.forEach(function (auction) {
+        while (table.rows.length > 1) {
+            table.deleteRow(1);
+        }
+        if (productList[0].active) {
+            let closeButton = document.getElementById("closeAuctionButton");
+            closeButton.style.display = "block";
+            //TODO
+            closeButton.addEventListener("click", (e) => {} );
+        }
+        else {
+        document.getElementById("closeAuctionButton").style.display = "none";
+        }
+        productList.forEach(function (auction) {
                 let row, codeCell, priceCell, productID, productName, productDescription, image;
                 row = document.createElement("tr")
 
@@ -319,8 +326,91 @@ function SellDetailsPage() {
                 productDescription.textContent = auction.description;
                 row.appendChild(productDescription);
 
+                image = document.createElement("img");
+                image.setAttribute("alt", "");
+                image.setAttribute("src", auction.image);
+
+                let imagetd= document.createElement("td");
+
+                imagetd.appendChild(image);
+
+                row.appendChild(imagetd);
+
                 table.appendChild(row);
         })
+
+        table = document.getElementById("offerList");
+        let offersList = data.offersList;
+        if (offersList && offersList.length > 0) {
+            table.style.display = "block";
+            document.getElementById("noOfferList").style.display = "none";
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+            offersList.forEach(function (offer) {
+                let row, userName, offering, date;
+                row = document.createElement("tr");
+
+                userName = document.createElement("td");
+                userName.textContent = offer.userName;
+                row.appendChild(userName);
+
+                offering = document.createElement("td");
+                offering.textContent = offer.offering;
+                row.appendChild(offering);
+
+                date = document.createElement("td");
+                date.textContent = offer.date;
+                row.appendChild(date);
+
+                table.appendChild(row);
+            })
+        }
+        else {
+            document.getElementById("noOfferList").style.display = "block";
+            table.style.display = "none";
+        }
+
+        table = document.getElementById("winnerTable")
+        let winner = data.winner;
+        if (winner) {
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+            let userID, username, email, city, address, province, row;
+
+            row = document.createElement("tr");
+
+            userID = document.createElement("td");
+            userID.textContent = winner.userID;
+            row.appendChild(userID);
+
+            username = document.createElement("td");
+            username.textContent = winner.username
+            row.appendChild(username);
+
+            email = document.createElement("td");
+            email.textContent = winner.email
+            row.appendChild(email);
+
+            city = document.createElement("td");
+            city.textContent = winner.city;
+            row.appendChild(city);
+
+            address = document.createElement("td");
+            address.textContent = winner.address
+            row.appendChild(address);
+
+            province = document.createElement("td");
+            province.textContent = winner.province
+            row.appendChild(province);
+
+            table.appendChild(row);
+        }
+        else {
+            table.style.display = "none";
+        }
+
     }
 }
 function BuyPage() {

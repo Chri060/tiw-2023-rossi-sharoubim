@@ -237,12 +237,10 @@
                           <th>Final Price</th>
                           <th>Bids details</th>
                           <th>Name</th>
-                          <th>Product code</th>
                       </tr>
                       </thead>
                       <tbody>
                       <tr>
-                          <td>data</td>
                           <td>data</td>
                           <td>
                               <form>
@@ -270,8 +268,7 @@
                           <th>Time left</th>
                           <th>Time left</th>
                           <th>Bids details</th>
-                          <th>Name</th>
-                          <th>Product code</th>
+                          <th>Products</th>
                       </tr>
                       </thead>
                       <tbody>
@@ -285,7 +282,6 @@
                                   <button type="submit" name="details" value="null">Details</button>
                               </form>
                           </td>
-                          <td>data</td>
                           <td>data</td>
                       </tr>
                       </tbody>
@@ -328,7 +324,7 @@
           <div>
               <fieldset>
                   <legend>Offering details</legend>
-                  <table>
+                  <table id="offerList">
                       <thead>
                       <tr>
                           <th>User</th>
@@ -344,6 +340,7 @@
                       </tr>
                       </tbody>
                   </table>
+                  <div id="noOfferList">No offers for this auction yet</div>
               </fieldset>
           </div>
           <div>
@@ -355,7 +352,7 @@
       <div>
           <fieldset>
               <legend>Winner</legend>
-              <table>
+              <table id="winnerTable">
                   <thead>
                   <tr>
                       <th>UserID</th>

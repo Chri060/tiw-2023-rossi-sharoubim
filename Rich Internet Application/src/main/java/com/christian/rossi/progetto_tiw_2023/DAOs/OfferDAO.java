@@ -23,11 +23,9 @@ public class OfferDAO extends AbstractDAO{
                        "ORDER BY offering DESC";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, auctionID);
+            List<OfferBean> offerBeanList = new ArrayList<>();
             try (ResultSet result = request.executeQuery()) {
-                if (!result.isBeforeFirst())
-                    return null;
-                else {
-                    List<OfferBean> offerBeanList = new ArrayList<>();
+                if (result.isBeforeFirst()) {
                     while (result.next()) {
                         OfferBean offerBean = new OfferBean();
                         offerBean.setUserID(result.getLong("userID"));
@@ -35,9 +33,9 @@ public class OfferDAO extends AbstractDAO{
                         offerBean.setDate(result.getString("date"));
                         offerBeanList.add(offerBean);
                     }
-                    return offerBeanList;
                 }
             }
+            return offerBeanList;
         }
     }
 

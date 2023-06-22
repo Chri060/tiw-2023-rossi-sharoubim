@@ -30,9 +30,16 @@ public class GetSell extends HttpServlet {
 
             List<ProductBean> productBeanList = productDAO.getUserProducts(userID);
             sellPageData.setMyProducts(productBeanList);
-            List<AuctionBean> openAuctions = auctionDAO.getAuctions(userID, 1, session.getCreationTime());
+            //List<AuctionBean> openAuctions = auctionDAO.getAuctions(userID, 1, session.getCreationTime());
+            List<AuctionBean> openAuctions = auctionDAO.getUserAuctions(userID, 1, session.getCreationTime());
+            for (AuctionBean auctionBean : openAuctions) {
+                auctionBean.setProductList(productDAO.getProductFromAuction(auctionBean.getAuctionID()));
+            }
             sellPageData.setMyOpenAuctions(openAuctions);
-            List<AuctionBean> closedAuctions = auctionDAO.getAuctions(userID, 0, session.getCreationTime());
+            List<AuctionBean> closedAuctions = auctionDAO.getUserAuctions(userID, 0, session.getCreationTime());
+            for (AuctionBean auctionBean : closedAuctions) {
+                auctionBean.setProductList(productDAO.getProductFromAuction(auctionBean.getAuctionID()));
+            }
             sellPageData.setMyClosedAuctions(closedAuctions);
 
             Gson gson = new Gson();
