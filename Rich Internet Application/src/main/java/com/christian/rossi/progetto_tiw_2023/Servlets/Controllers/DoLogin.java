@@ -36,7 +36,9 @@ public class DoLogin extends HttpServlet {
         }
         if (userBean == null) response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         else {
-            request.getSession().setAttribute("USER", userBean);
+            request.getSession().setAttribute("userName", userBean.getUsername());
+            request.getSession().setAttribute("userID", userBean.getUserID());
+            response.getWriter().write(userBean.getUsername());
             response.setStatus(HttpServletResponse.SC_OK);
         }
     }

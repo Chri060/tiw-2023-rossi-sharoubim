@@ -18,7 +18,7 @@ public class OfferDAO {
 
     public List<OfferBean> getOffers(Long auctionID) throws SQLException {
         String query = "SELECT * " +
-                       "FROM offer " +
+                       "FROM offer JOIN user ON offer.userID = user.userID " +
                        "WHERE auctionID=? " +
                        "ORDER BY offering DESC";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
@@ -30,6 +30,7 @@ public class OfferDAO {
                     List<OfferBean> offerBeanList = new ArrayList<>();
                     while (result.next()) {
                         OfferBean offerBean = new OfferBean();
+                        offerBean.setUsername(result.getString("username"));
                         offerBean.setUserID(result.getLong("userID"));
                         offerBean.setOffering(result.getInt("offering"));
                         offerBean.setDate(result.getString("date"));

@@ -46,12 +46,12 @@ public class UserDAO {
         return authenticate(username, password);
     }
 
-    public UserBean getUser(String userID) throws SQLException {
+    public UserBean getUser(Long userID) throws SQLException {
         String query = "SELECT * " +
                        "FROM user " +
                        "WHERE userID=?";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
-            request.setString(1, userID);
+            request.setLong(1, userID);
             try (ResultSet result = request.executeQuery()) {
                 if (!result.isBeforeFirst())
                     return null;
@@ -69,8 +69,6 @@ public class UserDAO {
             }
         }
     }
-
-
 
     public String GetUserByUsername(String username) throws SQLException {
         String query = "SELECT * " +

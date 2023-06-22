@@ -102,7 +102,6 @@
                         <th th:text="#{finalPrice}">Final Price</th>
                         <th th:text="#{offers}">Bids details</th>
                         <th th:text="#{name}">Name</th>
-                        <th th:text="#{productID}">Product code</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -114,8 +113,7 @@
                                 <button type="submit" name="details" value="Login" th:value="${closedauctions.auctionID}" th:text="#{detail}">Details</button>
                             </form>
                         </td>
-                        <td th:text="${closedauctions.name}">data</td>
-                        <td th:text="${closedauctions.productID}">data</td>
+                        <td style="white-space: pre-line" th:text="${closedauctions.productNames}">data</td>
                     </tr>
                     </tbody>
                 </table>
@@ -138,7 +136,6 @@
                             <th th:text="#{missingHours}">Time left</th>
                             <th th:text="#{offers}">Bids details</th>
                             <th th:text="#{name}">Name</th>
-                            <th th:text="#{productID}">Product code</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -152,8 +149,7 @@
                                     <button type="submit" name="details" value="null" th:value="${activeauctions.auctionID}" th:text="#{detail}">Details</button>
                                 </form>
                             </td>
-                            <td th:text="${activeauctions.name}">data</td>
-                            <td th:text="${activeauctions.productID}">data</td>
+                            <td style="white-space: pre-line" th:text="${activeauctions.productNames}">data</td>
                         </tr>
                     </tbody>
                 </table>

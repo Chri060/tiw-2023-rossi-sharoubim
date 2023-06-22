@@ -6,5 +6,11 @@ public class Constants {
     public static final String LOGIN_ENDPOINT = "/login";
     public static final String REGISTER_ENDPOINT = "/register";
     public static final String LOGOUT_ENDPOINT = "/logout";
-    public static final String GET_SELL_PAGE = "/sell";
+    public static final String DO_ADD_PRODUCT = "/addProduct";
+    public static final String GET_SELL = "/getSell";
+    public static final String DO_CREATE_AUCTION = "/doCreateAuction";
+    public static final String GET_AUCTION_DETAILS = "/getAuctionDetails";
+    public static final String DO_GET_IMAGE = "/getImage/*";
+    public static final String DO_CLOSE = "/doClose";
+
 }

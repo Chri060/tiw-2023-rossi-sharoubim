@@ -24,8 +24,7 @@ public class ProductDAO extends AbstractDAO{
             request.execute();
             ResultSet resultSet = request.getGeneratedKeys();
             resultSet.next();
-            long ID = resultSet.getLong(1);
-            return ID;
+            return resultSet.getLong(1);
         }
     }
 
@@ -89,7 +88,7 @@ public class ProductDAO extends AbstractDAO{
     public boolean CheckProduct (Long productID, Long userID) throws SQLException {
         String query = "SELECT * " +
                        "FROM product " +
-                       "WHERE productID=? AND userID=?";
+                       "WHERE productID=? AND userID=? AND sellable=1";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, productID);
             request.setLong(2, userID);
@@ -100,6 +99,32 @@ public class ProductDAO extends AbstractDAO{
                     productBean.setName(result.getString("name"));
                 }
                 return productBean.getName() == null;
+            }
+        }
+    }
+
+    public List<ProductBean> getProductFromAuction(Long auctionID) throws SQLException {
+        final String imgPath = "http://localhost:8080/getImage/";
+        String query = "SELECT * " +
+                "FROM product " +
+                "WHERE auctionID=?";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setLong(1, auctionID);
+            try (ResultSet result = request.executeQuery()) {
+                List<ProductBean> productBeanList = new ArrayList<>();
+                while(result.next()) {
+                    ProductBean productBean = new ProductBean();
+                    productBean.setName(result.getString("name"));
+                    productBean.setDescription(result.getString("description"));
+                    productBean.setPrice(result.getInt("price"));
+                    productBean.setSellable(result.getBoolean("sellable"));
+                    productBean.setUserID(result.getLong("userID"));
+                    productBean.setAuctionID(result.getLong("auctionID"));
+                    productBean.setProductID(result.getLong("productID"));
+                    productBean.setImage(imgPath + result.getLong("productID") + ".jpeg");
+                    productBeanList.add(productBean);
+                }
+                return productBeanList;
             }
         }
     }

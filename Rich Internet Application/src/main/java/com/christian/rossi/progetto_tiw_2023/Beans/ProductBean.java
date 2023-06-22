@@ -8,6 +8,7 @@ public class ProductBean {
     private boolean sellable = false;
     private Long userID = null;
     private Long auctionID = null;
+    private String image = null;
 
     public Long getProductID() { return productID; }
     public void setProductID(Long productID) { this.productID = productID; }
@@ -23,4 +24,12 @@ public class ProductBean {
     public void setUserID(Long userID) { this.userID = userID; }
     public Long getAuctionID() { return auctionID; }
     public void setAuctionID(Long auctionID) { this.auctionID = auctionID; }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

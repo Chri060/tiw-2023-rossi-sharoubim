@@ -1,7 +1,7 @@
 package com.christian.rossi.progetto_tiw_2023.DAOs;
 
 import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
-import static com.christian.rossi.progetto_tiw_2023.DAOs.DBConnectionPool.getConnection;
+import com.christian.rossi.progetto_tiw_2023.Constants.Constants;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,11 +10,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductDAO {
+public class ProductDAO extends AbstractDAO{
 
     public long addProduct(String name, String description, int price, Long userID) throws SQLException {
         String query = "INSERT INTO product (name, description, price, sellable, userID, auctionID) " +
-                       "VALUES (?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement request = getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             request.setString(1, name);
             request.setString(2, description);
@@ -25,8 +25,7 @@ public class ProductDAO {
             request.execute();
             ResultSet resultSet = request.getGeneratedKeys();
             resultSet.next();
-            long ID = resultSet.getLong(1);
-            return ID;
+            return resultSet.getLong(1);
         }
     }
 
@@ -87,10 +86,10 @@ public class ProductDAO {
     }
 
 
-    public boolean CheckProduct (Long productID, Long userID) throws SQLException {
+    public boolean CheckProduct(Long productID, Long userID) throws SQLException {
         String query = "SELECT * " +
                        "FROM product " +
-                       "WHERE productID=? AND userID=?";
+                       "WHERE productID=? AND userID=? AND sellable=1";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, productID);
             request.setLong(2, userID);
@@ -101,6 +100,31 @@ public class ProductDAO {
                     productBean.setName(result.getString("name"));
                 }
                 return productBean.getName() == null;
+            }
+        }
+    }
+
+    public List<ProductBean> getProductFromAuction(Long auctionID) throws SQLException {
+        String query = "SELECT * " +
+                       "FROM product " +
+                       "WHERE auctionID=?";
+        final String imgPath = "http://localhost:8080/getImage/";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setLong(1, auctionID);
+            try (ResultSet result = request.executeQuery()) {
+                List<ProductBean> productBeanList = new ArrayList<>();
+                while(result.next()) {
+                    ProductBean productBean = new ProductBean();
+                    productBean.setName(result.getString("name"));
+                    productBean.setDescription(result.getString("description"));
+                    productBean.setPrice(result.getInt("price"));
+                    productBean.setSellable(result.getBoolean("sellable"));
+                    productBean.setUserID(result.getLong("userID"));
+                    productBean.setAuctionID(result.getLong("auctionID"));
+                    productBean.setImage(imgPath + result.getLong("productID") + ".jpeg");
+                    productBeanList.add(productBean);
+                }
+                return productBeanList;
             }
         }
     }

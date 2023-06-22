@@ -2,45 +2,44 @@
     //hides signup form
     { document.getElementById("signUpDiv").style.display = "none"; }
 
+
     //login
-    {   const id = "sign-in-form";
+    {
+        const id = "sign-in-form";
         const endpoint = "/login";
-        const request = new XMLHttpRequest();
-        request.onreadystatechange = () => {
-            if (request.readyState === 4) {
-                if (request.status === 200) window.location.assign("home.html");
-                else alert("The sign in failed");
-            }
-        };
         document.getElementById(id).addEventListener("submit", (e) => {
             e.preventDefault();
             if (!e.target.closest("form").reportValidity()) e.stopPropagation();
-            else {
-                const data = new FormData(e.target.closest("form"));
-                request.open("post", endpoint, true);
-                request.send(data);
-            }
+            else makeCall("post", endpoint, e.target.closest("form"),
+                function(req) {
+                    if (req.readyState === 4) {
+                        if (req.status === 200) {
+                            window.location.assign("home.html");
+                            sessionStorage.setItem('userName', req.responseText);
+                        }else alert("The sign in failed");
+                    }
+                },true);
         });
     }
 
     //signup
-    {   const id = "sign-up-form";
+    {
+        const id = "sign-up-form";
         const endpoint = "/register";
-        const request = new XMLHttpRequest();
-        request.onreadystatechange = () => {
-            if (request.readyState === 4) {
-                if (request.status === 200) window.location.assign("home.html");
-                else alert("The signup failed");
-            }
-        };
         document.getElementById(id).addEventListener("submit", (e) => {
             e.preventDefault();
             if (!e.target.closest("form").reportValidity()) e.stopPropagation();
-            else {
-                const data = new FormData(e.target.closest("form"));
-                request.open("post", endpoint, true);
-                request.send(data);
-            }
+            else makeCall("post", endpoint, e.target.closest("form"),
+                function (req) {
+                    if (req.readyState === 4) {
+                        if (req.status === 200) {
+                            window.location.assign("home.html");
+                            sessionStorage.setItem('userName', req.responseText);
+                        }
+                        else alert("The signup failed");
+                    }
+                },
+                false);
         });
     }
 
@@ -146,4 +145,18 @@ function hideAndShow() {
     else signIn.style.display = "none";
     if (signUp.style.display === "none") signUp.style.display = "block";
     else signUp.style.display = "none";
+}
+
+function makeCall(method, url, formElement, callback, reset) {
+    const req = new XMLHttpRequest();
+    req.onreadystatechange = function() { callback(req) };
+
+    req.open(method, url);
+
+    if (formElement == null) { req.send(); }
+    else {
+        req.send(new FormData(formElement));
+        console.log("sending...")
+        if (reset) { formElement.reset(); }
+    }
 }

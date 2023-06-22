@@ -10,14 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(filterName = "UnAuthFilter", urlPatterns = {})
+@WebFilter(filterName = "UnAuthFilter", urlPatterns = {Constants.AUTHENTICATION_PAGE})
 public class UnAuthFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest hrequest = (HttpServletRequest) request;
         HttpServletResponse hresponse = (HttpServletResponse) response;
         HttpSession session = hrequest.getSession();
-        if (session.getAttribute("user") != null) {
+        if (session.getAttribute("userID") != null) {
             hresponse.sendRedirect(new PathBuilder(Constants.HOME_PAGE).toString());
             return;
         }

@@ -1,31 +1,34 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 
-import com.christian.rossi.progetto_tiw_2023.Constants.Errors;
-import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
-import com.christian.rossi.progetto_tiw_2023.DAOs.*;
+
+import com.christian.rossi.progetto_tiw_2023.Constants.Constants;
+import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
-import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
 import com.christian.rossi.progetto_tiw_2023.Utils.InputChecker;
 import com.christian.rossi.progetto_tiw_2023.Utils.PathBuilder;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "DoCreateAuction", urlPatterns = {URLs.DO_CREATE_AUCTION})
-public class DoCreateAuction extends ThymeleafHTTPServlet {
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+@WebServlet(name = "DoCreateAuction", urlPatterns = {Constants.DO_CREATE_AUCTION})
+@MultipartConfig
+public class DoCreateAuction extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         final Set<Long> products;
         final int rise;
@@ -35,7 +38,7 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
 
         //checking problem with variables product
         if (request.getParameterValues("product") == null) {
-            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.MISSING_PRODUCT).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
         else {
@@ -43,7 +46,7 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
                 products = Arrays.stream(request.getParameterValues("product")).map(Long::parseLong).collect(Collectors.toUnmodifiableSet());
             }
             catch (NumberFormatException | NullPointerException e) {
-                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
         }
@@ -52,12 +55,12 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
         try {
             rise = Integer.parseInt(request.getParameter("rise"));
             if (!InputChecker.checkRise(rise)) {
-                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.RISE_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
         }
         catch (NumberFormatException e) {
-            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
@@ -72,11 +75,11 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
             LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, formatter);
             expiry = Timestamp.valueOf(dateTime);
             if (!InputChecker.checkExpiry(expiry)) {
-                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.EXPIRY_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
         } catch (DateTimeParseException | NullPointerException e) {
-            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.EXPIRY_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
         //end of time parsing
@@ -88,11 +91,11 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
             try {
                 Long productID = productsIterator.next();
                 if (productDAO.CheckProduct(productID, userID)) {
-                    response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.PRODUCT_ID_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                     return;
                 }
             } catch (SQLException e) {
-                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 return;
             }
         }
@@ -105,7 +108,7 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
                 Long productID = productsIterator.next();
                 price += productDAO.GetPrice(productID);
             } catch (SQLException e) {
-                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 return;
             }
         }
@@ -130,13 +133,14 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
         }
         finally {
             try {
-            auctionDAO.setAutoCommit(true);
-            productDAO.setAutoCommit(true);
+                auctionDAO.setAutoCommit(true);
+                productDAO.setAutoCommit(true);
             } catch (SQLException e) {}
         }
         switch (statusCode) {
-            case 0 -> response.sendRedirect(URLs.GET_SELL_PAGE);
-            case -1 -> response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+            case 0 -> response.setStatus(HttpServletResponse.SC_OK);
+            case -1 -> response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
+
 }

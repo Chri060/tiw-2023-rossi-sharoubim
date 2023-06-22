@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Home page</title>
     <link rel="stylesheet" href="/static/style.css"/>
-    <script defer src="js/home.js"></script>
+    <script defer src="js/sell.js"></script>
 </head>
 <body>
   <div class="top">
@@ -23,8 +23,8 @@
               Buy
           </button>
       </div>
-      <div class="right">
-          <button class="modButton" onclick="logout()">
+      <div class="right" id="logout">
+          <button class="modButton">
             <img class="imgIcon" src="static/images/logout.png" alt="" />
           </button>
       </div>
@@ -41,7 +41,7 @@
                       </label>
                   </div>
                   <div>
-                      <input type="submit" name="search" onclick="searchProduct()">
+                      <input type="submit" name="search">
                   </div>
               </form>
               <div>
@@ -64,7 +64,7 @@
                           <td>data</td>
                           <td>
                               <form>
-                                  <button type="submit" name="details"  value="Login" onclick="sellDetails()">Details</button>
+                                  <button type="submit" name="details"  value="Login">Details</button>
                               </form>
                           </td>
                           <td>data</td>
@@ -111,12 +111,43 @@
               </table>
           </fieldset>
       </div>
+      <div>
+          <fieldset>
+              <legend>List of seen auctions</legend>
+              <div id="seenAuctionsDiv">
+                  <table id="seenAuction">
+                      <thead>
+                      <tr>
+                          <th>Auction ID</th>
+                          <th>Actual Price</th>
+                          <th>Details</th>
+                          <th>Name</th>
+                          <th>Product code</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                          <td>data</td>
+                          <td>data</td>
+                          <td>
+                              <form>
+                                  <button type="submit" name="details" value="Login">Details</button>
+                              </form>
+                          </td>
+                          <td>data</td>
+                          <td>data</td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </fieldset>
+      </div>
   </div>
 
   <div id="sell" style="padding: 60px">
       <div class="horizontal">
           <div>
-              <form>
+              <form id="addProductForm">
                   <fieldset>
                       <legend>Add new product</legend>
                       <div>
@@ -140,16 +171,17 @@
                           </label>
                       </div>
                       <div>
-                          <input type="submit" name="newArticle" value="Add product" onclick="addProduct()">
+                          <input id="submitAddProduct" type="submit" name="newArticle" value="Add product">
                       </div>
                   </fieldset>
               </form>
           </div>
           <div>
-              <form>
+              <form id="createAuctionForm">
                   <fieldset>
                       <legend>Create new auction</legend>
-                      <div>
+                      <div id="noProductsDiv">No sellable products</div>
+                      <div id="createNewAuctionDiv">
                           <div>
                               <table id="myProducts">
                                   <thead>
@@ -186,7 +218,7 @@
                               </label>
                           </div>
                           <div>
-                              <input type="submit" name="create" value="Create" onclick="createAuction()"/>
+                              <input type="submit" name="create" value="Create" id="submitNewAuction"/>
                           </div>
                       </div>
                   </fieldset>
@@ -196,24 +228,23 @@
       <div>
           <fieldset>
               <legend>List of closed auctions</legend>
-              <div>
-                  <table>
+              <div id="noAuctionClosedDiv">No closed auctions yet</div>
+              <div id="closedAuctionsDiv">
+                  <table id="closedAuctions">
                       <thead>
                       <tr>
                           <th>Closed auctions</th>
                           <th>Final Price</th>
                           <th>Bids details</th>
                           <th>Name</th>
-                          <th>Product code</th>
                       </tr>
                       </thead>
                       <tbody>
                       <tr>
                           <td>data</td>
-                          <td>data</td>
                           <td>
                               <form>
-                                  <button type="submit" name="details" value="Login" onclick="closedDetails()">Details</button>
+                                  <button type="submit" name="details" value="Login">Details</button>
                               </form>
                           </td>
                           <td>data</td>
@@ -227,8 +258,9 @@
       <div>
           <fieldset>
               <legend>List of active auctions</legend>
-              <div>
-                  <table>
+              <div id="noActiveAuctionsDiv">You don't have any active auction at the moment</div>
+              <div id="activeAuctionsDiv">
+                  <table id="activeAuctions">
                       <thead>
                       <tr>
                           <th>Active auctions</th>
@@ -236,8 +268,7 @@
                           <th>Time left</th>
                           <th>Time left</th>
                           <th>Bids details</th>
-                          <th>Name</th>
-                          <th>Product code</th>
+                          <th>Products</th>
                       </tr>
                       </thead>
                       <tbody>
@@ -248,10 +279,9 @@
                           <td>Time left</td>
                           <td>
                               <form>
-                                  <button type="submit" name="details" value="null" onclick="openDetails()">Details</button>
+                                  <button type="submit" name="details" value="null">Details</button>
                               </form>
                           </td>
-                          <td>data</td>
                           <td>data</td>
                       </tr>
                       </tbody>
@@ -265,7 +295,7 @@
           <div>
               <fieldset>
                   <legend>Auction details</legend>
-                  <table>
+                  <table id="auctionDetails">
                       <thead>
                       <tr>
                           <th>Auction code</th>
@@ -294,7 +324,7 @@
           <div>
               <fieldset>
                   <legend>Offering details</legend>
-                  <table>
+                  <table id="offerList">
                       <thead>
                       <tr>
                           <th>User</th>
@@ -310,18 +340,17 @@
                       </tr>
                       </tbody>
                   </table>
+                  <div id="noOfferList">No offers for this auction yet</div>
               </fieldset>
           </div>
           <div>
-              <form>
-                  <button class="modButton" type="submit" name="close" value="Login" onclick="closeAuction()">Close this auction</button>
-              </form>
+              <button id="closeAuctionButton" class="modButton" type="submit" name="close">Close this auction</button>
           </div>
       </fieldset>
       <div>
           <fieldset>
               <legend>Winner</legend>
-              <table>
+              <table id="winnerTable">
                   <thead>
                   <tr>
                       <th>UserID</th>
@@ -401,7 +430,7 @@
                   </label>
               </div>
               <div>
-                  <button class="modButton" type="submit" name="details" value="null" onclick="makeOffer()">Make the offer!</button>
+                  <button class="modButton" type="submit" name="details" value="null">Make the offer!</button>
               </div>
           </form>
       </fieldset>
