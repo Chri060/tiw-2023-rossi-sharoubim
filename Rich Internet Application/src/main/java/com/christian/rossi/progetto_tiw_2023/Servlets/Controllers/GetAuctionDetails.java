@@ -27,6 +27,8 @@ public class GetAuctionDetails extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
+        Long userID = (Long) session.getAttribute("userID");
+
         try {
             Long auctionID = Long.parseLong(request.getParameter("auctionID"));
             AuctionDAO auctionDAO = new AuctionDAO();
@@ -34,6 +36,11 @@ public class GetAuctionDetails extends HttpServlet {
             UserDAO userDAO = new UserDAO();
             ProductDAO productDAO = new ProductDAO();
             AuctionData auctionData = new AuctionData();
+
+            if (!auctionDAO.isAuctionOwner(userID, auctionID)) {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
 
             auctionData.setProductList(productDAO.getProductFromAuction(auctionID));
             List<OfferBean> offerList= offerDAO.getOffers(auctionID);

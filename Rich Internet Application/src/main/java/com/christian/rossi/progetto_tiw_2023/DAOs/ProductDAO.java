@@ -89,7 +89,7 @@ public class ProductDAO extends AbstractDAO{
     public boolean CheckProduct(Long productID, Long userID) throws SQLException {
         String query = "SELECT * " +
                        "FROM product " +
-                       "WHERE productID=? AND userID=?";
+                       "WHERE productID=? AND userID=? AND sellable=1";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, productID);
             request.setLong(2, userID);

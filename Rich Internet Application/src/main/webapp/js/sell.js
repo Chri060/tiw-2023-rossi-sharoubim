@@ -195,8 +195,6 @@ function SellPage() {
                 //Adds listener to details button
                 click.addEventListener("click", (e) =>{
                     let auctionID = e.target.value;
-                    pageOrchestrator.hideAll();
-                    pageOrchestrator.showSellDetailsPage();
                     pageOrchestrator.fillSellDetailsPage(auctionID);
 
                 })
@@ -250,8 +248,6 @@ function SellPage() {
                 //Adds listener to details button
                 click.addEventListener("click", (e) =>{
                     let auctionID = e.target.value;
-                    pageOrchestrator.hideAll();
-                    pageOrchestrator.showSellDetailsPage();
                     pageOrchestrator.fillSellDetailsPage(auctionID);
 
                 })
@@ -490,14 +486,24 @@ function fillSellDetailPageHandler(req) {
                 if (data) {
                     let sellDetailsPage = new SellDetailsPage()
                     sellDetailsPage.fill(data);
+                    pageOrchestrator.hideAll();
+                    pageOrchestrator.showSellDetailsPage();
                 }
                 else {
-
+                    alert("Data from server is not valid")
                 }
                 break;
             }
+            case (400) : {
+                alert("Bad request");
+                break;
+            }
+            case (403) :
+                alert("You are not the owner of this auction");
+                break;
             case (500) : {
                 alert("Server error: could not load Sell page");
+                break;
             }
         }
     }
