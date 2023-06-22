@@ -24,8 +24,6 @@ import static java.lang.Long.parseLong;
 @WebServlet(name = "GetDetailsPage", urlPatterns = {URLs.GET_DETAILS_PAGE})
 public class GetDetailsPage extends ThymeleafHTTPServlet {
 
-    private Long auctionID;
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
@@ -33,7 +31,7 @@ public class GetDetailsPage extends ThymeleafHTTPServlet {
         final ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         try {
-            auctionID = Long.valueOf(request.getParameter("details"));
+            Long auctionID = Long.valueOf(request.getParameter("details"));
             AuctionDAO auctionDAO = new AuctionDAO();
             OfferDAO offerDAO = new OfferDAO();
             UserDAO userDAO = new UserDAO();
