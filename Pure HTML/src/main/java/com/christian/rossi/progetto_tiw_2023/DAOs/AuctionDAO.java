@@ -42,10 +42,11 @@ public class AuctionDAO extends AbstractDAO{
                         AuctionBean auctionBean = new AuctionBean();
                         auctionBean.setAuctionID(result.getLong("auctionID"));
                         if (result.getString("max") != null) {
-                            auctionBean.setPrice(result.getInt("max"));
+                            auctionBean.setMaxOffer(result.getInt("max"));
                         } else {
-                            auctionBean.setPrice(0);
+                            auctionBean.setMaxOffer(0);
                         }
+                        auctionBean.setPrice(result.getInt("price"));
                         auctionBean.setRise(result.getInt("rise"));
                         auctionBean.setExpiry(result.getTimestamp("expiry"));
                         auctionBean.setActive(result.getInt("active"));
@@ -183,6 +184,24 @@ public class AuctionDAO extends AbstractDAO{
             request.setLong(2, auctionID);
             try (ResultSet result = request.executeQuery()) {
                 return (result.isBeforeFirst());
+            }
+        }
+    }
+
+    public boolean isAuctionActive(Long auctionID) throws SQLException{
+        String query = "SELECT * " +
+                "FROM auction " +
+                "WHERE auction.auctionID=?";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setLong(1, auctionID);
+            try (ResultSet result = request.executeQuery()) {
+                if (!result.isBeforeFirst()) {
+                    return false;
+                }
+                else {
+                    result.next();
+                    return result.getInt("active") == 1;
+                }
             }
         }
     }
