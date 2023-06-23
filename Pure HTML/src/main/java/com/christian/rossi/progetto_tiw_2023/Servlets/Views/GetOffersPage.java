@@ -1,5 +1,6 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Views;
 
+import com.christian.rossi.progetto_tiw_2023.Beans.AuctionBean;
 import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
 import com.christian.rossi.progetto_tiw_2023.Constants.Errors;
 import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
@@ -41,15 +42,24 @@ public class GetOffersPage extends ThymeleafHTTPServlet {
         try {
             OfferDAO offerDAO = new OfferDAO();
             ProductDAO productDAO = new ProductDAO();
-            List<ProductBean> productBeanlist = productDAO.getProductFromAuction(auctionID);
             AuctionDAO auctionDAO = new AuctionDAO();
+<<<<<<< Updated upstream
             if (auctionDAO.isAuctionOwner(userID, auctionID)) {
+=======
+            List<ProductBean> productBeanlist = productDAO.getProductFromAuction(auctionID);
+            List<AuctionBean> auctionBean = auctionDAO.getAuctionbyID(auctionID, session.getCreationTime());
+            boolean active = auctionDAO.isAuctionActive(auctionID);
+            if (!auctionDAO.isAuctionOwner(userID, auctionID)) {
+                auctionDAO.close(auctionID, userID);
+>>>>>>> Stashed changes
                 response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_BUY_PAGE).toString());
                 return;
             }
+            ctx.setVariable("price", auctionBean.get(0));
             ctx.setVariable("auction", productBeanlist);
             ctx.setVariable("offer", offerDAO.getOffers(auctionID));
             ctx.setVariable("actualID", auctionID);
+            ctx.setVariable("active", active);
         } catch (SQLException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_BUY_PAGE).toString());
             throw new RuntimeException(e);
