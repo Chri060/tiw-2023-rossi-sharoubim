@@ -43,18 +43,13 @@ public class GetOffersPage extends ThymeleafHTTPServlet {
             OfferDAO offerDAO = new OfferDAO();
             ProductDAO productDAO = new ProductDAO();
             AuctionDAO auctionDAO = new AuctionDAO();
-<<<<<<< Updated upstream
             if (auctionDAO.isAuctionOwner(userID, auctionID)) {
-=======
-            List<ProductBean> productBeanlist = productDAO.getProductFromAuction(auctionID);
-            List<AuctionBean> auctionBean = auctionDAO.getAuctionbyID(auctionID, session.getCreationTime());
-            boolean active = auctionDAO.isAuctionActive(auctionID);
-            if (!auctionDAO.isAuctionOwner(userID, auctionID)) {
-                auctionDAO.close(auctionID, userID);
->>>>>>> Stashed changes
                 response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_BUY_PAGE).toString());
                 return;
             }
+            List<ProductBean> productBeanlist = productDAO.getProductFromAuction(auctionID);
+            List<AuctionBean> auctionBean = auctionDAO.getAuctionbyID(auctionID, session.getCreationTime());
+            boolean active = auctionDAO.isAuctionActive(auctionID);
             ctx.setVariable("price", auctionBean.get(0));
             ctx.setVariable("auction", productBeanlist);
             ctx.setVariable("offer", offerDAO.getOffers(auctionID));
