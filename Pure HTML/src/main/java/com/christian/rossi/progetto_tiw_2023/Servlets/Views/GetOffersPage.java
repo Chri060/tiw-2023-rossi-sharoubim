@@ -3,6 +3,7 @@ package com.christian.rossi.progetto_tiw_2023.Servlets.Views;
 import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
 import com.christian.rossi.progetto_tiw_2023.Constants.Errors;
 import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
+import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.OfferDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
@@ -26,6 +27,7 @@ public class GetOffersPage extends ThymeleafHTTPServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
+        final Long userID = (Long) session.getAttribute("userID");
         Long auctionID = null;
         try {
             auctionID = Long.valueOf(request.getParameter("details"));
@@ -37,14 +39,15 @@ public class GetOffersPage extends ThymeleafHTTPServlet {
         final ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         try {
-
             OfferDAO offerDAO = new OfferDAO();
             ProductDAO productDAO = new ProductDAO();
-
             List<ProductBean> productBeanlist = productDAO.getProductFromAuction(auctionID);
-
-
-
+            AuctionDAO auctionDAO = new AuctionDAO();
+            if (!auctionDAO.isAuctionOwner(userID, auctionID)) {
+                auctionDAO.close(auctionID, userID);
+                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_BUY_PAGE).toString());
+                return;
+            }
             ctx.setVariable("auction", productBeanlist);
             ctx.setVariable("offer", offerDAO.getOffers(auctionID));
             ctx.setVariable("actualID", auctionID);
