@@ -43,8 +43,7 @@ public class GetOffersPage extends ThymeleafHTTPServlet {
             ProductDAO productDAO = new ProductDAO();
             List<ProductBean> productBeanlist = productDAO.getProductFromAuction(auctionID);
             AuctionDAO auctionDAO = new AuctionDAO();
-            if (!auctionDAO.isAuctionOwner(userID, auctionID)) {
-                auctionDAO.close(auctionID, userID);
+            if (auctionDAO.isAuctionOwner(userID, auctionID)) {
                 response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_BUY_PAGE).toString());
                 return;
             }

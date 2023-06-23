@@ -182,7 +182,7 @@ public class AuctionDAO extends AbstractDAO{
             request.setLong(1, userID);
             request.setLong(2, auctionID);
             try (ResultSet result = request.executeQuery()) {
-                return (!result.isBeforeFirst());
+                return (result.isBeforeFirst());
             }
         }
     }
