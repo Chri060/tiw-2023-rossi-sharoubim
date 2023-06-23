@@ -25,6 +25,7 @@ public class GetBuyPage extends ThymeleafHTTPServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String article = request.getParameter("search");
+
         HttpSession session = request.getSession();
         final ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
@@ -35,6 +36,9 @@ public class GetBuyPage extends ThymeleafHTTPServlet {
         userID = (Long) session.getAttribute("userID");
 
         try {
+            if (article.equals(""))  {
+                throw  new NullPointerException();
+            }
              AuctionDAO auctionDAO = new AuctionDAO();
              ProductDAO productDAO = new ProductDAO();
              List<AuctionBean> auctions = auctionDAO.getAuctionByKeyword(article, userID, session.getCreationTime());
@@ -73,9 +77,13 @@ public class GetBuyPage extends ThymeleafHTTPServlet {
 
 
              ctx.setVariable("closedauctions", closedauctions);
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_HOME_PAGE).toString());
             throw new RuntimeException(e);
+        }
+        catch (NullPointerException e) {
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_HOME_PAGE).toString());
         }
         getTemplateEngine().process(template, ctx, response.getWriter());
     }
