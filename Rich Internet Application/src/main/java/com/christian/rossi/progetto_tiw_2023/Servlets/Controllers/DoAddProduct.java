@@ -19,7 +19,6 @@ import java.sql.SQLException;
 public class DoAddProduct extends HttpServlet {
     String folderPath = "";
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
@@ -104,7 +103,6 @@ public class DoAddProduct extends HttpServlet {
             case 0 -> response.setStatus(HttpServletResponse.SC_OK);
             case -1 -> response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             case -2 -> response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-
         }
     }
 }

@@ -30,7 +30,6 @@ public class GetSell extends HttpServlet {
 
             List<ProductBean> productBeanList = productDAO.getUserProducts(userID);
             sellPageData.setMyProducts(productBeanList);
-            //List<AuctionBean> openAuctions = auctionDAO.getAuctions(userID, 1, session.getCreationTime());
             List<AuctionBean> openAuctions = auctionDAO.getUserAuctions(userID, 1, session.getCreationTime());
             for (AuctionBean auctionBean : openAuctions) {
                 auctionBean.setProductList(productDAO.getProductFromAuction(auctionBean.getAuctionID()));

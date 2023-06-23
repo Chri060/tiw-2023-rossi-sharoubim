@@ -27,12 +27,9 @@ public class GetMatchingAuctions extends HttpServlet {
             AuctionDAO auctionDAO = new AuctionDAO();
             ProductDAO productDAO = new ProductDAO();
             String article = request.getParameter("article");
-
             if (article.equals(""))  {
                 throw  new NullPointerException();
             }
-
-
             List<AuctionBean> auctionBeanList = auctionDAO.getAuctionByKeyword(article.toLowerCase(), userID, session.getCreationTime());
             for (AuctionBean auction : auctionBeanList) {
                 auction.setProductList(productDAO.getProductFromAuction(auction.getAuctionID()));
