@@ -70,8 +70,6 @@ public class UserDAO extends AbstractDAO{
         }
     }
 
-
-
     public String GetUserByUsername(String username) throws SQLException {
         String query = "SELECT * " +
                        "FROM user " +

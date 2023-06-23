@@ -58,39 +58,6 @@ public class AuctionDAO extends AbstractDAO{
         }
     }
 
-    public List<AuctionBean> getUserAuction(Long userID, long loginTime) throws SQLException{
-        String query = "SELECT * " +
-                "FROM auction LEFT JOIN winner ON auction.auctionID = winner.auctionID " +
-                "WHERE auction.userID=? " +
-                "ORDER BY auction.auctionID ";
-        try (PreparedStatement request = getConnection().prepareStatement(query)) {
-            request.setLong(1, userID);
-            try (ResultSet result = request.executeQuery()) {
-                if (!result.isBeforeFirst())
-                    return null;
-                else {
-                    List<AuctionBean> auctionBeanList = new ArrayList<>();
-                    while (result.next()) {
-                        AuctionBean auctionBean = new AuctionBean();
-                        auctionBean.setAuctionID(result.getLong("auctionID"));
-                        if (result.getString("max") != null) {
-                            auctionBean.setPrice(result.getInt("max"));
-                        } else {
-                            auctionBean.setPrice(0);
-                        }
-                        auctionBean.setRise(result.getInt("rise"));
-                        auctionBean.setExpiry(result.getTimestamp("expiry"));
-                        List<Integer> timeRem = TimeHandler.getTimeDifference(result.getTimestamp("expiry"), loginTime);
-                        auctionBean.setRemainingDays(String.valueOf(timeRem.get(0)));
-                        auctionBean.setRemainingHours(timeRem.get(1) + "h " + timeRem.get(2)+ "m");
-                        auctionBeanList.add(auctionBean);
-                    }
-                    return auctionBeanList;
-                }
-            }
-        }
-    }
-
     public Long getWinner(Long auctionID) throws SQLException {
         String query = "SELECT winner.userID " +
                        "FROM auction LEFT JOIN winner ON auction.auctionID = winner.auctionID " +
