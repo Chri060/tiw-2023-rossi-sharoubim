@@ -48,8 +48,16 @@
                 </table>
             </fieldset>
         </div>
+        <div>
+            <fieldset>
+                <p th:text="#{startingPrice}">Starting price: </p>
+                <p th:text="${price.getPrice()}">
+                <p th:text="#{minimumRise}">Minimum rise: </p>
+                <p th:text="${price.getRise()}">
+            </fieldset>
+        </div>
     </fieldset>
-    <fieldset>
+    <fieldset th:if="${active}">
         <legend th:text="#{makeOffer}">New offer</legend>
         <form th:action="${@com.christian.rossi.progetto_tiw_2023.Constants.URLs@DO_OFFER}" method="post">
             <div>

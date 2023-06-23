@@ -62,6 +62,7 @@
                         <th th:text="#{auctionID}">Closed auctions</th>
                         <th th:text="#{finalPrice}">Final Price</th>
                         <th th:text="#{name}">Name</th>
+                        <th th:text="#{offers}">Bid details</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -69,6 +70,11 @@
                         <td th:text="${closedauctions.auctionID}">data</td>
                         <td th:text="${closedauctions.maxOffer}">data</td>
                         <td th:text="${closedauctions.productNames}">data</td>
+                        <td>
+                            <form th:action="${@com.christian.rossi.progetto_tiw_2023.Constants.URLs@GET_OFFERS_PAGE}" method="post">
+                                <button type="submit" name="details"  value="Login" th:value="${closedauctions.auctionID}" th:text="#{detail}">Details</button>
+                            </form>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
