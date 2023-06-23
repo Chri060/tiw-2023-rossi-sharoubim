@@ -121,6 +121,7 @@ public class ProductDAO extends AbstractDAO{
                     productBean.setSellable(result.getBoolean("sellable"));
                     productBean.setUserID(result.getLong("userID"));
                     productBean.setAuctionID(result.getLong("auctionID"));
+                    productBean.setProductID(result.getLong("productID"));
                     productBean.setImage(imgPath + result.getLong("productID") + ".jpeg");
                     productBeanList.add(productBean);
                 }

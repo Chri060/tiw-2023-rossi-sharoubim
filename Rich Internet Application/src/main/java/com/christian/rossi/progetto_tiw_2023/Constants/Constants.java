@@ -12,5 +12,6 @@ public class Constants {
     public static final String GET_AUCTION_DETAILS = "/getAuctionDetails";
     public static final String DO_GET_IMAGE = "/getImage/*";
     public static final String DO_CLOSE = "/doClose";
+    public static final String GET_WON_AUCTIONS = "/getWonAuctions";
 
 }

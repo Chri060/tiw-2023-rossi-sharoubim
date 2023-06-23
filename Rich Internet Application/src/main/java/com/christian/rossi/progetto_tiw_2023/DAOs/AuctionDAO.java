@@ -139,39 +139,34 @@ public class AuctionDAO extends AbstractDAO{
         }
     }
 
-    /*public List<AuctionBean> getWonAuctions(Long userID) throws SQLException{
+    public List<AuctionBean> getWonAuctions(Long userID) throws SQLException{
         String query = "SELECT * " +
                        "FROM winner LEFT JOIN auction on winner.auctionID = auction.auctionID " +
-                       "            LEFT JOIN product on auction.auctionID = product.auctionID " +
                        "WHERE winner.userID=? AND auction.active=0";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, userID);
             try (ResultSet result = request.executeQuery()) {
-                if (!result.isBeforeFirst())
-                    return null;
-                else {
-                    List<AuctionBean> auctionBeanList = new ArrayList<>();
+                List<AuctionBean> auctionBeanList = new ArrayList<>();
+                if (result.isBeforeFirst()) {
                     while (result.next()) {
                         AuctionBean auctionBean = new AuctionBean();
-                        auctionBean.setAuctionID(result.getLong("auctionID"));
                         if (result.getString("max") != null) {
-                            auctionBean.setPrice(result.getInt("max"));
+                            auctionBean.setMaxOffer(result.getInt("max"));
                         }
                         else {
                             auctionBean.setPrice(0);
                         }
-                        auctionBean.setName(result.getString("name"));
-                        auctionBean.setProductID(result.getLong("productID"));
-                        auctionBean.setDescription(result.getString("description"));
-                        auctionBean.setImage(imgPath + result.getString("productID") + ".jpeg");
+                        auctionBean.setAuctionID(result.getLong("auctionID"));
+                        auctionBean.setPrice(result.getInt("price"));
+                        auctionBean.setRise(result.getInt("rise"));
                         auctionBeanList.add(auctionBean);
                     }
-                    return auctionBeanList;
                 }
+                return auctionBeanList;
             }
         }
     }
-
+/*
     public List<AuctionBean> getAuctionByKeyword(String article, Long userID, Long loginTime) throws SQLException {
         String details = "%" + article + "%";
         String query = "SELECT * " +
@@ -203,8 +198,8 @@ public class AuctionDAO extends AbstractDAO{
                 }
             }
         }
-    }*/
-
+    }
+*/
     public void close(Long auctionID, Long userID) throws SQLException {
         String query = "UPDATE auction SET active=0 WHERE auctionID=? AND userID=?";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {

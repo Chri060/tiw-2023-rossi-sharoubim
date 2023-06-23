@@ -3,6 +3,17 @@ window.onload = function () {
     pageOrchestrator = new PageOrchestrator();
     pageOrchestrator.start();
     pageOrchestrator.hideAll();
+    let lastAction = getCookie(sessionStorage.getItem('userName') + "lastAction");
+    switch (lastAction) {
+        case ("sell") : {
+            pageOrchestrator.showSellPage();
+            break;
+        }
+        default : {
+            pageOrchestrator.showBuyPage();
+            break;
+        }
+    }
 }
 
 function PageOrchestrator() {
@@ -42,6 +53,15 @@ function PageOrchestrator() {
                         addProductResponseHandler, true)
                 }
             });
+        //Updates cookies
+        document.getElementById("submitNewAuction").addEventListener("click", () => {
+            let now = new Date();
+            let time = now.getTime();
+            let expireTime = time + 30*24*60*60*1000;
+            now.setTime(expireTime);
+            document.cookie = sessionStorage.getItem('userName') + 'lastAction=sell; expires=' + now.toUTCString() + ';'
+            }
+        )
         //Adds close auction listener
         document.getElementById("closeAuctionButton").addEventListener("click", (e) => {
             e.preventDefault();
@@ -67,8 +87,13 @@ function PageOrchestrator() {
     }
 
     this.fillSellPage = function () {
-            makeCall("GET", "getSell", null,
+            makeCall("GET", "/getSell", null,
                 fillSellPageHandler, false);
+    }
+
+    this.fillBuyPage = function () {
+        makeCall("GET", "/getWonAuctions", null,
+                 fillWonActionHandler, false);
     }
 
     this.fillSellDetailsPage = function (auctionID) {
@@ -91,6 +116,7 @@ function PageOrchestrator() {
     this.showBuyPage = function () {
         this.hideAll();
         this.buyPage.show();
+        this.fillBuyPage();
     }
     this.showSellDetailsPage = function () {
         this.sellDetailspage.show();
@@ -424,6 +450,53 @@ function BuyPage() {
         this.page.style.display = "block";
     }
 
+    this.fillWonAuctions = function (data) {
+        if (data.length > 0) {
+            var table = document.getElementById("wonAuctionsTable");
+            table.style.display = "block";
+            document.getElementById("noWonAuctions").style.display = "none";
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+            data.forEach(function (auction) {
+                let row, auctionID, detailsButton, productList, maxOffer, productDiv;
+
+                row = document.createElement("tr");
+
+                auctionID = document.createElement("td");
+                auctionID.textContent = auction.auctionID;
+                row.appendChild(auctionID);
+
+                maxOffer = document.createElement("td");
+                maxOffer.textContent = auction.maxOffer;
+                row.appendChild(maxOffer);
+
+                detailsButton = document.createElement("td");
+                let click = document.createElement("button");
+                click.textContent = "Details";
+                click.setAttribute("value", auction.auctionID);
+                detailsButton.appendChild(click);
+                row.appendChild(detailsButton);
+
+                productList = document.createElement("td");
+                var temp = "";
+                auction.productList.forEach(function (product) {
+                        temp += product.name;
+                        temp += ", ";
+                    }
+                )
+                productList.textContent = temp;
+                row.appendChild(productList);
+
+                table.appendChild(row);
+            })
+        }
+        else {
+            document.getElementById("wonAuctionsTable").style.display = "none";
+            document.getElementById("noWonAuctions").style.display = "block";
+        }
+    }
+
 }
 function BuyDetailPage() {
     this.page = document.getElementById("buyDetails");
@@ -441,8 +514,6 @@ function addProductResponseHandler(req) {
         const message = req.responseText;
         switch (req.status) {
             case (200) : {
-                alert("Product successfully added");
-                let orchestrator = new PageOrchestrator();
                 pageOrchestrator.fillSellPage();
                 break;
             }
@@ -482,6 +553,26 @@ function fillSellPageHandler(req) {
     }
 }
 
+function fillWonActionHandler(req) {
+    if (req.readyState == 4) {
+        switch (req.status) {
+            case (200) : {
+                const data = JSON.parse((req.responseText));
+                if (data) {
+                    let buyPage = new BuyPage()
+                    buyPage.fillWonAuctions(data);
+                }
+                else {
+
+                }
+                break;
+            }
+            case (500) : {
+                alert("Server error: could not load won auctions");
+            }
+        }
+    }
+}
 function fillSellDetailPageHandler(req) {
     if (req.readyState == 4) {
         switch (req.status) {
@@ -512,22 +603,10 @@ function fillSellDetailPageHandler(req) {
         }
     }
 }
-
 function closeAuctionResponseHandler(req) {
     if (req.readyState == 4) {
         switch (req.status) {
-            case (200) : {/*
-                const data = JSON.parse((req.responseText));
-                if (data) {
-                    let sellDetailsPage = new SellDetailsPage()
-                    sellDetailsPage.fill(data);
-                    pageOrchestrator.hideAll();
-                    pageOrchestrator.showSellDetailsPage();
-                }
-                else {
-                    alert("Data from server is not valid")
-                }*/
-                alert("Auction closed")
+            case (200) : {
                 document.getElementById("closeAuctionButton").style.display = "none";
                 break;
             }
@@ -545,7 +624,6 @@ function closeAuctionResponseHandler(req) {
         }
     }
 }
-
 function makeCall(method, url, formElement, callback, reset) {
     const req = new XMLHttpRequest();
     req.onreadystatechange = function() {
@@ -564,4 +642,19 @@ function makeCall(method, url, formElement, callback, reset) {
             formElement.reset();
         }
     }
+}
+
+function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        let c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            let c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) {
+                c_end = document.cookie.length;
+            }
+            return unescape(document.cookie.substring(c_start, c_end));
+        }
+    }
+    return "";
 }
