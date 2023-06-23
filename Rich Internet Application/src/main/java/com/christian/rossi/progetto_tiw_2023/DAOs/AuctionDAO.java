@@ -166,40 +166,36 @@ public class AuctionDAO extends AbstractDAO{
             }
         }
     }
-/*
+
     public List<AuctionBean> getAuctionByKeyword(String article, Long userID, Long loginTime) throws SQLException {
         String details = "%" + article + "%";
         String query = "SELECT * " +
-                       "FROM auction LEFT JOIN product ON auction.auctionID = product.auctionID " +
-                       "WHERE auction.active=1 AND (product.name LIKE ? OR product.description LIKE ?) AND product.userID!=?";
+                "FROM auction LEFT JOIN product ON auction.auctionID = product.auctionID " +
+                "WHERE auction.active=1 AND (product.name LIKE ? OR product.description LIKE ?) AND product.userID!=? " +
+                "ORDER BY expiry DESC";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setString(1, details);
             request.setString(2, details);
             request.setLong(3, userID);
             try (ResultSet result = request.executeQuery()) {
-                if (!result.isBeforeFirst())
-                    return null;
-                else {
-                    List<AuctionBean> auctionBeanList = new ArrayList<>();
+                List<AuctionBean> auctionBeanList = new ArrayList<>();
+                if (result.isBeforeFirst()) {
                     while (result.next()) {
                         AuctionBean auctionBean = new AuctionBean();
                         auctionBean.setAuctionID(result.getLong("auctionID"));
-                        auctionBean.setName(result.getString("name"));
-                        auctionBean.setProductID(result.getLong("productID"));
-                        auctionBean.setDescription(result.getString("description"));
-                        auctionBean.setImage(imgPath + result.getString("productID") + ".jpeg");
+                        auctionBean.setActive(1);
                         auctionBean.setPrice(result.getInt("price"));
                         List<Integer> timeRem = TimeHandler.getTimeDifference(result.getTimestamp("expiry"), loginTime);
                         auctionBean.setRemainingDays(String.valueOf(timeRem.get(0)));
                         auctionBean.setRemainingHours(timeRem.get(1) + "h " + timeRem.get(2)+ "m");
                         auctionBeanList.add(auctionBean);
                     }
-                    return auctionBeanList;
                 }
+                return auctionBeanList;
             }
         }
     }
-*/
+
     public void close(Long auctionID, Long userID) throws SQLException {
         String query = "UPDATE auction SET active=0 WHERE auctionID=? AND userID=?";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {

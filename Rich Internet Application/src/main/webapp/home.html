@@ -34,18 +34,16 @@
       <div>
           <fieldset>
               <legend>Product search</legend>
-              <form>
                   <div>
                       <label>
-                          <input type="text" name="search" placeholder="Product search" required/>
+                          <input id="searchInput" type="text" name="search" placeholder="Product search" required/>
                       </label>
                   </div>
                   <div>
-                      <input type="submit" name="search">
+                      <input id="submitSearch" type="submit" name="search">
                   </div>
-              </form>
               <div>
-                  <table>
+                  <table id="searchResultTable">
                       <thead>
                       <tr>
                           <th>Auction ID</th>
@@ -368,18 +366,14 @@
           <div>
               <fieldset>
                   <legend>Auction details</legend>
-                  <table>
+                  <table id="auctionDetails1">
                       <tr>
                           <th>Product code</th>
                           <th>Name</th>
                           <th>Description</th>
-                          <th>Description</th>
-                          <th>Description</th>
                           <th>Image</th>
                       </tr>
                       <tr>
-                          <td>data</td>
-                          <td>data</td>
                           <td>data</td>
                           <td>data</td>
                           <td>data</td>
@@ -393,7 +387,7 @@
           <div>
               <fieldset>
                   <legend>Active bids</legend>
-                  <table>
+                  <table id="offersTable">
                       <tr>
                           <th>User</th>
                           <th>Bid</th>
@@ -405,6 +399,14 @@
                           <td>data</td>
                       </tr>
                   </table>
+              </fieldset>
+          </div>
+          <div>
+              <fieldset>
+                  <p>Starting price: </p>
+                  <p id="startingPrice">
+                  <p >Minimum rise: </p>
+                  <p id="minimumRise">
               </fieldset>
           </div>
       </fieldset>

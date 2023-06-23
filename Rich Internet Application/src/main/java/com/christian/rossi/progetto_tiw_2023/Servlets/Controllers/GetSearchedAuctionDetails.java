@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(name = "GetAuctionDetails", urlPatterns = {Constants.GET_AUCTION_DETAILS})
+@WebServlet(name = "GetSearchedAuctionDetails", urlPatterns = {Constants.GET_SEARCHED_AUCTION_DETAILS})
 @MultipartConfig
-public class GetAuctionDetails extends HttpServlet {
+public class GetSearchedAuctionDetails extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
@@ -38,7 +38,7 @@ public class GetAuctionDetails extends HttpServlet {
             AuctionData auctionData = new AuctionData();
 
 
-            if (!auctionDAO.isAuctionOwner(userID, auctionID) && !auctionDAO.isAuctionActive(auctionID)) {
+            if (!auctionDAO.isAuctionActive(auctionID)) {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 return;
             }
