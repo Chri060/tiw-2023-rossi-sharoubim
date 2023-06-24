@@ -39,7 +39,7 @@ public class GetBuyPage extends ThymeleafHTTPServlet {
             AuctionDAO auctionDAO = new AuctionDAO();
             ProductDAO productDAO = new ProductDAO();
             List<AuctionBean> auctions = null;
-            if (!article.equals("")) auctions = auctionDAO.getAuctionByKeyword(article, userID, session.getCreationTime());
+            if (article != null && !article.equals("")) auctions = auctionDAO.getAuctionByKeyword(article, userID, session.getCreationTime());
             if (auctions != null) {
                 for (AuctionBean auctionBean : auctions) {
                     List<ProductBean> productBeanList = productDAO.getProductFromAuction(auctionBean.getAuctionID());

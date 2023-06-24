@@ -43,9 +43,9 @@ public class GetDetailsPage extends ThymeleafHTTPServlet {
                 response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_BUY_PAGE).toString());
                 return;
             }
-            List<AuctionBean> auctionBeanList = auctionDAO.getAuctionbyID(auctionID, session.getCreationTime());
+            AuctionBean auctionBean = auctionDAO.getAuctionbyID(auctionID, session.getCreationTime());
             ProductDAO productDAO = new ProductDAO();
-            List<ProductBean> productBeanList = productDAO.getProductFromAuction(auctionBeanList.get(0).getAuctionID());
+            List<ProductBean> productBeanList = productDAO.getProductFromAuction(auctionBean.getAuctionID());
             UserBean winner = null;
             if (auctionDAO.getWinner(auctionID) != null) {
                 Long winnerID = auctionDAO.getWinner(auctionID);
@@ -55,7 +55,7 @@ public class GetDetailsPage extends ThymeleafHTTPServlet {
             ctx.setVariable("offer",  offerDAO.getOffers(auctionID));
             ctx.setVariable("winner", winner);
             ctx.setVariable("close", auctionID);
-            ctx.setVariable("active", auctionBeanList.get(0).isActive());
+            ctx.setVariable("active", auctionBean.isActive());
             if (winner != null) ctx.setVariable("user", userDAO.getUser(winner.getUserID()));
         } catch (SQLException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());

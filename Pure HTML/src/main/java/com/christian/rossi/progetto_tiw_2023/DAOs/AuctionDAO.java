@@ -61,7 +61,7 @@ public class AuctionDAO extends AbstractDAO{
         }
     }
 
-    public List<AuctionBean> getAuctionbyID(Long auctionID, long loginTime) throws SQLException{
+    public AuctionBean getAuctionbyID(Long auctionID, long loginTime) throws SQLException{
         String query = "SELECT * " +
                 "FROM auction LEFT JOIN winner ON auction.auctionID = winner.auctionID " +
                 "WHERE auction.auctionID=? " +
@@ -69,17 +69,17 @@ public class AuctionDAO extends AbstractDAO{
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, auctionID);
             try (ResultSet result = request.executeQuery()) {
+                AuctionBean auctionBean = new AuctionBean();
                 if (!result.isBeforeFirst())
                     return null;
                 else {
-                    List<AuctionBean> auctionBeanList = new ArrayList<>();
-                    while (result.next()) {
-                        AuctionBean auctionBean = new AuctionBean();
+                    if (result.next()) {
                         auctionBean.setAuctionID(result.getLong("auctionID"));
+                        auctionBean.setPrice(result.getInt("price"));
                         if (result.getString("max") != null) {
-                            auctionBean.setPrice(result.getInt("max"));
+                            auctionBean.setMaxOffer(result.getInt("max"));
                         } else {
-                            auctionBean.setPrice(0);
+                            auctionBean.setMaxOffer(0);
                         }
                         auctionBean.setRise(result.getInt("rise"));
                         auctionBean.setActive(result.getInt("active"));
@@ -87,9 +87,8 @@ public class AuctionDAO extends AbstractDAO{
                         List<Integer> timeRem = TimeHandler.getTimeDifference(result.getTimestamp("expiry"), loginTime);
                         auctionBean.setRemainingDays(String.valueOf(timeRem.get(0)));
                         auctionBean.setRemainingHours(timeRem.get(1) + "h " + timeRem.get(2)+ "m");
-                        auctionBeanList.add(auctionBean);
                     }
-                    return auctionBeanList;
+                    return auctionBean;
                 }
             }
         }

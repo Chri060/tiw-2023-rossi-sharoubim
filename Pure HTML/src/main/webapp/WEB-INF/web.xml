@@ -5,7 +5,7 @@
          version="4.0">
     <context-param>
         <param-name>outputPath</param-name>
-        <param-value>Documents/GitHub/tiw-2023-rossi-sharoubim/Images/</param-value>
+        <param-value>/Users/christianrossi/Documents/GitHub/tiw-2023-rossi-sharoubim/Images/</param-value>
     </context-param>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
