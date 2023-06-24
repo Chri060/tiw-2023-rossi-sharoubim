@@ -35,6 +35,8 @@ public class GetWonAuctions  extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(json);
+        } catch (NullPointerException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         } catch (SQLException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }

@@ -53,7 +53,12 @@ function PageOrchestrator() {
             });
         //Adds listener to search button
         document.getElementById("submitSearch").addEventListener("click", (e) => {
-            makeCall("GET", "/getMatchingAuctions?article=" + document.getElementById("searchInput").value, null,
+            let search = document.getElementById("searchInput").value;
+            if (search === "") {
+                alert("Write something please");
+                return;
+            }
+            makeCall("GET", "/getMatchingAuctions?article=" + search, null,
                 fillSearchAuctionHandler, false);
         })
         //Updates cookies
@@ -701,8 +706,12 @@ function fillSearchAuctionHandler(req) {
                 }
                 break;
             }
+            case (400) : {
+                alert("Told you to write something");
+                break;
+            }
             case (500) : {
-                alert("Server error: could not load won auctions");
+                alert("Server error: could not load searched auctions");
             }
         }
     }

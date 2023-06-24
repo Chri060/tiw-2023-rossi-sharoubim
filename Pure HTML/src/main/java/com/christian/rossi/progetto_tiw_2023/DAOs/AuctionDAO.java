@@ -138,7 +138,7 @@ public class AuctionDAO extends AbstractDAO{
 
     public List<AuctionBean> getAuctionByKeyword(String article, Long userID, Long loginTime) throws SQLException {
         String details = "%" + article + "%";
-        String query = "SELECT * " +
+        String query = "SELECT distinct auction.auctionID, auction.price, expiry " +
                 "FROM auction LEFT JOIN product ON auction.auctionID = product.auctionID " +
                 "WHERE auction.active=1 AND (product.name LIKE ? OR product.description LIKE ?) AND product.userID!=? " +
                 "ORDER BY expiry DESC";

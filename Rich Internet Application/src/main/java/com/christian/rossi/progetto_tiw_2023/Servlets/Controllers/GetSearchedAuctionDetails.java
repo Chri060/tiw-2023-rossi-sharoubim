@@ -38,7 +38,7 @@ public class GetSearchedAuctionDetails extends HttpServlet {
             AuctionData auctionData = new AuctionData();
 
 
-            if (!auctionDAO.isAuctionActive(auctionID)) {
+            if (!auctionDAO.isAuctionActive(auctionID) && !userID.equals(auctionDAO.getWinner(auctionID))) {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 return;
             }
