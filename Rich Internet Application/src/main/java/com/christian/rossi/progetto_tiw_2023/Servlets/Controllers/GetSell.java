@@ -7,6 +7,8 @@ import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
 import com.christian.rossi.progetto_tiw_2023.JSONPrototypes.SellPageData;
 import com.google.gson.Gson;
+import org.apache.commons.lang3.ObjectUtils;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +50,11 @@ public class GetSell extends HttpServlet {
             response.getWriter().write(json);
 
 
-            } catch (SQLException e) {
+        }
+        catch (NullPointerException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+        catch (SQLException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
