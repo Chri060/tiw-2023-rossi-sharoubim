@@ -25,6 +25,36 @@ public class AuctionDAO extends AbstractDAO{
         }
     }
 
+    public AuctionBean getAuctionByID(Long auctionID, long loginTime) throws SQLException{
+        String query = "SELECT * " +
+                "FROM auction LEFT JOIN winner ON auction.auctionID = winner.auctionID " +
+                "WHERE auction.auctionID=?";
+        try (PreparedStatement request = getConnection().prepareStatement(query)) {
+            request.setLong(1, auctionID);
+            try (ResultSet result = request.executeQuery()) {
+                AuctionBean auctionBean = new AuctionBean();
+                if (result.isBeforeFirst()) {
+                    result.next();
+                    auctionBean.setAuctionID(result.getLong("auctionID"));
+                    if (result.getString("max") != null) {
+                        auctionBean.setMaxOffer(result.getInt("max"));
+                    } else {
+                        auctionBean.setPrice(0);
+                    }
+                    auctionBean.setPrice(result.getInt("price"));
+                    auctionBean.setRise(result.getInt("rise"));
+                    auctionBean.setActive(result.getInt("active"));
+                    auctionBean.setExpiry(result.getTimestamp("expiry"));
+                    List<Integer> timeRem = TimeHandler.getTimeDifference(result.getTimestamp("expiry"), loginTime);
+                    auctionBean.setRemainingDays(String.valueOf(timeRem.get(0)));
+                    auctionBean.setRemainingHours(timeRem.get(1) + "h " + timeRem.get(2)+ "m");
+                }
+                return auctionBean;
+            }
+        }
+    }
+
+
     public List<AuctionBean> getUserAuctions(Long userID, int active, Long loginTime) throws SQLException {
         String query = "SELECT * " +
                 "FROM auction LEFT JOIN winner ON auction.auctionID = winner.auctionID " +

@@ -9,6 +9,7 @@ import com.christian.rossi.progetto_tiw_2023.JSONPrototypes.SellPageData;
 import com.google.gson.Gson;
 import org.apache.commons.lang3.ObjectUtils;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(name = "GetSellPage", urlPatterns = {Constants.GET_SELL})
+@MultipartConfig
 public class GetSell extends HttpServlet {
 
     @Override

@@ -75,6 +75,18 @@ function PageOrchestrator() {
             makeCall("POST", "/doClose?auctionID=" + e.target.value, null,
                 closeAuctionResponseHandler, false)
         } );
+        //Adds new offerListener
+        document.getElementById("submitNewOffer").addEventListener("click", (e) => {
+            e.preventDefault();
+            if (!e.target.closest("form").reportValidity()) {
+                alert("Data is invalid");
+                return;
+            }
+            else {
+            makeCall("POST", "/doOffer", document.getElementById("offerForm"),
+                doOfferResponseHandler, true);
+            }
+        })
     }
 
     this.logout = function () {
@@ -101,6 +113,7 @@ function PageOrchestrator() {
     this.fillBuyPage = function () {
         makeCall("GET", "/getWonAuctions", null,
                  fillWonActionHandler, false);
+        document.getElementById("searchResultTable").style.display = "none";
     }
 
     this.fillSellDetailsPage = function (auctionID) {
@@ -485,7 +498,7 @@ function BuyPage() {
                 detailsButton.appendChild(click);
                 row.appendChild(detailsButton);
 
-                click.addEventListe("click", (e) => {
+                click.addEventListener("click", (e) => {
                     let auctionID = e.target.value;
                     pageOrchestrator.fillBuyDetailsPage(auctionID);
                 })
@@ -513,6 +526,12 @@ function BuyPage() {
         let table = document.getElementById("searchResultTable");
         while (table.rows.length > 1) {
             table.deleteRow(1);
+        }
+        if (data.length > 0) {
+            table.style.display = "block";
+        }
+        else {
+            table.style.display = "none";
         }
         data.forEach(function (auction) {
             let row = document.createElement("tr");
@@ -626,6 +645,17 @@ function BuyDetailPage() {
 
             table.appendChild(row);
         })
+
+        document.getElementById("startingPrice").textContent = data.price;
+        document.getElementById("minimumRise").textContent = data.rise;
+
+        if (data.active) {
+            document.getElementById("newOfferFieldset").style.display = "block";
+            document.getElementById("auctionIDOfferForm").setAttribute("value", data.productList[0].auctionID)
+        }
+        else {
+            document.getElementById("newOfferFieldset").style.display = "none";
+        }
     }
 }
 
@@ -777,6 +807,40 @@ function fillBuyDetailsPageHandler(req) {
         }
     }
 }
+
+function doOfferResponseHandler(req) {
+    if (req.readyState == 4) {
+    switch (req.status) {
+        case (200) : {
+            const data = JSON.parse((req.responseText));
+            if (data) {
+                pageOrchestrator.showBuyDetailsPage();
+                let buyDetailPage = new BuyDetailPage()
+                buyDetailPage.fill(data);
+            }
+            else {
+                alert("Data from server is not valid")
+            }
+            break;
+        }
+        case (400) : {
+            alert("Bad request");
+            break;
+        }
+        case (403) : {
+            alert("You are the owner of this auction");
+            break;
+        }
+        case (406) : {
+            alert("Offer not valid");
+            break;
+        }
+        case (500) : {
+            alert("Server error: could not load Sell page");
+            break;
+        }
+    }
+}}
 
 function closeAuctionResponseHandler(req) {
     if (req.readyState == 4) {

@@ -2,12 +2,14 @@ package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 
 import com.christian.rossi.progetto_tiw_2023.Constants.Constants;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "Logout", urlPatterns = {Constants.LOGOUT_ENDPOINT})
+@MultipartConfig
 public class DoLogout extends HttpServlet {
 
     @Override

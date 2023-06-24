@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.christian.rossi.progetto_tiw_2023.Beans.AuctionBean;
 import com.christian.rossi.progetto_tiw_2023.Beans.OfferBean;
 import com.christian.rossi.progetto_tiw_2023.Beans.UserBean;
 import com.christian.rossi.progetto_tiw_2023.Constants.*;
@@ -56,6 +57,10 @@ public class GetSearchedAuctionDetails extends HttpServlet {
                 auctionData.setWinner(winner);
             }
 
+            AuctionBean auctionBean = auctionDAO.getAuctionByID(auctionID, session.getCreationTime());
+            auctionData.setRise(auctionBean.getRise());
+            auctionData.setPrice(auctionBean.getPrice());
+
 
             Gson gson = new Gson();
             String json = gson.toJson(auctionData);
@@ -71,4 +76,8 @@ public class GetSearchedAuctionDetails extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        doGet(request, response);
+    }
 }

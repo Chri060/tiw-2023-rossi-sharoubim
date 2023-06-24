@@ -410,16 +410,17 @@
               </fieldset>
           </div>
       </fieldset>
-      <fieldset>
+      <fieldset id="newOfferFieldset">
           <legend>New offer</legend>
-          <form>
+          <form id="offerForm">
               <div>
                   <label>
                       <input type="number" name="offer" placeholder="Your bid" required/>
+                      <input id="auctionIDOfferForm" type="number" name="auctionID" hidden required/>
                   </label>
               </div>
               <div>
-                  <button class="modButton" type="submit" name="details" value="null">Make the offer!</button>
+                  <button class="modButton" id="submitNewOffer" type="submit">Make the offer!</button>
               </div>
           </form>
       </fieldset>

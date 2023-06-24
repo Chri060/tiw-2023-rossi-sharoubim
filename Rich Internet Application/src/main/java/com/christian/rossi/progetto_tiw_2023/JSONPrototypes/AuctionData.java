@@ -12,6 +12,8 @@ public class AuctionData {
     List<OfferBean> offersList;
     UserBean winner;
     boolean active;
+    int rise;
+    int price;
 
     public List<ProductBean> getProductList() {
         return productList;
@@ -43,5 +45,21 @@ public class AuctionData {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public int getRise() {
+        return rise;
+    }
+
+    public void setRise(int rise) {
+        this.rise = rise;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

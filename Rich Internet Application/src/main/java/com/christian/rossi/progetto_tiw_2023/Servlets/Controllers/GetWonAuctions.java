@@ -7,6 +7,7 @@ import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
 import com.google.gson.Gson;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(name = "GetWonAuctions", urlPatterns = {Constants.GET_WON_AUCTIONS})
+@MultipartConfig
 public class GetWonAuctions  extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
