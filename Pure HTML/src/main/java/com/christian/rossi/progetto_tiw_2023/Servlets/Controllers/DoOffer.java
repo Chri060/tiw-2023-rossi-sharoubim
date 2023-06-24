@@ -53,15 +53,15 @@ public class DoOffer extends ThymeleafHTTPServlet {
         try {
             AuctionDAO auctionDAO = new AuctionDAO();
             OfferDAO offerDAO = new OfferDAO();
-            List<AuctionBean> auctionBeanList = auctionDAO.getAuctionbyID(auctionID, session.getCreationTime());
-            int start = auctionBeanList.get(0).getPrice();
-            int rise = auctionBeanList.get(0).getRise();
+            AuctionBean auctionBean = auctionDAO.getAuctionbyID(auctionID, session.getCreationTime());
+            int start = auctionBean.getPrice();
+            int rise = auctionBean.getRise();
             int actualOffer = offerDAO.getMaxOffer(auctionID);
             if (!InputChecker.checkOffer(Integer.parseInt(offer), start, rise, actualOffer)) {
                 response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.OFFER_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
                 return;
             }
-            if (Objects.equals(auctionBeanList.get(0).getUserID(), userID)) {
+            if (Objects.equals(auctionBean.getUserID(), userID)) {
                 response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.OFFER_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
                 return;
             }
@@ -70,11 +70,6 @@ public class DoOffer extends ThymeleafHTTPServlet {
         }
 
         try {
-            AuctionDAO auctionDAO = new AuctionDAO();
-            if (auctionDAO.isAuctionOwner(userID, auctionID)) {
-                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_BUY_PAGE).toString());
-                return;
-            }
             OfferDAO offerDAO = new OfferDAO();
             offerDAO.addOffer(offer, userID, auctionID, date);
         } catch (SQLException e) {

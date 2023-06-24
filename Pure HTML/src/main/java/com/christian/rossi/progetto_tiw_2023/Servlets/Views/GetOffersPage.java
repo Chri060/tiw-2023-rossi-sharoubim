@@ -48,9 +48,9 @@ public class GetOffersPage extends ThymeleafHTTPServlet {
                 return;
             }
             List<ProductBean> productBeanlist = productDAO.getProductFromAuction(auctionID);
-            List<AuctionBean> auctionBean = auctionDAO.getAuctionbyID(auctionID, session.getCreationTime());
+            AuctionBean auctionBean = auctionDAO.getAuctionbyID(auctionID, session.getCreationTime());
             boolean active = auctionDAO.isAuctionActive(auctionID);
-            ctx.setVariable("price", auctionBean.get(0));
+            ctx.setVariable("price", auctionBean);
             ctx.setVariable("auction", productBeanlist);
             ctx.setVariable("offer", offerDAO.getOffers(auctionID));
             ctx.setVariable("actualID", auctionID);
