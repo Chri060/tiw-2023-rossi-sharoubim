@@ -42,7 +42,7 @@
                             <td th:text="${auctions.price}">data</td>
                             <td th:text="${auctions.remainingDays}">data</td>
                             <td th:text="${auctions.remainingHours}">data</td>
-                            <td th:text="${auctions.productNames}">data</td>
+                            <td th:utext="${auctions.productNames}">data</td>
                         </tr>
                     </tbody>
                 </table>
@@ -69,7 +69,7 @@
                     <tr th:each ="closedauctions : ${closedauctions}">
                         <td th:text="${closedauctions.auctionID}">data</td>
                         <td th:text="${closedauctions.maxOffer}">data</td>
-                        <td th:text="${closedauctions.productNames}">data</td>
+                        <td th:utext="${closedauctions.productNames}">data</td>
                         <td>
                             <form th:action="${@com.christian.rossi.progetto_tiw_2023.Constants.URLs@GET_OFFERS_PAGE}" method="post">
                                 <button type="submit" name="details"  value="Login" th:value="${closedauctions.auctionID}" th:text="#{detail}">Details</button>

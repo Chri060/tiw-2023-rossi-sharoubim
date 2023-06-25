@@ -193,6 +193,7 @@
                     let row, nameCell, description, priceCell, codeCell, tickCell;
                     row = document.createElement("tr")
 
+
                     codeCell = document.createElement("td");
                     codeCell.textContent = product.productID;
                     row.appendChild(codeCell);

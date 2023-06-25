@@ -113,7 +113,7 @@
                                 <button type="submit" name="details" value="Login" th:value="${closedauctions.auctionID}" th:text="#{detail}">Details</button>
                             </form>
                         </td>
-                        <td style="white-space: pre-line" th:text="${closedauctions.productNames}">data</td>
+                        <td style="white-space: pre-line" th:utext="${closedauctions.productNames}">data</td>
                     </tr>
                     </tbody>
                 </table>
@@ -149,7 +149,7 @@
                                     <button type="submit" name="details" value="null" th:value="${activeauctions.auctionID}" th:text="#{detail}">Details</button>
                                 </form>
                             </td>
-                            <td style="white-space: pre-line" th:text="${activeauctions.productNames}">data</td>
+                            <td style="white-space: pre-line" th:utext="${activeauctions.productNames}">data</td>
                         </tr>
                     </tbody>
                 </table>
