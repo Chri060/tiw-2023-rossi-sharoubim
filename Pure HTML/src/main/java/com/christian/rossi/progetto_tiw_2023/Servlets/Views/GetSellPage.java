@@ -37,7 +37,7 @@ public class GetSellPage extends ThymeleafHTTPServlet {
                 auctionBean.setProductList(productBeanList);
                 String products1 = "";
                 for (ProductBean productBean : productBeanList) {
-                    products1 += productBean.getName() + ", ";
+                    products1 += productBean.getName() + "</br>";
                 }
                 auctionBean.setProductNames(products1);
             }
@@ -47,7 +47,7 @@ public class GetSellPage extends ThymeleafHTTPServlet {
                 auctionBean.setProductList(productBeanList);
                 String products = "";
                 for (ProductBean productBean : productBeanList) {
-                    products += productBean.getName() + ", ";
+                    products += productBean.getName() + "</br>";
                 }
                 auctionBean.setProductNames(products);
             }
