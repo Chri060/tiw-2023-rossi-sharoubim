@@ -45,7 +45,8 @@ public class DoSignup extends HttpServlet {
             if (userDAO.GetUserByUsername(username) == null && userDAO.GetUserByEmail(email) == null) {
                 userDAO.addUser(username, email, city, address, province, password);
                 userBean = userDAO.authenticate(email, password);
-                request.getSession().setAttribute("USER", userBean);
+                request.getSession().setAttribute("username", username);
+                request.getSession().setAttribute("userID", userBean.getUserID());
                 response.setStatus(HttpServletResponse.SC_OK);
             } else response.setStatus(HttpServletResponse.SC_CONFLICT);
         } catch (SQLException e) {

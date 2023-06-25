@@ -4,6 +4,8 @@ import com.christian.rossi.progetto_tiw_2023.Constants.Constants;
 import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.Utils.PathBuilder;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +20,7 @@ import java.sql.SQLException;
 public class DoClose extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         final Long userID;
         final Long auctionID;
@@ -38,7 +40,8 @@ public class DoClose extends HttpServlet {
             AuctionDAO auctionDAO = new AuctionDAO();
             if (auctionDAO.isAuctionOwner(userID, auctionID)) {
                 auctionDAO.close(auctionID, userID);
-                response.setStatus(HttpServletResponse.SC_OK);
+                RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(Constants.GET_AUCTION_DETAILS);
+                requestDispatcher.forward(request, response);
                 return;
             }
             else {

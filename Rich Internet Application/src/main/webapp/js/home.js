@@ -63,8 +63,10 @@
                     fillSearchAuctionHandler, false);
             })
             //Updates cookies
-            document.getElementById("submitNewAuction").addEventListener("click", () => {
-                Cookies.set(sessionStorage.getItem('userName') + 'LastActionCookie', 'sell', {expires: 30});
+            document.getElementById("submitNewAuction").addEventListener("click", (e) => {
+                if (e.target.closest("form").reportValidity()) {
+                    Cookies.set(sessionStorage.getItem('userName') + 'LastActionCookie', 'sell', {expires: 30});
+                }
             })
             //Adds close auction listener
             document.getElementById("closeAuctionButton").addEventListener("click", (e) => {
@@ -455,6 +457,7 @@
                 row.appendChild(province);
 
                 table.appendChild(row);
+                table.style.display = "block";
             } else {
                 table.style.display = "none";
             }
@@ -533,11 +536,10 @@
                 document.getElementById("seenAuctionDiv").style.display = "none";
                 return;
             }
+            document.getElementById("seenAuctionDiv").style.display = "block";
             while (table.rows.length > 1) {
                 table.deleteRow(1);
             }
-            table.style.display = "block";
-
 
             data.forEach(function (auction) {
                 let row = document.createElement("tr");
@@ -798,6 +800,10 @@
                     }
                     break;
                 }
+                case (400) : {
+                    document.getElementById("seenAuctionDiv").style.display = "none";
+                    break;
+                }
                 case (500) : {
                     alert("Server error: could not load seen auctions");
                 }
@@ -925,6 +931,7 @@
             switch (req.status) {
                 case (200) : {
                     document.getElementById("closeAuctionButton").style.display = "none";
+                    fillSellDetailPageHandler(req);
                     break;
                 }
                 case (400) : {
