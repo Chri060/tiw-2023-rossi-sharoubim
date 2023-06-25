@@ -3,7 +3,8 @@
         pageOrchestrator = new PageOrchestrator();
         pageOrchestrator.start();
         pageOrchestrator.hideAll();
-        let lastAction = getCookie(sessionStorage.getItem('userName') + "lastAction");
+
+        let lastAction = Cookies.get(sessionStorage.getItem('userName') + "LastActionCookie");
         switch (lastAction) {
             case ("sell") : {
                 pageOrchestrator.showSellPage();
@@ -63,11 +64,7 @@
             })
             //Updates cookies
             document.getElementById("submitNewAuction").addEventListener("click", () => {
-                let now = new Date();
-                let time = now.getTime();
-                let expireTime = time + 30 * 24 * 60 * 60 * 1000;
-                now.setTime(expireTime);
-                document.cookie = sessionStorage.getItem('userName') + 'lastAction=sell; expires=' + now.toUTCString() + ';'
+                Cookies.set(sessionStorage.getItem('userName') + 'LastActionCookie', 'sell', {expires: 30});
             })
             //Adds close auction listener
             document.getElementById("closeAuctionButton").addEventListener("click", (e) => {
@@ -112,6 +109,18 @@
         this.fillBuyPage = function () {
             makeCall("GET", "/getWonAuctions", null,
                 fillWonActionHandler, false);
+
+            const auctionsArray = getSeenAuctionsID();
+            let params = "";
+            for (const auctionsArrayElement of auctionsArray) {
+                params = params + `auctionsIds=${auctionsArrayElement}&`
+            }
+            if (params.length > 0)
+                params = params.slice(0, params.length - 1)
+
+            makeCall("GET", `/getSeenAuction?${params}`, null,
+                fillSeenActionHandler, false);
+
             document.getElementById("searchResultTable").style.display = "none";
         }
 
@@ -514,6 +523,64 @@
             }
         }
 
+
+
+
+
+        this.fillSeenAuctions = function (data) {
+            let table = document.getElementById("seenAuctionTable");
+            if (data.length == 0) {
+                document.getElementById("seenAuctionDiv").style.display = "none";
+                return;
+            }
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+            table.style.display = "block";
+
+
+            data.forEach(function (auction) {
+                let row = document.createElement("tr");
+
+                let auctionID, maxOffer, details, productList;
+                auctionID = document.createElement("td");
+                auctionID.textContent = auction.auctionID;
+                row.appendChild(auctionID);
+
+                maxOffer = document.createElement("td");
+                maxOffer.textContent = Math.max(auction.maxOffer, auction.price);
+                row.appendChild(maxOffer);
+
+
+                details = document.createElement("td");
+                let click = document.createElement("button");
+                click.textContent = "Details";
+                click.setAttribute("value", auction.auctionID);
+
+                click.addEventListener("click", (e) => {
+                    Cookies.set(sessionStorage.getItem('userName') + 'LastActionCookie', 'buy', {expires: 30});
+                    let auctionID = e.target.value;
+                    Cookies.set(sessionStorage.getItem('userName') + 'SeenAuction' + auctionID, auctionID, {expires: 30});
+                    pageOrchestrator.fillBuyDetailsPage(auctionID);
+                })
+
+                details.appendChild(click);
+                row.appendChild(details);
+
+                productList = document.createElement("td");
+                var temp = "";
+                auction.productList.forEach(function (product) {
+                        temp += product.name;
+                        temp += "</br>";
+                    }
+                )
+                productList.innerHTML = temp;
+                row.appendChild(productList);
+
+                table.appendChild(row);
+            })
+        }
+
         this.fillMatchingAuctions = function (data) {
             let table = document.getElementById("searchResultTable");
             while (table.rows.length > 1) {
@@ -532,7 +599,7 @@
                 row.appendChild(auctionID);
 
                 price = document.createElement("td");
-                price.textContent = auction.price;
+                price.textContent = Math.max(auction.maxOffer, auction.price);
                 row.appendChild(price);
 
                 remainingDays = document.createElement("td");
@@ -549,9 +616,10 @@
                 click.setAttribute("value", auction.auctionID);
 
                 click.addEventListener("click", (e) => {
+                    Cookies.set(sessionStorage.getItem('userName') + 'LastActionCookie', 'buy', {expires: 30});
                     let auctionID = e.target.value;
+                    Cookies.set(sessionStorage.getItem('userName') + 'SeenAuction' + auctionID, auctionID, { expires: 30 });
                     pageOrchestrator.fillBuyDetailsPage(auctionID);
-
                 })
 
                 details.appendChild(click);
@@ -578,6 +646,7 @@
         this.hide = function () {
             this.page.style.display = "none";
         }
+
         this.show = function () {
             this.page.style.display = "block";
         }
@@ -618,24 +687,33 @@
                 table.deleteRow(1);
             }
 
-            data.offersList.forEach(function (offers) {
-                let row, username, offering, date;
-                row = document.createElement("tr");
+            if (data.offersList.length == 0) {
+                document.getElementById("noOffers").style.display = "block";
+                document.getElementById("offersTable").style.display = "none";
+            }
+            else {
+                document.getElementById("noOffers").style.display = "none";
+                document.getElementById("offersTable").style.display = "block";
+                data.offersList.forEach(function (offers) {
 
-                username = document.createElement("td");
-                username.textContent = offers.userName;
-                row.appendChild(username);
+                    let row, username, offering, date;
+                    row = document.createElement("tr");
 
-                offering = document.createElement("td");
-                offering.textContent = offers.offering;
-                row.appendChild(offering);
+                    username = document.createElement("td");
+                    username.textContent = offers.userName;
+                    row.appendChild(username);
 
-                date = document.createElement("td");
-                date.textContent = offers.date;
-                row.appendChild(date);
+                    offering = document.createElement("td");
+                    offering.textContent = offers.offering;
+                    row.appendChild(offering);
 
-                table.appendChild(row);
-            })
+                    date = document.createElement("td");
+                    date.textContent = offers.date;
+                    row.appendChild(date);
+
+                    table.appendChild(row);
+                })
+            }
 
             document.getElementById("startingPrice").textContent = data.price;
             document.getElementById("minimumRise").textContent = data.rise;
@@ -681,8 +759,6 @@
                     if (data) {
                         let sellPage = new SellPage()
                         sellPage.fill(data);
-                    } else {
-
                     }
                     break;
                 }
@@ -701,13 +777,29 @@
                     if (data) {
                         let buyPage = new BuyPage()
                         buyPage.fillWonAuctions(data);
-                    } else {
-
                     }
                     break;
                 }
                 case (500) : {
                     alert("Server error: could not load won auctions");
+                }
+            }
+        }
+    }
+
+    function fillSeenActionHandler(req) {
+        if (req.readyState == 4) {
+            switch (req.status) {
+                case (200) : {
+                    const data = JSON.parse((req.responseText));
+                    if (data) {
+                        let buyPage = new BuyPage()
+                        buyPage.fillSeenAuctions(data);
+                    }
+                    break;
+                }
+                case (500) : {
+                    alert("Server error: could not load seen auctions");
                 }
             }
         }
@@ -758,7 +850,7 @@
                     alert("This auction is already closed");
                     break;
                 case (500) : {
-                    alert("Server error: could not load Sell page");
+                    alert("Server error: could not load sell details page");
                     break;
                 }
             }
@@ -870,18 +962,13 @@
         }
     }
 
-    function getCookie(c_name) {
-        if (document.cookie.length > 0) {
-            let c_start = document.cookie.indexOf(c_name + "=");
-            if (c_start != -1) {
-                c_start = c_start + c_name.length + 1;
-                let c_end = document.cookie.indexOf(";", c_start);
-                if (c_end == -1) {
-                    c_end = document.cookie.length;
-                }
-                return unescape(document.cookie.substring(c_start, c_end));
-            }
+    function getSeenAuctionsID() {
+        let cookieMap = Cookies.get();
+        let idArray = [];
+        for (const cookieMapKey in cookieMap) {
+            if (cookieMapKey.includes(sessionStorage.getItem('userName') + 'SeenAuction'))
+                idArray.push(cookieMap[cookieMapKey])
         }
-        return "";
+        return idArray;
     }
 }

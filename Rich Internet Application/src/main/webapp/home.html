@@ -5,6 +5,7 @@
     <title>Home page</title>
     <link rel="stylesheet" href="/static/style.css"/>
     <script defer src="js/home.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 </head>
 <body>
   <div class="top">
@@ -47,7 +48,7 @@
                       <thead>
                       <tr>
                           <th>Auction ID</th>
-                          <th>Starting price</th>
+                          <th>Actual offer</th>
                           <th>Days remaining</th>
                           <th>Hours and minutes</th>
                           <th></th>
@@ -96,18 +97,17 @@
               </table>
           </fieldset>
       </div>
-      <div>
+      <div id="seenAuctionDiv">
           <fieldset>
               <legend>List of seen auctions</legend>
-              <div id="seenAuctionsDiv">
-                  <table id="seenAuction">
+              <div>
+                  <table id="seenAuctionTable">
                       <thead>
                       <tr>
                           <th>Auction ID</th>
                           <th>Actual Price</th>
                           <th></th>
                           <th>Name</th>
-                          <th>Product code</th>
                       </tr>
                       </thead>
                       <tbody>
@@ -119,7 +119,6 @@
                                   <button type="submit" name="details" value="Login">Details</button>
                               </form>
                           </td>
-                          <td>data</td>
                           <td>data</td>
                       </tr>
                       </tbody>
@@ -219,8 +218,8 @@
                       <thead>
                       <tr>
                           <th>Auction ID</th>
-                          <th>Final Price</th>
                           <th></th>
+                          <th>Final Price</th>
                           <th>Products</th>
                       </tr>
                       </thead>
@@ -284,7 +283,7 @@
                       <thead>
                       <tr>
                           <th>Auction code</th>
-                          <th>Current price</th>
+                          <th>Price</th>
                           <th>Product code</th>
                           <th>Name</th>
                           <th>Description</th>
@@ -387,6 +386,9 @@
           <div>
               <fieldset>
                   <legend>Active bids</legend>
+                  <div id="noOffers">
+                      <p>No offers for this auction yet</p>
+                  </div>
                   <table id="offersTable">
                       <tr>
                           <th>User</th>

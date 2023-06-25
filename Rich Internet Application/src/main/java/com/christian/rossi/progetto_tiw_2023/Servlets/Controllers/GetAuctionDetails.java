@@ -55,8 +55,6 @@ public class GetAuctionDetails extends HttpServlet {
                 UserBean winner = userDAO.getUser(winnerID.toString());
                 auctionData.setWinner(winner);
             }
-
-
             Gson gson = new Gson();
             String json = gson.toJson(auctionData);
             response.setContentType("application/json");
@@ -70,5 +68,4 @@ public class GetAuctionDetails extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
-
 }
