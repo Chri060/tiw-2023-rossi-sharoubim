@@ -35,14 +35,16 @@
       <div>
           <fieldset>
               <legend>Product search</legend>
+              <form id="searchForm">
                   <div>
                       <label>
-                          <input id="searchInput" type="text" name="search" placeholder="Product search" required/>
+                          <input id="searchInput" type="text" name="article" placeholder="Product search" required/>
                       </label>
                   </div>
                   <div>
                       <input id="submitSearch" type="submit" name="search">
                   </div>
+              </form>
               <div>
                   <table id="searchResultTable">
                       <thead>
@@ -136,22 +138,22 @@
                       <legend>Add new product</legend>
                       <div>
                           <label>
-                              <input type="text" name="name" placeholder="Name" required/>
+                              <input type="text" name="name" id="name" placeholder="Name" required/>
                           </label>
                       </div>
                       <div>
                           <label>
-                              <input type="text" name="description" placeholder="Description" required/>
+                              <input type="text" name="description" id="description" placeholder="Description" required/>
                           </label>
                       </div>
                       <div>
                           <label>
-                              <input type="number" name="price" placeholder="Price" required/>
+                              <input type="number" name="price" placeholder="Price" id="price" required/>
                           </label>
                       </div>
                       <div>
                           <label>
-                              <input type="file" name="file" accept="image/png, image/jpeg, image/jpg" required/>
+                              <input type="file" name="file" accept="image/png, image/jpeg, image/jpg" id="image" required/>
                           </label>
                       </div>
                       <div>
@@ -192,13 +194,13 @@
                           </div>
                           <div>
                               <label>
-                                  <input type="number" name="rise" placeholder="Minimum rise" required/>
+                                  <input type="number" name="rise" placeholder="Minimum rise" id="rise" required/>
                               </label>
                           </div>
                           <div>
                               <p>Expiration date</p>
                               <label>
-                                  <input type="datetime-local" name="expiry" placeholder="Expiration date" required/>
+                                  <input type="datetime-local" name="expiry" id="date" placeholder="Expiration date" required/>
                               </label>
                           </div>
                           <div>
@@ -417,7 +419,7 @@
           <form id="offerForm">
               <div>
                   <label>
-                      <input type="number" name="offer" placeholder="Your bid" required/>
+                      <input type="number" name="offer" id="offer" placeholder="Your bid" required/>
                       <input id="auctionIDOfferForm" type="number" name="auctionID" hidden required/>
                   </label>
               </div>

@@ -3,7 +3,6 @@
         pageOrchestrator = new PageOrchestrator();
         pageOrchestrator.start();
         pageOrchestrator.hideAll();
-
         let lastAction = Cookies.get(sessionStorage.getItem('userName') + "LastActionCookie");
         switch (lastAction) {
             case ("sell") : {
@@ -24,13 +23,12 @@
         this.buyDetailspage = new BuyDetailPage();
 
         this.start = function () {
+            inputChecker();
             //Adds listener to the submit new product form
-            document.getElementById("submitAddProduct").addEventListener("click", (e) => {
+            document.getElementById("addProductForm").addEventListener("submit", (e) => {
                 e.preventDefault();
-                if (!e.target.closest("form").reportValidity()) {
-                    alert("Data is invalid");
-                    return;
-                } else {
+                if (!e.target.closest("form").reportValidity()) e.stopPropagation();
+                else {
                     makeCall("POST", "/addProduct", this.sellPage.addProductForm,
                         addProductResponseHandler, true)
                 }
@@ -42,25 +40,22 @@
             //Adds listener to logout
             document.getElementById("logout").addEventListener("click", (e) => this.logout());
             //Adds listener to create new auction button
-            document.getElementById("submitNewAuction").addEventListener("click", (e) => {
+            document.getElementById("createAuctionForm").addEventListener("submit", (e) => {
                 e.preventDefault();
-                if (!e.target.closest("form").reportValidity()) {
-                    alert("Data is invalid");
-                    return;
-                } else {
+                if (!e.target.closest("form").reportValidity()) e.stopPropagation();
+                else {
                     makeCall("POST", "/doCreateAuction", this.sellPage.createAuctionForm,
                         addProductResponseHandler, true)
                 }
             });
             //Adds listener to search button
-            document.getElementById("submitSearch").addEventListener("click", (e) => {
-                let search = document.getElementById("searchInput").value;
-                if (search === "") {
-                    alert("Write something please");
-                    return;
+            document.getElementById("searchForm").addEventListener("submit", (e) => {
+                e.preventDefault();
+                if (!e.target.closest("form").reportValidity()) e.stopPropagation();
+                else {
+                    makeCall("GET", "/getMatchingAuctions?article=" + document.getElementById("searchInput").value, null,
+                        fillSearchAuctionHandler, true);
                 }
-                makeCall("GET", "/getMatchingAuctions?article=" + search, null,
-                    fillSearchAuctionHandler, false);
             })
             //Updates cookies
             document.getElementById("submitNewAuction").addEventListener("click", (e) => {
@@ -75,11 +70,10 @@
                     closeAuctionResponseHandler, false)
             });
             //Adds new offerListener
-            document.getElementById("submitNewOffer").addEventListener("click", (e) => {
+            document.getElementById("offerForm").addEventListener("submit", (e) => {
                 e.preventDefault();
                 if (!e.target.closest("form").reportValidity()) {
-                    alert("Data is invalid");
-                    return;
+                    e.stopPropagation();
                 } else {
                     makeCall("POST", "/doOffer", document.getElementById("offerForm"),
                         doOfferResponseHandler, true);
@@ -485,7 +479,7 @@
                     table.deleteRow(1);
                 }
                 data.forEach(function (auction) {
-                    let row, auctionID, detailsButton, productList, maxOffer, productDiv;
+                    let row, auctionID, detailsButton, productList, maxOffer;
 
                     row = document.createElement("tr");
 
@@ -796,6 +790,18 @@
                 case (200) : {
                     const data = JSON.parse((req.responseText));
                     if (data) {
+                        let auctionIDs = getSeenAuctionsID();
+                        let validIDMap = {};
+                        for (const auction of data) {
+                            validIDMap[auction.auctionID] = true;
+                        }
+                        const toRemoveIds = auctionIDs.filter(e => !validIDMap[e]);
+                        for (const auctionID of toRemoveIds) {
+                            let string = sessionStorage.getItem('userName') + 'SeenAuction' + auctionID;
+                            Cookies.remove(string);
+                        }
+
+
                         let buyPage = new BuyPage()
                         buyPage.fillSeenAuctions(data);
                     }
@@ -978,5 +984,70 @@
                 idArray.push(cookieMap[cookieMapKey])
         }
         return idArray;
+    }
+
+    function inputChecker() {
+        //check del prezzo
+        document.getElementById("price").onchange = (e) => {
+            const elem = e.target;
+            const value = String(elem.value);
+            if (!value.match("^[0-9]{1,32}$")) elem.setCustomValidity("The price inserted is not valid");
+            else if (value <= 0) elem.setCustomValidity("The price inserted is not valid");
+            else elem.setCustomValidity("");
+        };
+        //check del rise
+        document.getElementById("rise").onchange = (e) => {
+            const elem = e.target;
+            const value = String(elem.value);
+            if (!value.match("^[0-9]{1,32}$")) elem.setCustomValidity("The rise inserted is not valid");
+            else if (value <= 0) elem.setCustomValidity("The rise inserted is not valid");
+            else elem.setCustomValidity("");
+        };
+        //check della data
+        document.getElementById("date").onchange = (e) => {
+            const elem = e.target;
+            const value = String(elem.value);
+            if (!value || value.length < 1) elem.setCustomValidity("Field is required");
+            else if (value.length > 31) elem.setCustomValidity("The date inserted is too long");
+            else if (!value.match("^(000[1-9]|00[1-9]\\d|0[1-9]\\d\\d|100\\d|10[1-9]\\d|1[1-9]\\d{2}|[2-9]\\d{3}|[1-9]\\d{4}|1\\d{5}|2[0-6]\\d{4}|27[0-4]\\d{3}|275[0-6]\\d{2}|2757[0-5]\\d|275760)-(0[1-9]|1[012])-(0[1-9]|[12]\\d|3[01])T(0\\d|1\\d|2[0-4]):(0\\d|[1-5]\\d)(?::(0\\d|[1-5]\\d))?(?:.(00\\d|0[1-9]\\d|[1-9]\\d{2}))?$")) elem.setCustomValidity("The date inserted is not valid");
+            else if (value <= 0) elem.setCustomValidity("The date inserted is not valid");
+            else elem.setCustomValidity("");
+        };
+        //check della offer
+        document.getElementById("offer").onchange = (e) => {
+            const elem = e.target;
+            const value = String(elem.value);
+            if (!value.match("^[0-9]{1,32}$")) elem.setCustomValidity("The offer inserted is not valid");
+            else if (value <= 0) elem.setCustomValidity("The offer inserted is not valid");
+            else elem.setCustomValidity("");
+        };
+        //check dell'input
+        document.getElementById("searchInput").onchange = (e) => {
+            const elem = e.target;
+            const value = String(elem.value);
+            if (!value.match("^[a-zA-Z0-9_- ]{1,50}$"))  elem.setCustomValidity("The search word inserted is not valid");
+            else if (value === "") elem.setCustomValidity("Field is required");
+            else elem.setCustomValidity("");
+        };
+        //check del nome del prodotto
+        document.getElementById("name").onchange = (e) => {
+            const elem = e.target;
+            const value = String(elem.value);
+            if (!value.match("^[a-zA-Z0-9_- ]{1,50}$")) elem.setCustomValidity("The name inserted is not valid");
+            else elem.setCustomValidity("");
+        };
+        //check della descrizione del prodotto
+        document.getElementById("description").onchange = (e) => {
+            const elem = e.target;
+            const value = String(elem.value);
+            if (!value.match("^[a-zA-Z0-9_- ]{1,120}$"))  elem.setCustomValidity("The description inserted is not valid");
+            else elem.setCustomValidity("");
+        };
+        //check della immagine
+        document.getElementById("image").onchange = (e) => {
+            const elem = e.target;
+            const acceptedImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+            if (!(value && acceptedImageTypes.includes(elem['type']))) elem.setCustomValidity("The file inserted is not an image");
+        }
     }
 }
