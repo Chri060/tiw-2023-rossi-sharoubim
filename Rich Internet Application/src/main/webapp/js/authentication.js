@@ -16,7 +16,8 @@
                         if (req.status === 200) {
                             window.location.assign("home.html");
                             sessionStorage.setItem('userName', req.responseText);
-                        }else alert("The sign in failed");
+                        }
+                        else alert("The sign in failed");
                     }
                 },true);
         });
@@ -96,7 +97,7 @@
             const value = String(elem.value);
             if (!value || value.length < 1) elem.setCustomValidity("Field is required");
             else if (value.length > 31) elem.setCustomValidity("The city inserted is too long");
-            else if (!value.match("^[a-zA-Z]{1,32}$"))  elem.setCustomValidity("City not valid");
+            else if (!value.match("^[a-zA-Z ]{1,32}$"))  elem.setCustomValidity("City not valid");
             else elem.setCustomValidity("");
         };
 
@@ -105,16 +106,16 @@
             const value = String(elem.value);
             if (!value || value.length < 1) elem.setCustomValidity("Field is required");
             else if (value.length > 31) elem.setCustomValidity("The province inserted is too long");
-            else if (!value.match("^[a-zA-Z]{1,32}$"))  elem.setCustomValidity("Province not valid");
+            else if (!value.match("^[a-zA-Z ]{1,32}$"))  elem.setCustomValidity("Province not valid");
             else elem.setCustomValidity("");
         };
 
-        province.onchange = (e) => {
+        address.onchange = (e) => {
             const elem = e.target;
             const value = String(elem.value);
             if (!value || value.length < 1) elem.setCustomValidity("Field is required");
             else if (value.length > 63) elem.setCustomValidity("The address inserted is too long");
-            else if (!value.match("^[a-zA-Z0-9,]{1,64}$"))  elem.setCustomValidity("Address not valid");
+            else if (!value.match("^[a-zA-Z0-9, ]{1,64}$"))  elem.setCustomValidity("Address not valid");
             else elem.setCustomValidity("");
         };
 

@@ -827,6 +827,9 @@
                         let buyPage = new BuyPage()
                         buyPage.fillMatchingAuctions(data);
                     }
+                    if (data.length === 0) {
+                        alert("No product matching the request");
+                    }
                     break;
                 }
                 case (400) : {
@@ -1025,7 +1028,7 @@
         document.getElementById("searchInput").onchange = (e) => {
             const elem = e.target;
             const value = String(elem.value);
-            if (!value.match("^[a-zA-Z0-9_- ]{1,50}$"))  elem.setCustomValidity("The search word inserted is not valid");
+            if (!value.match("^[a-zA-Z0-9_ -]{1,50}$"))  elem.setCustomValidity("The search word inserted is not valid");
             else if (value === "") elem.setCustomValidity("Field is required");
             else elem.setCustomValidity("");
         };
@@ -1033,14 +1036,14 @@
         document.getElementById("name").onchange = (e) => {
             const elem = e.target;
             const value = String(elem.value);
-            if (!value.match("^[a-zA-Z0-9_- ]{1,50}$")) elem.setCustomValidity("The name inserted is not valid");
+            if (!value.match("^[a-zA-Z0-9_ -]{1,50}$")) elem.setCustomValidity("The name inserted is not valid");
             else elem.setCustomValidity("");
         };
         //check della descrizione del prodotto
         document.getElementById("description").onchange = (e) => {
             const elem = e.target;
             const value = String(elem.value);
-            if (!value.match("^[a-zA-Z0-9_- ]{1,120}$"))  elem.setCustomValidity("The description inserted is not valid");
+            if (!value.match("^[a-zA-Z0-9_ -]{1,120}$"))  elem.setCustomValidity("The description inserted is not valid");
             else elem.setCustomValidity("");
         };
         //check della immagine

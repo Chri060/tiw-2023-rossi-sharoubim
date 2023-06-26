@@ -15,7 +15,7 @@ public class DBConnectionPool {
                 if (dataSource == null) {
                     PoolProperties p = new PoolProperties();
                     p.setDriverClassName("com.mysql.cj.jdbc.Driver");
-                    p.setUrl("jdbc:mysql://localhost:3306/progetto_tiw_2023_finale");
+                    p.setUrl("jdbc:mysql://localhost:3306/progetto_tiw_2023");
                     p.setUsername("tiw2023_user");
                     p.setPassword("tiw2023_pass");
                     p.setMaxActive(128);

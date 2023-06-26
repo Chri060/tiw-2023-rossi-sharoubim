@@ -41,11 +41,9 @@ public class DoSignup extends HttpServlet {
         }
         try {
             UserDAO userDAO = new UserDAO();
-            UserBean userBean;
             if (userDAO.GetUserByUsername(username) == null && userDAO.GetUserByEmail(email) == null) {
-                userDAO.addUser(username, email, city, address, province, password);
-                userBean = userDAO.authenticate(email, password);
-                request.getSession().setAttribute("username", username);
+                UserBean userBean = userDAO.addUser(username, email, city, address, province, password);
+                request.getSession().setAttribute("user", userBean.getUsername());
                 request.getSession().setAttribute("userID", userBean.getUserID());
                 response.setStatus(HttpServletResponse.SC_OK);
             } else response.setStatus(HttpServletResponse.SC_CONFLICT);
