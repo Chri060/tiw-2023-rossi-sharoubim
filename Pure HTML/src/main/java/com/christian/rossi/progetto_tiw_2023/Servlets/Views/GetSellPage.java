@@ -58,7 +58,7 @@ public class GetSellPage extends ThymeleafHTTPServlet {
             else ctx.setVariable("activeauctions", openAuctions);
         } catch (SQLException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_HOME_PAGE).toString());
-            throw new RuntimeException(e);
+            return;
         }
         getTemplateEngine().process(template, ctx, response.getWriter());
     }

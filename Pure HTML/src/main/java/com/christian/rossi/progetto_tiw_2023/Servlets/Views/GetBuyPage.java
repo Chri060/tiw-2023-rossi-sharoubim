@@ -72,6 +72,7 @@ public class GetBuyPage extends ThymeleafHTTPServlet {
         }
         catch (NullPointerException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_HOME_PAGE).toString());
+            return;
         }
         getTemplateEngine().process(template, ctx, response.getWriter());
     }

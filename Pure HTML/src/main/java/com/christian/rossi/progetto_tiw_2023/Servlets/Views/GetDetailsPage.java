@@ -59,8 +59,14 @@ public class GetDetailsPage extends ThymeleafHTTPServlet {
             if (winner != null) ctx.setVariable("user", userDAO.getUser(winner.getUserID()));
         } catch (SQLException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+            return;
         } catch (NumberFormatException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+            return;
+        }
+        catch (NullPointerException e) {
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+            return;
         }
         getTemplateEngine().process(template, ctx, response.getWriter());
     }
