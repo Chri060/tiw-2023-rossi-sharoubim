@@ -66,6 +66,10 @@ public class DoAddProduct extends ThymeleafHTTPServlet {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
             return;
         }
+        catch (NullPointerException e) {
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+            return;
+        }
 
         //getter for the current userID
         userID = (Long) session.getAttribute("userID");

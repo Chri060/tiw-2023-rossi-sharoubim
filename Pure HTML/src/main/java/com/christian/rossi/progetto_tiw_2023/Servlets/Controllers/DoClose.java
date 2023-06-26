@@ -47,6 +47,10 @@ public class DoClose extends ThymeleafHTTPServlet {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
             return;
         }
+        catch (NullPointerException e) {
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
+            return;
+        }
         request.setAttribute("details", auctionID);
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(URLs.GET_DETAILS_PAGE);
         requestDispatcher.forward(request, response);

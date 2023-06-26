@@ -56,7 +56,7 @@ public class DoCreateAuction extends ThymeleafHTTPServlet {
                 return;
             }
         }
-        catch (NumberFormatException e) {
+        catch (NumberFormatException | NullPointerException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
             return;
         }

@@ -35,7 +35,13 @@ public class GetOffersPage extends ThymeleafHTTPServlet {
         }
         catch (NumberFormatException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_BUY_PAGE).toString());
+            return;
         }
+        catch (NullPointerException e) {
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_BUY_PAGE).toString());
+            return;
+        }
+
         final String template = "offers";
         final ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
@@ -57,7 +63,7 @@ public class GetOffersPage extends ThymeleafHTTPServlet {
             ctx.setVariable("active", active);
         } catch (SQLException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_BUY_PAGE).toString());
-            throw new RuntimeException(e);
+            return;
         }
         getTemplateEngine().process(template, ctx, response.getWriter());
     }

@@ -33,17 +33,18 @@ public class DoOffer extends ThymeleafHTTPServlet {
         final Long auctionID;
         final Timestamp date;
 
-        //getting the value of offer
-        offer = request.getParameter("offer");
 
         //getting the value of userID
         userID = (Long) session.getAttribute("userID");
 
-        //checking problems with variable auctionID
         try {
+            //getting the value of offer
+            offer = request.getParameter("offer");
+            //checking problems with variable auctionID
             auctionID = Long.valueOf(request.getParameter("details"));
+            if (offer == null) {throw new NullPointerException();}
         }
-        catch (NumberFormatException e) {
+        catch (NumberFormatException | NullPointerException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
             return;
         }
@@ -66,7 +67,12 @@ public class DoOffer extends ThymeleafHTTPServlet {
                 return;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
+            return;
+        }
+        catch (NullPointerException e) {
+            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
+            return;
         }
 
         try {
@@ -74,6 +80,7 @@ public class DoOffer extends ThymeleafHTTPServlet {
             offerDAO.addOffer(offer, userID, auctionID, date);
         } catch (SQLException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
+            return;
         }
         request.setAttribute("details", auctionID);
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(URLs.GET_OFFERS_PAGE);
