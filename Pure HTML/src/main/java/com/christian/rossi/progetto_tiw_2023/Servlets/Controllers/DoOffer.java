@@ -59,7 +59,7 @@ public class DoOffer extends ThymeleafHTTPServlet {
             int rise = auctionBean.getRise();
             int actualOffer = offerDAO.getMaxOffer(auctionID);
             if (!InputChecker.checkOffer(Integer.parseInt(offer), start, rise, actualOffer)) {
-                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.OFFER_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
+                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.OFFER_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE + "?details=" + auctionID).toString());
                 return;
             }
             if (Objects.equals(auctionBean.getUserID(), userID)) {
