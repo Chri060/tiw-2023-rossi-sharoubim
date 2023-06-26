@@ -3,7 +3,6 @@
         pageOrchestrator = new PageOrchestrator();
         pageOrchestrator.start();
         pageOrchestrator.hideAll();
-
         let lastAction = Cookies.get(sessionStorage.getItem('userName') + "LastActionCookie");
         switch (lastAction) {
             case ("sell") : {
@@ -24,6 +23,7 @@
         this.buyDetailspage = new BuyDetailPage();
 
         this.start = function () {
+            inputChecker();
             //Adds listener to the submit new product form
             document.getElementById("submitAddProduct").addEventListener("click", (e) => {
                 e.preventDefault();
@@ -485,7 +485,7 @@
                     table.deleteRow(1);
                 }
                 data.forEach(function (auction) {
-                    let row, auctionID, detailsButton, productList, maxOffer, productDiv;
+                    let row, auctionID, detailsButton, productList, maxOffer;
 
                     row = document.createElement("tr");
 
@@ -796,6 +796,18 @@
                 case (200) : {
                     const data = JSON.parse((req.responseText));
                     if (data) {
+                        let auctionIDs = getSeenAuctionsID();
+                        let validIDMap = {};
+                        for (const auction of data) {
+                            validIDMap[auction.auctionID] = true;
+                        }
+                        const toRemoveIds = auctionIDs.filter(e => !validIDMap[e]);
+                        for (const auctionID of toRemoveIds) {
+                            let string = sessionStorage.getItem('userName') + 'SeenAuction' + auctionID;
+                            Cookies.remove(string);
+                        }
+
+
                         let buyPage = new BuyPage()
                         buyPage.fillSeenAuctions(data);
                     }
@@ -978,5 +990,81 @@
                 idArray.push(cookieMap[cookieMapKey])
         }
         return idArray;
+    }
+
+    function inputChecker() {
+
+        //check del prezzo
+        document.getElementById("price").onchange = (e) => {
+            const elem = e.target;
+            const value = String(elem.value);
+            if (!value || value.length < 1) elem.setCustomValidity("Field is required");
+            else if (value.length > 31) elem.setCustomValidity("The username inserted is too long");
+            else if (!value.match("^[0-9]")) elem.setCustomValidity("The price inserted is not valid");
+            else if (value <= 0) elem.setCustomValidity("The price inserted is not valid");
+            else elem.setCustomValidity("");
+        };
+        //check del rise
+        document.getElementById("rise").onchange = (e) => {
+            const elem = e.target;
+            const value = String(elem.value);
+            if (!value || value.length < 1) elem.setCustomValidity("Field is required");
+            else if (value.length > 31) elem.setCustomValidity("The rise inserted is too long");
+            else if (!value.match("^[0-9]")) elem.setCustomValidity("The rise inserted is not valid");
+            else if (value <= 0) elem.setCustomValidity("The rise inserted is not valid");
+            else elem.setCustomValidity("");
+        };
+        //check della data
+        document.getElementById("date").onchange = (e) => {
+            const elem = e.target;
+            const value = String(elem.value);
+            if (!value || value.length < 1) elem.setCustomValidity("Field is required");
+            else if (value.length > 31) elem.setCustomValidity("The date inserted is too long");
+            else if (!value.match("/^(\\d{4,})-(\\d{2})-(\\d{2})[T ](\\d{2}):(\\d{2})(?::(\\d{2}(?:\\.\\d+)?))?$/")) elem.setCustomValidity("The date inserted is not valid");
+            else if (value <= 0) elem.setCustomValidity("The date inserted is not valid");
+            else elem.setCustomValidity("");
+        };
+        //check della offer
+        document.getElementById("offer").onchange = (e) => {
+            const elem = e.target;
+            const value = String(elem.value);
+            if (!value || value.length < 1) elem.setCustomValidity("Field is required");
+            else if (value.length > 31) elem.setCustomValidity("The offer inserted is too long");
+            else if (!value.match("^[0-9]")) elem.setCustomValidity("The offer inserted is not valid");
+            else if (value >= document.getElementById("startingPrice").value) elem.setCustomValidity("The offer inserted is not valid");
+            else elem.setCustomValidity("");
+        };
+
+        document.getElementById("searchInput").onchange = (e) => {
+            const elem = e.target;
+            const value = String(elem.value);
+            if (!value || value.length < 1) elem.setCustomValidity("Field is required");
+            else if (value.length > 100) elem.setCustomValidity("The search word inserted is too long");
+            else if (!value.match("^[a-zA-Z0-9_-]"))  elem.setCustomValidity("The search word inserted is not valid");
+            else elem.setCustomValidity("");
+        };
+
+        document.getElementById("name").onchange = (e) => {
+            const elem = e.target;
+            const value = String(elem.value);
+            if (!value || value.length < 1) elem.setCustomValidity("Field is required");
+            else if (value.length > 100) elem.setCustomValidity("The name inserted is too long");
+            else if (!value.match("^[a-zA-Z0-9_-]"))  elem.setCustomValidity("The name inserted is not valid");
+            else elem.setCustomValidity("");
+        };
+
+        document.getElementById("description").onchange = (e) => {
+            const elem = e.target;
+            const value = String(elem.value);
+            if (!value || value.length < 1) elem.setCustomValidity("Field is required");
+            else if (value.length > 100) elem.setCustomValidity("The name inserted is too long");
+            else if (!value.match("^[a-zA-Z0-9_-]"))  elem.setCustomValidity("The name inserted is not valid");
+            else elem.setCustomValidity("");
+        };
+
+        document.getElementById("image").onchange = (e) => {
+            const acceptedImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+            if (!(file && acceptedImageTypes.includes(file['type']))) elem.setCustomValidity("The file inserted is not an image");
+        }
     }
 }
