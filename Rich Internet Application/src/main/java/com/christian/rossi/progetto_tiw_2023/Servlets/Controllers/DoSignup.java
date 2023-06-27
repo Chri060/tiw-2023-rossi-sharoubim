@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+
 @WebServlet(name = "Register", urlPatterns = {Constants.REGISTER_ENDPOINT})
 @MultipartConfig
 public class DoSignup extends HttpServlet {
@@ -23,7 +24,6 @@ public class DoSignup extends HttpServlet {
         final String address = request.getParameter("address");
         final String province = request.getParameter("province");
         final String password = request.getParameter("password");
-
         if (username == null || username.isEmpty() ||
                 email == null || email.isEmpty() ||
                 city == null || city.isEmpty() ||
@@ -47,8 +47,6 @@ public class DoSignup extends HttpServlet {
                 request.getSession().setAttribute("userID", userBean.getUserID());
                 response.setStatus(HttpServletResponse.SC_OK);
             } else response.setStatus(HttpServletResponse.SC_CONFLICT);
-        } catch (SQLException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
+        } catch (SQLException e) { response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); }
     }
 }

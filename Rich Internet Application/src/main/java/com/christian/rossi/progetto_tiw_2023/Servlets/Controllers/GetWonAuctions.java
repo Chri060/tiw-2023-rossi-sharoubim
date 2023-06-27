@@ -1,6 +1,5 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 
-
 import com.christian.rossi.progetto_tiw_2023.Beans.AuctionBean;
 import com.christian.rossi.progetto_tiw_2023.Constants.Constants;
 import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
@@ -28,21 +27,14 @@ public class GetWonAuctions  extends HttpServlet {
             ProductDAO productDAO = new ProductDAO();
             Long userID = (Long) session.getAttribute("userID");
             List<AuctionBean> auctionBeanList = auctionDAO.getWonAuctions(userID);
-            for (AuctionBean auction : auctionBeanList) {
-                auction.setProductList(productDAO.getProductFromAuction(auction.getAuctionID()));
-            }
-
+            for (AuctionBean auction : auctionBeanList) auction.setProductList(productDAO.getProductFromAuction(auction.getAuctionID()));
             Gson gson = new Gson();
             String json = gson.toJson(auctionBeanList);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(json);
-        } catch (NullPointerException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        } catch (SQLException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-
+        catch (NullPointerException e) { response.setStatus(HttpServletResponse.SC_BAD_REQUEST); }
+        catch (SQLException e) { response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); }
     }
-
 }

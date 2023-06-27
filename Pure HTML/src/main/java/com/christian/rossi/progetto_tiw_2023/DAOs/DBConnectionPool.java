@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DBConnectionPool {
+
     private static volatile DataSource dataSource = null;
 
     protected static Connection getConnection() throws SQLException {

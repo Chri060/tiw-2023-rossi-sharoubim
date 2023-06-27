@@ -24,37 +24,28 @@ import java.util.Objects;
 @MultipartConfig
 public class DoOffer extends HttpServlet {
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
-        Integer offer;
+        final Integer offer;
         final Long userID;
         final Long auctionID;
         final Timestamp date;
-
         AuctionDAO auctionDAO = new AuctionDAO();
         OfferDAO offerDAO = new OfferDAO();
-
         try {
-            //Getting variable auctionID
             auctionID = Long.valueOf(request.getParameter("auctionID"));
-            //getting the value of offer
             offer = Integer.parseInt(request.getParameter("offer"));
-            //getting the value of userID
             userID = (Long) session.getAttribute("userID");
-            //getting the current date
             date = new Timestamp(System.currentTimeMillis());
             AuctionBean auctionBean = auctionDAO.getAuctionByID(auctionID, session.getCreationTime());
             int start = auctionBean.getPrice();
             int rise = auctionBean.getRise();
             int actualOffer = offerDAO.getMaxOffer(auctionID);
-            //Caso offerta troppo bassa
             if (!InputChecker.checkOffer(offer, start, rise, actualOffer)) {
                 response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
                 return;
             }
-            //Caso offerta alla mia stessa asta
             if (Objects.equals(auctionBean.getUserID(), userID)) {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 return;
@@ -64,16 +55,7 @@ public class DoOffer extends HttpServlet {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(Constants.GET_SEARCHED_AUCTION_DETAILS);
             requestDispatcher.forward(request, response);
         }
-        catch (SQLException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
-        catch (NumberFormatException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-        catch (NullPointerException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
+        catch (SQLException e) { response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); }
+        catch (NumberFormatException e) { response.setStatus(HttpServletResponse.SC_BAD_REQUEST); }
     }
 }

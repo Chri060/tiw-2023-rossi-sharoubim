@@ -18,9 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Objects;
-
 
 @WebServlet(name = "DoOffer", urlPatterns = {URLs.DO_OFFER})
 public class DoOffer extends ThymeleafHTTPServlet {
@@ -32,29 +30,21 @@ public class DoOffer extends ThymeleafHTTPServlet {
         final Long userID;
         final Long auctionID;
         final Timestamp date;
-
-
-        //getting the value of userID
         userID = (Long) session.getAttribute("userID");
-
         try {
-            //getting the value of offer
             offer = request.getParameter("offer");
-            //checking problems with variable auctionID
             auctionID = Long.valueOf(request.getParameter("details"));
-            if (offer == null) {throw new NullPointerException();}
+            if (offer == null) throw new NullPointerException();
         }
         catch (NumberFormatException | NullPointerException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
             return;
         }
-
-        //getting the current date
         date = new Timestamp(System.currentTimeMillis());
         try {
             AuctionDAO auctionDAO = new AuctionDAO();
             OfferDAO offerDAO = new OfferDAO();
-            AuctionBean auctionBean = auctionDAO.getAuctionbyID(auctionID, session.getCreationTime());
+            AuctionBean auctionBean = auctionDAO.getAuctionByID(auctionID, session.getCreationTime());
             int start = auctionBean.getPrice();
             int rise = auctionBean.getRise();
             int actualOffer = offerDAO.getMaxOffer(auctionID);
@@ -74,7 +64,6 @@ public class DoOffer extends ThymeleafHTTPServlet {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_OFFERS_PAGE).toString());
             return;
         }
-
         try {
             OfferDAO offerDAO = new OfferDAO();
             offerDAO.addOffer(offer, userID, auctionID, date);

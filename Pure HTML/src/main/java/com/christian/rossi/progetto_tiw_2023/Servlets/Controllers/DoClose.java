@@ -15,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-
 @WebServlet(name = "DoClose", urlPatterns = {URLs.DO_CLOSE})
 public class DoClose extends ThymeleafHTTPServlet {
 
@@ -24,19 +23,13 @@ public class DoClose extends ThymeleafHTTPServlet {
         HttpSession session = request.getSession();
         final Long userID;
         final Long auctionID;
-
-        //getter for the current userID
         userID = (Long) session.getAttribute("userID");
-
-        //checking parse problems with variable auctionID
-        try {
-            auctionID = Long.valueOf((request.getParameter("details")));
-        } catch (NumberFormatException e) {
+        try {auctionID = Long.valueOf((request.getParameter("details"))); }
+        catch (NumberFormatException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());
             return;
         }
         try {
-            //update query only if the owner of the action is who is closing it
             AuctionDAO auctionDAO = new AuctionDAO();
             if (!auctionDAO.isAuctionOwner(userID, auctionID)) {
                 response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_SELL_PAGE).toString());

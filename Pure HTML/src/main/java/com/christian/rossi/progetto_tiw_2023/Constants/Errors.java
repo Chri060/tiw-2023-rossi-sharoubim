@@ -31,5 +31,4 @@ public enum Errors {
     AUCTION_ERROR,
     NUMBER_FORMAT_ERROR,
     GENERIC_ERROR
-
 }

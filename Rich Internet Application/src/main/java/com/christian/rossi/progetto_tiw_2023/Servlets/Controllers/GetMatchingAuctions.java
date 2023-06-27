@@ -19,6 +19,7 @@ import java.util.List;
 @WebServlet(name = "GetMatchingAuctions", urlPatterns = {Constants.GET_MATCHING_AUCTIONS})
 @MultipartConfig
 public class GetMatchingAuctions extends HttpServlet {
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         Long userID = (Long) session.getAttribute("userID");
@@ -27,27 +28,16 @@ public class GetMatchingAuctions extends HttpServlet {
             AuctionDAO auctionDAO = new AuctionDAO();
             ProductDAO productDAO = new ProductDAO();
             String article = request.getParameter("article");
-            if (article.equals(""))  {
-                throw  new NullPointerException();
-            }
+            if (article.equals(""))  throw  new NullPointerException();
             List<AuctionBean> auctionBeanList = auctionDAO.getAuctionByKeyword(article.toLowerCase(), userID, session.getCreationTime());
-            for (AuctionBean auction : auctionBeanList) {
-                auction.setProductList(productDAO.getProductFromAuction(auction.getAuctionID()));
-            }
-
+            for (AuctionBean auction : auctionBeanList) auction.setProductList(productDAO.getProductFromAuction(auction.getAuctionID()));
             Gson gson = new Gson();
             String json = gson.toJson(auctionBeanList);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(json);
-
-        } catch (NullPointerException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        } catch (SQLException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return;
         }
-
+        catch (NullPointerException e) { response.setStatus(HttpServletResponse.SC_BAD_REQUEST); }
+        catch (SQLException e) { response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); }
     }
 }

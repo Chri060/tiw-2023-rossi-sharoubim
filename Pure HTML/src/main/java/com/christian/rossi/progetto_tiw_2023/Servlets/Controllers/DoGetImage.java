@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "DoGetImage", urlPatterns = {URLs.DO_GET_IMAGE})
 public class DoGetImage extends HttpServlet {
+
     String folderPath = "";
 
     public void init() {

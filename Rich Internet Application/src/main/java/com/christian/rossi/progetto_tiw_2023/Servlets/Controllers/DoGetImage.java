@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "DoGetImage", urlPatterns = {Constants.DO_GET_IMAGE})
 @MultipartConfig
 public class DoGetImage extends HttpServlet {
+
     String folderPath = "";
 
     public void init() {
@@ -25,14 +26,10 @@ public class DoGetImage extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String pathInfo = request.getPathInfo();
-        if (pathInfo == null || pathInfo.equals("/")) {
-            return;
-        }
+        if (pathInfo == null || pathInfo.equals("/")) return;
         String filename = URLDecoder.decode(pathInfo.substring(1), StandardCharsets.UTF_8);
         File file = new File(folderPath, filename);
-        if (!file.exists() || file.isDirectory()) {
-            return;
-        }
+        if (!file.exists() || file.isDirectory()) return;
         Files.copy(file.toPath(), response.getOutputStream());
     }
 }

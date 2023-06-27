@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
 public abstract class ThymeleafHTTPServlet extends HttpServlet {
+
     private TemplateEngine templateEngine = null;
 
     public ITemplateEngine getTemplateEngine() {

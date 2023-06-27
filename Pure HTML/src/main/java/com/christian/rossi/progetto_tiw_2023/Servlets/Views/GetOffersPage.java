@@ -29,10 +29,8 @@ public class GetOffersPage extends ThymeleafHTTPServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         final Long userID = (Long) session.getAttribute("userID");
-        Long auctionID = null;
-        try {
-            auctionID = Long.valueOf(request.getParameter("details"));
-        }
+        Long auctionID;
+        try { auctionID = Long.valueOf(request.getParameter("details")); }
         catch (NumberFormatException e) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NUMBER_FORMAT_ERROR).addParam("redirect", URLs.GET_BUY_PAGE).toString());
             return;
@@ -54,7 +52,7 @@ public class GetOffersPage extends ThymeleafHTTPServlet {
                 return;
             }
             List<ProductBean> productBeanlist = productDAO.getProductFromAuction(auctionID);
-            AuctionBean auctionBean = auctionDAO.getAuctionbyID(auctionID, session.getCreationTime());
+            AuctionBean auctionBean = auctionDAO.getAuctionByID(auctionID, session.getCreationTime());
             boolean active = auctionDAO.isAuctionActive(auctionID);
             ctx.setVariable("price", auctionBean);
             ctx.setVariable("auction", productBeanlist);

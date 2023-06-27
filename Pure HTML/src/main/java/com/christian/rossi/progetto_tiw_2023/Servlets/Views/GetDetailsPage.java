@@ -20,9 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-
 
 @WebServlet(name = "GetDetailsPage", urlPatterns = {URLs.GET_DETAILS_PAGE})
 public class GetDetailsPage extends ThymeleafHTTPServlet {
@@ -43,7 +41,7 @@ public class GetDetailsPage extends ThymeleafHTTPServlet {
                 response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.GENERIC_ERROR).addParam("redirect", URLs.GET_BUY_PAGE).toString());
                 return;
             }
-            AuctionBean auctionBean = auctionDAO.getAuctionbyID(auctionID, session.getCreationTime());
+            AuctionBean auctionBean = auctionDAO.getAuctionByID(auctionID, session.getCreationTime());
             ProductDAO productDAO = new ProductDAO();
             List<ProductBean> productBeanList = productDAO.getProductFromAuction(auctionBean.getAuctionID());
             UserBean winner = null;

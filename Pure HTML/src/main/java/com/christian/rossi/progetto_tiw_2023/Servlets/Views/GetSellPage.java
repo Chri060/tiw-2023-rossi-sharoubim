@@ -1,13 +1,12 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Views;
 
 import com.christian.rossi.progetto_tiw_2023.Beans.AuctionBean;
-import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
 import com.christian.rossi.progetto_tiw_2023.Constants.Errors;
 import com.christian.rossi.progetto_tiw_2023.Constants.URLs;
 import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
 import com.christian.rossi.progetto_tiw_2023.Servlets.ThymeleafHTTPServlet;
-import com.christian.rossi.progetto_tiw_2023.Utils.PathBuilder;
+import com.christian.rossi.progetto_tiw_2023.Utils.*;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletContext;
@@ -32,25 +31,9 @@ public class GetSellPage extends ThymeleafHTTPServlet {
             ProductDAO productDAO = new ProductDAO();
             AuctionDAO auctionDAO = new AuctionDAO();
             List<AuctionBean> openAuctions = auctionDAO.getUserAuctions((Long) session.getAttribute("userID"), 1, session.getCreationTime());
-            for (AuctionBean auctionBean : openAuctions) {
-                List<ProductBean> productBeanList = productDAO.getProductFromAuction(auctionBean.getAuctionID());
-                auctionBean.setProductList(productBeanList);
-                String products1 = "";
-                for (ProductBean productBean : productBeanList) {
-                    products1 += productBean.getName() + "</br>";
-                }
-                auctionBean.setProductNames(products1);
-            }
+            StringFormatter.getProductsWithBreakLine(openAuctions);
             List<AuctionBean> closedAuctions = auctionDAO.getUserAuctions((Long) session.getAttribute("userID"), 0, session.getCreationTime());
-            for (AuctionBean auctionBean : closedAuctions) {
-                List<ProductBean> productBeanList = productDAO.getProductFromAuction(auctionBean.getAuctionID());
-                auctionBean.setProductList(productBeanList);
-                String products = "";
-                for (ProductBean productBean : productBeanList) {
-                    products += productBean.getName() + "</br>";
-                }
-                auctionBean.setProductNames(products);
-            }
+            StringFormatter.getProductsWithBreakLine(closedAuctions);
             ctx.setVariable("products", productDAO.getUserProducts((Long) session.getAttribute("userID")));
             if (closedAuctions.size() == 0) ctx.setVariable("closedauctions", null);
             else ctx.setVariable("closedauctions", closedAuctions);

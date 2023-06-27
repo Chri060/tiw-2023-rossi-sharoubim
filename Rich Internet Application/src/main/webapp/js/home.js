@@ -24,7 +24,6 @@
 
         this.start = function () {
             inputChecker();
-            //Adds listener to the submit new product form
             document.getElementById("addProductForm").addEventListener("submit", (e) => {
                 e.preventDefault();
                 if (!e.target.closest("form").reportValidity()) e.stopPropagation();
@@ -33,13 +32,9 @@
                         addProductResponseHandler, true)
                 }
             });
-            //Adds listener to load sellPage
             document.getElementById("getSell").addEventListener("click", (e) => this.showSellPage());
-            //Adds listener to load buyPage
             document.getElementById("getBuy").addEventListener("click", (e) => this.showBuyPage());
-            //Adds listener to logout
             document.getElementById("logout").addEventListener("click", (e) => this.logout());
-            //Adds listener to create new auction button
             document.getElementById("createAuctionForm").addEventListener("submit", (e) => {
                 e.preventDefault();
                 if (!e.target.closest("form").reportValidity()) e.stopPropagation();
@@ -48,7 +43,6 @@
                         addProductResponseHandler, true)
                 }
             });
-            //Adds listener to search button
             document.getElementById("searchForm").addEventListener("submit", (e) => {
                 e.preventDefault();
                 if (!e.target.closest("form").reportValidity()) e.stopPropagation();
@@ -57,19 +51,16 @@
                         fillSearchAuctionHandler, true);
                 }
             })
-            //Updates cookies
             document.getElementById("submitNewAuction").addEventListener("click", (e) => {
                 if (e.target.closest("form").reportValidity()) {
                     Cookies.set(sessionStorage.getItem('userName') + 'LastActionCookie', 'sell', {expires: 30});
                 }
             })
-            //Adds close auction listener
             document.getElementById("closeAuctionButton").addEventListener("click", (e) => {
                 e.preventDefault();
                 makeCall("POST", "/doClose?auctionID=" + e.target.value, null,
                     closeAuctionResponseHandler, false)
             });
-            //Adds new offerListener
             document.getElementById("offerForm").addEventListener("submit", (e) => {
                 e.preventDefault();
                 if (!e.target.closest("form").reportValidity()) {
@@ -105,7 +96,6 @@
         this.fillBuyPage = function () {
             makeCall("GET", "/getWonAuctions", null,
                 fillWonActionHandler, false);
-
             const auctionsArray = getSeenAuctionsID();
             let params = "";
             for (const auctionsArrayElement of auctionsArray) {
@@ -113,10 +103,8 @@
             }
             if (params.length > 0)
                 params = params.slice(0, params.length - 1)
-
             makeCall("GET", `/getSeenAuction?${params}`, null,
                 fillSeenActionHandler, false);
-
             document.getElementById("searchResultTable").style.display = "none";
         }
 
@@ -188,21 +176,16 @@
                 myProductsArray.forEach(function (product) {
                     let row, nameCell, description, priceCell, codeCell, tickCell;
                     row = document.createElement("tr")
-
-
                     codeCell = document.createElement("td");
                     codeCell.textContent = product.productID;
                     row.appendChild(codeCell);
-
                     nameCell = document.createElement("td");
                     nameCell.textContent = product.name;
                     nameCell.title = product.description;
                     row.appendChild(nameCell);
-
                     priceCell = document.createElement("td");
                     priceCell.textContent = product.price;
                     row.appendChild(priceCell);
-
                     tickCell = document.createElement("td");
                     let tick = document.createElement("input");
                     tick.setAttribute("type", "checkbox");
@@ -210,7 +193,6 @@
                     tick.value = product.productID;
                     tickCell.appendChild(tick);
                     row.appendChild(tickCell);
-
                     this.myProducts.appendChild(row);
                 })
             } else {
@@ -229,36 +211,28 @@
                 myOpenAuctionsArray.forEach(function (auction) {
                     let row, auctionID, price, days, detailsButton, time, productList;
                     row = document.createElement("tr");
-
                     auctionID = document.createElement("td");
                     auctionID.textContent = auction.auctionID;
                     row.appendChild(auctionID);
-
                     price = document.createElement("td");
                     price.textContent = auction.price;
                     row.appendChild(price);
-
                     days = document.createElement("td");
                     days.textContent = auction.remainingDays;
                     row.appendChild(days);
-
                     time = document.createElement("td");
                     time.textContent = auction.remainingHours;
                     row.appendChild(time);
-
                     detailsButton = document.createElement("td");
                     let click = document.createElement("button");
                     click.textContent = "Details";
                     click.setAttribute("value", auction.auctionID);
                     detailsButton.appendChild(click);
                     row.appendChild(detailsButton);
-
-                    //Adds listener to details button
                     click.addEventListener("click", (e) => {
                         let auctionID = e.target.value;
                         pageOrchestrator.fillSellDetailsPage(auctionID);
                     })
-
                     productList = document.createElement("td");
                     let temp = "";
                     auction.productList.forEach(function (product) {
@@ -286,29 +260,23 @@
                 myClosedAuctionsArray.forEach(function (auction) {
                     let row, auctionID, price, detailsButton, productList;
                     row = document.createElement("tr");
-
                     auctionID = document.createElement("td");
                     auctionID.textContent = auction.auctionID;
                     row.appendChild(auctionID);
-
                     price = document.createElement("td");
                     price.textContent = auction.price;
                     row.appendChild(price);
-
                     detailsButton = document.createElement("td");
                     let click = document.createElement("button");
                     click.textContent = "Details";
                     click.setAttribute("value", auction.auctionID);
                     detailsButton.appendChild(click);
                     row.appendChild(detailsButton);
-
-                    //Adds listener to details button
                     click.addEventListener("click", (e) => {
                         let auctionID = e.target.value;
                         pageOrchestrator.fillSellDetailsPage(auctionID);
 
                     })
-
                     productList = document.createElement("td");
                     let temp = "";
                     auction.productList.forEach(function (product) {
@@ -318,7 +286,6 @@
                     )
                     productList.innerHTML = temp;
                     row.appendChild(productList);
-
                     table.appendChild(row);
                 })
             } else {
@@ -355,34 +322,27 @@
             productList.forEach(function (auction) {
                 let row, codeCell, priceCell, productID, productName, productDescription, image;
                 row = document.createElement("tr")
-
                 codeCell = document.createElement("td");
                 codeCell.textContent = auction.auctionID;
                 row.appendChild(codeCell);
-
                 priceCell = document.createElement("td");
                 priceCell.textContent = auction.price;
                 row.appendChild(priceCell);
-
                 productID = document.createElement("td");
                 productID.textContent = auction.productID;
                 row.appendChild(productID);
-
                 productName = document.createElement("td");
                 productName.textContent = auction.name;
                 row.appendChild(productName);
-
                 productDescription = document.createElement("td");
                 productDescription.textContent = auction.description;
                 row.appendChild(productDescription);
-
                 image = document.createElement("img");
                 image.setAttribute("alt", "");
                 image.setAttribute("src", auction.image);
                 let imagetd = document.createElement("td");
                 imagetd.appendChild(image);
                 row.appendChild(imagetd);
-
                 table.appendChild(row);
             })
 
@@ -397,19 +357,15 @@
                 offersList.forEach(function (offer) {
                     let row, userName, offering, date;
                     row = document.createElement("tr");
-
                     userName = document.createElement("td");
                     userName.textContent = offer.userName;
                     row.appendChild(userName);
-
                     offering = document.createElement("td");
                     offering.textContent = offer.offering;
                     row.appendChild(offering);
-
                     date = document.createElement("td");
                     date.textContent = offer.date;
                     row.appendChild(date);
-
                     table.appendChild(row);
                 })
             } else {
@@ -424,38 +380,28 @@
                     table.deleteRow(1);
                 }
                 let userID, username, email, city, address, province, row;
-
                 row = document.createElement("tr");
-
                 userID = document.createElement("td");
                 userID.textContent = winner.userID;
                 row.appendChild(userID);
-
                 username = document.createElement("td");
                 username.textContent = winner.username
                 row.appendChild(username);
-
                 email = document.createElement("td");
                 email.textContent = winner.email
                 row.appendChild(email);
-
                 city = document.createElement("td");
                 city.textContent = winner.city;
                 row.appendChild(city);
-
                 address = document.createElement("td");
                 address.textContent = winner.address
                 row.appendChild(address);
-
                 province = document.createElement("td");
                 province.textContent = winner.province
                 row.appendChild(province);
-
                 table.appendChild(row);
                 table.style.display = "block";
-            } else {
-                table.style.display = "none";
-            }
+            } else table.style.display = "none";
         }
     }
 
@@ -480,29 +426,23 @@
                 }
                 data.forEach(function (auction) {
                     let row, auctionID, detailsButton, productList, maxOffer;
-
                     row = document.createElement("tr");
-
                     auctionID = document.createElement("td");
                     auctionID.textContent = auction.auctionID;
                     row.appendChild(auctionID);
-
                     maxOffer = document.createElement("td");
                     maxOffer.textContent = auction.maxOffer;
                     row.appendChild(maxOffer);
-
                     detailsButton = document.createElement("td");
                     let click = document.createElement("button");
                     click.textContent = "Details";
                     click.setAttribute("value", auction.auctionID);
                     detailsButton.appendChild(click);
                     row.appendChild(detailsButton);
-
                     click.addEventListener("click", (e) => {
                         let auctionID = e.target.value;
                         pageOrchestrator.fillBuyDetailsPage(auctionID);
                     })
-
                     productList = document.createElement("td");
                     let temp = "";
                     auction.productList.forEach(function (product) {
@@ -512,7 +452,6 @@
                     )
                     productList.innerHTML = temp;
                     row.appendChild(productList);
-
                     table.appendChild(row);
                 })
             } else {
@@ -538,32 +477,25 @@
 
             data.forEach(function (auction) {
                 let row = document.createElement("tr");
-
                 let auctionID, maxOffer, details, productList;
                 auctionID = document.createElement("td");
                 auctionID.textContent = auction.auctionID;
                 row.appendChild(auctionID);
-
                 maxOffer = document.createElement("td");
                 maxOffer.textContent = Math.max(auction.maxOffer, auction.price);
                 row.appendChild(maxOffer);
-
-
                 details = document.createElement("td");
                 let click = document.createElement("button");
                 click.textContent = "Details";
                 click.setAttribute("value", auction.auctionID);
-
                 click.addEventListener("click", (e) => {
                     Cookies.set(sessionStorage.getItem('userName') + 'LastActionCookie', 'buy', {expires: 30});
                     let auctionID = e.target.value;
                     Cookies.set(sessionStorage.getItem('userName') + 'SeenAuction' + auctionID, auctionID, {expires: 30});
                     pageOrchestrator.fillBuyDetailsPage(auctionID);
                 })
-
                 details.appendChild(click);
                 row.appendChild(details);
-
                 productList = document.createElement("td");
                 var temp = "";
                 auction.productList.forEach(function (product) {
@@ -573,7 +505,6 @@
                 )
                 productList.innerHTML = temp;
                 row.appendChild(productList);
-
                 table.appendChild(row);
             })
         }
@@ -594,34 +525,27 @@
                 auctionID = document.createElement("td");
                 auctionID.textContent = auction.auctionID;
                 row.appendChild(auctionID);
-
                 price = document.createElement("td");
                 price.textContent = Math.max(auction.maxOffer, auction.price);
                 row.appendChild(price);
-
                 remainingDays = document.createElement("td");
                 remainingDays.textContent = auction.remainingDays;
                 row.appendChild(remainingDays);
-
                 remainingHours = document.createElement("td");
                 remainingHours.textContent = auction.remainingHours;
                 row.appendChild(remainingHours);
-
                 details = document.createElement("td");
                 let click = document.createElement("button");
                 click.textContent = "Details";
                 click.setAttribute("value", auction.auctionID);
-
                 click.addEventListener("click", (e) => {
                     Cookies.set(sessionStorage.getItem('userName') + 'LastActionCookie', 'buy', {expires: 30});
                     let auctionID = e.target.value;
                     Cookies.set(sessionStorage.getItem('userName') + 'SeenAuction' + auctionID, auctionID, { expires: 30 });
                     pageOrchestrator.fillBuyDetailsPage(auctionID);
                 })
-
                 details.appendChild(click);
                 row.appendChild(details);
-
                 productList = document.createElement("td");
                 var temp = "";
                 auction.productList.forEach(function (product) {
@@ -631,7 +555,6 @@
                 )
                 productList.innerHTML = temp;
                 row.appendChild(productList);
-
                 table.appendChild(row);
             })
         }
@@ -657,25 +580,21 @@
             data.productList.forEach(function (product) {
                 let row, productId, name, description, image;
                 row = document.createElement("tr");
-
                 productId = document.createElement("td");
                 productId.textContent = product.productID;
                 row.appendChild(productId);
                 name = document.createElement("td");
                 name.textContent = product.name;
                 row.appendChild(name)
-
                 description = document.createElement("td");
                 description.textContent = product.description;
                 row.appendChild(description);
-
                 image = document.createElement("img");
                 image.setAttribute("alt", "");
                 image.setAttribute("src", product.image);
                 let imagetd = document.createElement("td");
                 imagetd.appendChild(image);
                 row.appendChild(imagetd);
-
                 table.appendChild(row);
             })
 
@@ -692,29 +611,22 @@
                 document.getElementById("noOffers").style.display = "none";
                 document.getElementById("offersTable").style.display = "block";
                 data.offersList.forEach(function (offers) {
-
                     let row, username, offering, date;
                     row = document.createElement("tr");
-
                     username = document.createElement("td");
                     username.textContent = offers.userName;
                     row.appendChild(username);
-
                     offering = document.createElement("td");
                     offering.textContent = offers.offering;
                     row.appendChild(offering);
-
                     date = document.createElement("td");
                     date.textContent = offers.date;
                     row.appendChild(date);
-
                     table.appendChild(row);
                 })
             }
-
             document.getElementById("startingPrice").textContent = data.price;
             document.getElementById("minimumRise").textContent = data.rise;
-
             if (data.active) {
                 document.getElementById("newOfferFieldset").style.display = "block";
                 document.getElementById("auctionIDOfferForm").setAttribute("value", data.productList[0].auctionID)
@@ -800,8 +712,6 @@
                             let string = sessionStorage.getItem('userName') + 'SeenAuction' + auctionID;
                             Cookies.remove(string);
                         }
-
-
                         let buyPage = new BuyPage()
                         buyPage.fillSeenAuctions(data);
                     }
@@ -964,9 +874,7 @@
         req.onreadystatechange = function () {
             callback(req)
         };
-
         req.open(method, url);
-
         if (formElement == null) {
             req.send();
         } else {
@@ -990,7 +898,6 @@
     }
 
     function inputChecker() {
-        //check del prezzo
         document.getElementById("price").onchange = (e) => {
             const elem = e.target;
             const value = String(elem.value);
@@ -998,7 +905,6 @@
             else if (value <= 0) elem.setCustomValidity("The price inserted is not valid");
             else elem.setCustomValidity("");
         };
-        //check del rise
         document.getElementById("rise").onchange = (e) => {
             const elem = e.target;
             const value = String(elem.value);
@@ -1006,7 +912,6 @@
             else if (value <= 0) elem.setCustomValidity("The rise inserted is not valid");
             else elem.setCustomValidity("");
         };
-        //check della data
         document.getElementById("date").onchange = (e) => {
             const elem = e.target;
             const value = String(elem.value);
@@ -1016,7 +921,6 @@
             else if (value <= 0) elem.setCustomValidity("The date inserted is not valid");
             else elem.setCustomValidity("");
         };
-        //check della offer
         document.getElementById("offer").onchange = (e) => {
             const elem = e.target;
             const value = String(elem.value);
@@ -1024,7 +928,6 @@
             else if (value <= 0) elem.setCustomValidity("The offer inserted is not valid");
             else elem.setCustomValidity("");
         };
-        //check dell'input
         document.getElementById("searchInput").onchange = (e) => {
             const elem = e.target;
             const value = String(elem.value);
@@ -1032,21 +935,18 @@
             else if (value === "") elem.setCustomValidity("Field is required");
             else elem.setCustomValidity("");
         };
-        //check del nome del prodotto
         document.getElementById("name").onchange = (e) => {
             const elem = e.target;
             const value = String(elem.value);
             if (!value.match("^[a-zA-Z0-9_ -]{1,50}$")) elem.setCustomValidity("The name inserted is not valid");
             else elem.setCustomValidity("");
         };
-        //check della descrizione del prodotto
         document.getElementById("description").onchange = (e) => {
             const elem = e.target;
             const value = String(elem.value);
             if (!value.match("^[a-zA-Z0-9_ -]{1,120}$"))  elem.setCustomValidity("The description inserted is not valid");
             else elem.setCustomValidity("");
         };
-        //check della immagine
         document.getElementById("image").onchange = (e) => {
             const elem = e.target;
             const acceptedImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];

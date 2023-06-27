@@ -17,5 +17,4 @@ public class Constants {
     public static final String GET_SEARCHED_AUCTION_DETAILS = "/getSearchedAuctionDetails";
     public static final String DO_OFFER = "/doOffer";
     public static final String GET_SEEN_AUCTION = "/getSeenAuction";
-
 }

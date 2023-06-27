@@ -1,11 +1,9 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 
-
 import com.christian.rossi.progetto_tiw_2023.Constants.Constants;
 import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
 import com.christian.rossi.progetto_tiw_2023.Utils.InputChecker;
-import com.christian.rossi.progetto_tiw_2023.Utils.PathBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -35,23 +33,17 @@ public class DoCreateAuction extends HttpServlet {
         final Long userID;
         final Timestamp expiry;
         int statusCode = 0;
-
-        //checking problem with variables product
         if (request.getParameterValues("product") == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
         else {
-            try {
-                products = Arrays.stream(request.getParameterValues("product")).map(Long::parseLong).collect(Collectors.toUnmodifiableSet());
-            }
+            try { products = Arrays.stream(request.getParameterValues("product")).map(Long::parseLong).collect(Collectors.toUnmodifiableSet()); }
             catch (NumberFormatException | NullPointerException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
         }
-
-        //checking problem with variable rise
         try {
             rise = Integer.parseInt(request.getParameter("rise"));
             if (!InputChecker.checkRise(rise)) {
@@ -63,11 +55,7 @@ public class DoCreateAuction extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-
-        //getter for the current userID
         userID = (Long) session.getAttribute("userID");
-
-        //start of time parsing
         try {
             String expiryHtml = request.getParameter("expiry");
             String dateTimeString = expiryHtml.replace("T", " ");
@@ -82,9 +70,6 @@ public class DoCreateAuction extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-        //end of time parsing
-
-        //check if every product selected belongs to the user that made the request
         Iterator<Long> productsIterator = products.iterator();
         ProductDAO productDAO = new ProductDAO();
         while (productsIterator.hasNext()) {
@@ -99,8 +84,6 @@ public class DoCreateAuction extends HttpServlet {
                 return;
             }
         }
-
-        //setting the price based on the price of the various articles
         productsIterator = products.iterator();
         int price = 0;
         while (productsIterator.hasNext()) {
@@ -112,8 +95,6 @@ public class DoCreateAuction extends HttpServlet {
                 return;
             }
         }
-
-        //auction creation and setting value for the various objects
         AuctionDAO auctionDAO = new AuctionDAO();
         try {
             productsIterator = products.iterator();
@@ -129,13 +110,13 @@ public class DoCreateAuction extends HttpServlet {
             try {
                 auctionDAO.rollback();
                 productDAO.rollback();
-            } catch (SQLException exception) {}
+            } catch (SQLException exception) { /*do nothing*/ }
         }
         finally {
             try {
                 auctionDAO.setAutoCommit(true);
                 productDAO.setAutoCommit(true);
-            } catch (SQLException e) {}
+            } catch (SQLException e) { /*do nothing*/ }
         }
         switch (statusCode) {
             case 0 -> response.setStatus(HttpServletResponse.SC_OK);

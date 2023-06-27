@@ -14,9 +14,7 @@ public class PathBuilder {
         if (noParams) {
             pathBuilder.append("?");
             noParams = false;
-        } else {
-            pathBuilder.append("&");
-        }
+        } else pathBuilder.append("&");
         pathBuilder.append(key).append("=").append(value);
         return this;
     }

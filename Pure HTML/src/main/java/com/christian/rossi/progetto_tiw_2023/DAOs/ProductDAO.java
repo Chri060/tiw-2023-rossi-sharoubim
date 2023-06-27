@@ -11,6 +11,8 @@ import java.util.List;
 
 public class ProductDAO extends AbstractDAO{
 
+    final String imgPath = "http://localhost:8080/getImage/";
+
     public long addProduct(String name, String description, int price, Long userID) throws SQLException {
         String query = "INSERT INTO product (name, description, price, sellable, userID, auctionID) " +
                        "VALUES (?, ?, ?, ?, ?, ?)";
@@ -35,8 +37,7 @@ public class ProductDAO extends AbstractDAO{
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, userID);
             try (ResultSet result = request.executeQuery()) {
-                if (!result.isBeforeFirst())
-                    return null;
+                if (!result.isBeforeFirst()) return null;
                 else {
                     List<ProductBean> productBeanList = new ArrayList<>();
                     while (result.next()) {
@@ -64,15 +65,14 @@ public class ProductDAO extends AbstractDAO{
         }
     }
 
-    public int GetPrice (Long productID) throws SQLException {
+    public int getPrice(Long productID) throws SQLException {
         String query = "SELECT price " +
                        "FROM product " +
                        "WHERE productID=?";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, productID);
             try (ResultSet result = request.executeQuery()) {
-                if (!result.isBeforeFirst())
-                    return 0;
+                if (!result.isBeforeFirst()) return 0;
                 else {
                     ProductBean productBean = new ProductBean();
                     if (result.next()) {
@@ -84,8 +84,7 @@ public class ProductDAO extends AbstractDAO{
         }
     }
 
-
-    public boolean CheckProduct (Long productID, Long userID) throws SQLException {
+    public boolean checkProduct(Long productID, Long userID) throws SQLException {
         String query = "SELECT * " +
                        "FROM product " +
                        "WHERE productID=? AND userID=? AND sellable=1";
@@ -93,21 +92,17 @@ public class ProductDAO extends AbstractDAO{
             request.setLong(1, productID);
             request.setLong(2, userID);
             try (ResultSet result = request.executeQuery()) {
-
                 ProductBean productBean = new ProductBean();
-                if (result.next()) {
-                    productBean.setName(result.getString("name"));
-                }
+                if (result.next()) productBean.setName(result.getString("name"));
                 return productBean.getName() == null;
             }
         }
     }
 
     public List<ProductBean> getProductFromAuction(Long auctionID) throws SQLException {
-        final String imgPath = "http://localhost:8080/getImage/";
         String query = "SELECT * " +
-                "FROM product " +
-                "WHERE auctionID=?";
+                       "FROM product " +
+                       "WHERE auctionID=?";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, auctionID);
             try (ResultSet result = request.executeQuery()) {

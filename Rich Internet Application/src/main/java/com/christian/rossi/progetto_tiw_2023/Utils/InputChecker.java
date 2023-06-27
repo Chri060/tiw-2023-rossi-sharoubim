@@ -3,6 +3,7 @@ package com.christian.rossi.progetto_tiw_2023.Utils;
 import java.sql.Timestamp;
 
 public class InputChecker {
+
     private static final String emailRegex = "[^@ \\t\\r\\n]+@[^@ \\t\\r\\n]+\\.[^@ \\t\\r\\n]+";
     private static final String passwordRegex = "^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,16}$";
     private static final String usernameRegex = "^[a-zA-Z0-9_-]{4,16}$";
@@ -30,11 +31,7 @@ public class InputChecker {
         long now = System.currentTimeMillis();
         return expiry - now >= 0; }
     public static boolean checkOffer (int offer, int start, int rise, int actualOffer) {
-        if (actualOffer == 0) {
-            return offer >= start;
-        }
-        else {
-            return offer >= actualOffer + rise;
-        }
+        if (actualOffer == 0) return offer >= start;
+        else return offer >= actualOffer + rise;
     }
 }

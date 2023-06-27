@@ -1,10 +1,6 @@
 package com.christian.rossi.progetto_tiw_2023.DAOs;
 
-
 import com.christian.rossi.progetto_tiw_2023.Beans.OfferBean;
-import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
-
-import static com.christian.rossi.progetto_tiw_2023.DAOs.DBConnectionPool.getConnection;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -58,8 +54,7 @@ public class OfferDAO extends AbstractDAO{
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, auctionID);
             try (ResultSet result = request.executeQuery()) {
-                if (!result.isBeforeFirst())
-                    return 0;
+                if (!result.isBeforeFirst()) return 0;
                 else {
                     result.next();
                     return result.getInt(1);

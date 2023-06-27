@@ -20,34 +20,25 @@ public class DoLogin extends ThymeleafHTTPServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         final String username;
         final String password;
-
-        //checking problems with variable username
         username = request.getParameter("username");
         if (username == null || username.isEmpty()) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NO_USERNAME).addParam("redirect", URLs.GET_LOGIN_PAGE).toString());
             return;
         }
-
-        //checking problems with variable password
         password = request.getParameter("password");
         if (password == null || password.isEmpty()) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NO_PASSWORD).addParam("redirect", URLs.GET_LOGIN_PAGE).toString());
             return;
         }
-
-        //checking if the combination of username/password already exists in the DB
         try {
             UserDAO userDAO = new UserDAO();
             UserBean userBean = userDAO.authenticate(username, password);
-            if (userBean == null) {
-                response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NO_USER).addParam("redirect", URLs.GET_LOGIN_PAGE).toString());
-            } else {
+            if (userBean == null) response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.NO_USER).addParam("redirect", URLs.GET_LOGIN_PAGE).toString());
+            else {
                 request.getSession().setAttribute("user", userBean.getUsername());
                 request.getSession().setAttribute("userID", userBean.getUserID());
                 response.sendRedirect(URLs.GET_HOME_PAGE);
             }
-        } catch (SQLException e) {
-            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_LOGIN_PAGE).toString());
-        }
+        } catch (SQLException e) { response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_LOGIN_PAGE).toString()); }
     }
 }

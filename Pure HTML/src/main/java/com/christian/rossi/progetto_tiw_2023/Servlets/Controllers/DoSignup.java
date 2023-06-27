@@ -26,58 +26,44 @@ public class DoSignup extends ThymeleafHTTPServlet {
         final String province;
         final String password;
         final String repeatedPassword;
-
-        //checking problems with variable username
         username = request.getParameter("username");
         if (username == null || username.isEmpty() || !InputChecker.checkUsername(username)) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.USERNAME_ERROR).addParam("redirect", URLs.GET_SIGNUP_PAGE).toString());
             return;
         }
-
-        //checking problems with variable email
         email = request.getParameter("email");
         if (email == null || email.isEmpty() || !InputChecker.checkEmail(email)) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.EMAIL_ERROR).addParam("redirect", URLs.GET_SIGNUP_PAGE).toString());
             return;
         }
-
-        //checking problems with variable city
         city = request.getParameter("city");
         if (city == null || city.isEmpty() || !InputChecker.checkCity(city)) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.CITY_ERROR).addParam("redirect", URLs.GET_SIGNUP_PAGE).toString());
             return;
         }
-
-        //checking problems with variable address
         address = request.getParameter("address");
         if (address == null || address.isEmpty() || !InputChecker.checkAddress(address)) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.ADDRESS_ERROR).addParam("redirect", URLs.GET_SIGNUP_PAGE).toString());
             return;
         }
-
-        //checking problems with variable province
         province = request.getParameter("province");
         if (province == null || province.isEmpty() || !InputChecker.checkProvince(province)) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.PROVINCE_ERROR).addParam("redirect", URLs.GET_SIGNUP_PAGE).toString());
             return;
         }
-
-        //checking problems with variable password and password1
         password = request.getParameter("password");
         repeatedPassword = request.getParameter("password1");
         if (password == null || password.isEmpty() || repeatedPassword == null || repeatedPassword.isEmpty() || !password.equals(repeatedPassword) || !InputChecker.checkPassword(password)) {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.PASSWORD_ERROR).addParam("redirect", URLs.GET_SIGNUP_PAGE).toString());
             return;
         }
-
-        //check the uniqueness of some parameters
         try {
             UserDAO userDAO = new UserDAO();
-            if (userDAO.GetUserByUsername(username) != null) {
+            if (userDAO.getUserByUsername(username) != null) {
                 response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.USERNAME_NOT_UNIQUE).addParam("redirect", URLs.GET_SIGNUP_PAGE).toString());
                 return;
             }
-            if (userDAO.GetUserByEmail(email) != null) {
+            if (userDAO.getUserByEmail(email) != null) {
                 response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.EMAIL_NOT_UNIQUE).addParam("redirect", URLs.GET_SIGNUP_PAGE).toString());
                 return;
             }
@@ -85,8 +71,6 @@ public class DoSignup extends ThymeleafHTTPServlet {
             response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.DB_ERROR).addParam("redirect", URLs.GET_SIGNUP_PAGE).toString());
             return;
         }
-
-        //checking complete, adding the user to the database and login
         try {
             UserDAO userDAO = new UserDAO();
             UserBean userBean = userDAO.addUser(username, email, city, address, province, password);

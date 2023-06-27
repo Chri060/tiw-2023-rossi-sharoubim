@@ -1,6 +1,7 @@
 package com.christian.rossi.progetto_tiw_2023.Beans;
 
 public class ProductBean {
+
     private Long productID = null;
     private String name = null;
     private String description = null;
@@ -24,11 +25,9 @@ public class ProductBean {
     public void setUserID(Long userID) { this.userID = userID; }
     public Long getAuctionID() { return auctionID; }
     public void setAuctionID(Long auctionID) { this.auctionID = auctionID; }
-
     public String getImage() {
         return image;
     }
-
     public void setImage(String image) {
         this.image = image;
     }

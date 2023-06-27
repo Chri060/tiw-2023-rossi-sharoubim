@@ -1,6 +1,5 @@
 package com.christian.rossi.progetto_tiw_2023.DAOs;
 
-import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
 import com.christian.rossi.progetto_tiw_2023.Beans.UserBean;
 import static com.christian.rossi.progetto_tiw_2023.DAOs.DBConnectionPool.getConnection;
 
@@ -18,8 +17,7 @@ public class UserDAO {
             request.setString(1, username);
             request.setString(2, password);
             try (ResultSet result = request.executeQuery()) {
-                if (!result.isBeforeFirst())
-                    return null;
+                if (!result.isBeforeFirst()) return null;
                 else {
                     result.next();
                     UserBean userBean = new UserBean();
@@ -53,8 +51,7 @@ public class UserDAO {
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, userID);
             try (ResultSet result = request.executeQuery()) {
-                if (!result.isBeforeFirst())
-                    return null;
+                if (!result.isBeforeFirst()) return null;
                 else {
                     result.next();
                     UserBean userBean = new UserBean();
@@ -70,24 +67,21 @@ public class UserDAO {
         }
     }
 
-    public String GetUserByUsername(String username) throws SQLException {
+    public String getUserByUsername(String username) throws SQLException {
         String query = "SELECT * " +
                        "FROM user " +
                        "WHERE username=?";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setString(1, username);
             try (ResultSet result = request.executeQuery()) {
-
                 UserBean userBean = new UserBean();
-                if (result.next()) {
-                    userBean.setUsername(result.getString("username"));
-                }
+                if (result.next()) userBean.setUsername(result.getString("username"));
                 return userBean.getUsername();
             }
         }
     }
 
-    public String GetUserByEmail(String email) throws SQLException {
+    public String getUserByEmail(String email) throws SQLException {
         String query = "SELECT * " +
                        "FROM user " +
                        "WHERE email=?";
@@ -95,9 +89,7 @@ public class UserDAO {
             request.setString(1, email);
             try (ResultSet result = request.executeQuery()) {
                 UserBean userBean = new UserBean();
-                if (result.next()) {
-                    userBean.setEmail(result.getString("email"));
-                }
+                if (result.next()) userBean.setEmail(result.getString("email"));
                 return userBean.getEmail();
             }
         }

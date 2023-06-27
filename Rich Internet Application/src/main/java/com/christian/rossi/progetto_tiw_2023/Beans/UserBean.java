@@ -1,6 +1,7 @@
 package com.christian.rossi.progetto_tiw_2023.Beans;
 
 public class UserBean {
+
     private Long userID = null;
     private String username = null;
     private String email = null;

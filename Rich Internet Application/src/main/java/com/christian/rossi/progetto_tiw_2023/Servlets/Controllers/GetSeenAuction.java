@@ -1,14 +1,9 @@
 package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 
 import com.christian.rossi.progetto_tiw_2023.Beans.AuctionBean;
-import com.christian.rossi.progetto_tiw_2023.Beans.OfferBean;
-import com.christian.rossi.progetto_tiw_2023.Beans.UserBean;
 import com.christian.rossi.progetto_tiw_2023.Constants.Constants;
 import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
-import com.christian.rossi.progetto_tiw_2023.DAOs.OfferDAO;
 import com.christian.rossi.progetto_tiw_2023.DAOs.ProductDAO;
-import com.christian.rossi.progetto_tiw_2023.DAOs.UserDAO;
-import com.christian.rossi.progetto_tiw_2023.JSONPrototypes.AuctionData;
 import com.google.gson.Gson;
 
 import javax.servlet.annotation.MultipartConfig;
@@ -29,7 +24,6 @@ public class GetSeenAuction extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-
         try {
             Long userID = (Long) session.getAttribute("userID");
             final Set<Long> auctionIDArray;
@@ -37,11 +31,7 @@ public class GetSeenAuction extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
-            else {
-                auctionIDArray = Arrays.stream(request.getParameterValues("auctionsIds")).map(Long::parseLong).collect(Collectors.toUnmodifiableSet());
-            }
-
-
+            else auctionIDArray = Arrays.stream(request.getParameterValues("auctionsIds")).map(Long::parseLong).collect(Collectors.toUnmodifiableSet());
             AuctionDAO auctionDAO = new AuctionDAO();
             ProductDAO productDAO = new ProductDAO();
             List<AuctionBean> auctionBeanList = new ArrayList<>();
@@ -60,10 +50,8 @@ public class GetSeenAuction extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(json);
-        } catch (NullPointerException | NumberFormatException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        } catch (SQLException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
+        catch (NullPointerException | NumberFormatException e) { response.setStatus(HttpServletResponse.SC_BAD_REQUEST); }
+        catch (SQLException e) { response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); }
     }
 }

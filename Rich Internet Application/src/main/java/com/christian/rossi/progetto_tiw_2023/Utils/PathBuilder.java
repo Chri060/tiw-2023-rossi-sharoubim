@@ -1,6 +1,7 @@
 package com.christian.rossi.progetto_tiw_2023.Utils;
 
 public class PathBuilder {
+
     private final StringBuilder pathBuilder;
     private boolean noParams;
 
@@ -14,9 +15,7 @@ public class PathBuilder {
         if (noParams) {
             pathBuilder.append("?");
             noParams = false;
-        } else {
-            pathBuilder.append("&");
-        }
+        } else pathBuilder.append("&");
         pathBuilder.append(key).append("=").append(value);
         return this;
     }

@@ -2,7 +2,6 @@
     //hides signup form
     { document.getElementById("signUpDiv").style.display = "none"; }
 
-
     //login
     {
         const id = "sign-in-form";
@@ -70,7 +69,6 @@
             const value = String(elem.value);
             if (!value || value.length < 1) elem.setCustomValidity("Field is required");
             else if (value.length > 63) elem.setCustomValidity("The password inserted is too long");
-            //else if (!value.match("^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,16}$")) elem.setCustomValidity("The password inserted is not valid");
             else elem.setCustomValidity("");
         };
 

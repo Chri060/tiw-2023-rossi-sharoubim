@@ -1,8 +1,6 @@
 package com.christian.rossi.progetto_tiw_2023.DAOs;
 
-import com.christian.rossi.progetto_tiw_2023.Beans.ProductBean;
 import com.christian.rossi.progetto_tiw_2023.Beans.UserBean;
-import static com.christian.rossi.progetto_tiw_2023.DAOs.DBConnectionPool.getConnection;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,8 +16,7 @@ public class UserDAO extends AbstractDAO{
             request.setString(1, username);
             request.setString(2, password);
             try (ResultSet result = request.executeQuery()) {
-                if (!result.isBeforeFirst())
-                    return null;
+                if (!result.isBeforeFirst()) return null;
                 else {
                     result.next();
                     UserBean userBean = new UserBean();
@@ -53,8 +50,7 @@ public class UserDAO extends AbstractDAO{
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setString(1, userID);
             try (ResultSet result = request.executeQuery()) {
-                if (!result.isBeforeFirst())
-                    return null;
+                if (!result.isBeforeFirst()) return null;
                 else {
                     result.next();
                     UserBean userBean = new UserBean();
@@ -77,11 +73,8 @@ public class UserDAO extends AbstractDAO{
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setString(1, username);
             try (ResultSet result = request.executeQuery()) {
-
                 UserBean userBean = new UserBean();
-                if (result.next()) {
-                    userBean.setUsername(result.getString("username"));
-                }
+                if (result.next()) userBean.setUsername(result.getString("username"));
                 return userBean.getUsername();
             }
         }
@@ -95,9 +88,7 @@ public class UserDAO extends AbstractDAO{
             request.setString(1, email);
             try (ResultSet result = request.executeQuery()) {
                 UserBean userBean = new UserBean();
-                if (result.next()) {
-                    userBean.setEmail(result.getString("email"));
-                }
+                if (result.next()) userBean.setEmail(result.getString("email"));
                 return userBean.getEmail();
             }
         }

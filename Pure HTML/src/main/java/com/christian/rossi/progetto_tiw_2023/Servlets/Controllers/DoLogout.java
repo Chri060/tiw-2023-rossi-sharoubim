@@ -16,11 +16,7 @@ public class DoLogout extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.getSession().invalidate();
-        if (request.getAttribute("user") != null) {
-            response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.LOGOUT_ERROR).addParam("redirect", URLs.GET_HOME_PAGE).toString());
-        }
-        else {
-            response.sendRedirect(URLs.GET_LOGIN_PAGE);
-        }
+        if (request.getAttribute("user") != null) response.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.LOGOUT_ERROR).addParam("redirect", URLs.GET_HOME_PAGE).toString());
+        else response.sendRedirect(URLs.GET_LOGIN_PAGE);
     }
 }

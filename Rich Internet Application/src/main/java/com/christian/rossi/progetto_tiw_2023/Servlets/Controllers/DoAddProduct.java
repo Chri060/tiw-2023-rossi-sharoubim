@@ -17,6 +17,7 @@ import java.sql.SQLException;
 @WebServlet(name = "doAddProduct", urlPatterns = {Constants.DO_ADD_PRODUCT})
 @MultipartConfig
 public class DoAddProduct extends HttpServlet {
+
     String folderPath = "";
 
     @Override
@@ -28,22 +29,16 @@ public class DoAddProduct extends HttpServlet {
         final Long userID;
         int statusCode = 0;
         folderPath = getServletContext().getInitParameter("outputPath");
-
-        //checking problems with variable name
         name = request.getParameter("name");
         if (name == null || name.isEmpty() || !InputChecker.checkName(name)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-
-        //checking problems with variable description
         description = request.getParameter("description");
         if (description == null || description.isEmpty() || !InputChecker.checkDescription(description)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-
-        //checking problems with variable price
         try {
             price = Integer.parseInt(request.getParameter("price"));
             if (!InputChecker.checkPrice(price)) {
@@ -55,11 +50,7 @@ public class DoAddProduct extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-
-        //getter for the current userID
         userID = (Long) session.getAttribute("userID");
-
-        //start of file uploading
         Part filePart = request.getPart("file");
         if (filePart == null || filePart.getSize() <= 0) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -72,32 +63,22 @@ public class DoAddProduct extends HttpServlet {
         }
         ProductDAO productDAO = new ProductDAO();
         try {
-            //inserting products in DB
             productDAO.setAutoCommit(false);
             long productID = productDAO.addProduct(name, description, price, userID);
-            //setting the name to the image, and save
             String fileName = productID + ".jpeg";
             String outputPath = folderPath + fileName;
             File file = new File(outputPath);
-            try (InputStream fileContent = filePart.getInputStream()) {
-                Files.copy(fileContent, file.toPath());
-            } catch (Exception e) {
-                statusCode = - 1;
-                throw new SQLException();
-            }
-            //end of file uploading
+            InputStream fileContent = filePart.getInputStream();
+            Files.copy(fileContent, file.toPath());
         } catch (SQLException e) {
-            try {
-                productDAO.rollback();
-            } catch (SQLException exception) {}
-            if (statusCode != -1) {
-                statusCode = -2;
-            }
+            try { productDAO.rollback(); }
+            catch (SQLException exception) { /*do nothing*/ }
+            statusCode = -2;
         }
+        catch (Exception e) { statusCode = - 1; }
         finally {
-            try {
-                productDAO.setAutoCommit(true);
-            } catch (SQLException e) {}
+            try { productDAO.setAutoCommit(true); }
+            catch (SQLException e) { /*do nothing*/ }
         }
         switch (statusCode) {
             case 0 -> response.setStatus(HttpServletResponse.SC_OK);

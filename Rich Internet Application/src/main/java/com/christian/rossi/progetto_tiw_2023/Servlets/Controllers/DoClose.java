@@ -2,7 +2,6 @@ package com.christian.rossi.progetto_tiw_2023.Servlets.Controllers;
 
 import com.christian.rossi.progetto_tiw_2023.Constants.Constants;
 import com.christian.rossi.progetto_tiw_2023.DAOs.AuctionDAO;
-import com.christian.rossi.progetto_tiw_2023.Utils.PathBuilder;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,11 +23,7 @@ public class DoClose extends HttpServlet {
         HttpSession session = request.getSession();
         final Long userID;
         final Long auctionID;
-
-        //getter for the current userID
         userID = (Long) session.getAttribute("userID");
-
-        //checking parse problems with variable auctionID
         try {
             auctionID = Long.valueOf((request.getParameter("auctionID")));
         } catch (NumberFormatException e) {
@@ -36,20 +31,13 @@ public class DoClose extends HttpServlet {
             return;
         }
         try {
-            //update query only if the owner of the action is who is closing it
             AuctionDAO auctionDAO = new AuctionDAO();
             if (auctionDAO.isAuctionOwner(userID, auctionID)) {
                 auctionDAO.close(auctionID, userID);
                 RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(Constants.GET_AUCTION_DETAILS);
                 requestDispatcher.forward(request, response);
-                return;
             }
-            else {
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            }
-        } catch (SQLException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return;
-        }
+            else response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        } catch (SQLException e) { response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); }
     }
 }

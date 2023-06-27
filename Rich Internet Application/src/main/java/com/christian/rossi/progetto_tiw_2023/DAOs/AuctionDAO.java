@@ -27,8 +27,8 @@ public class AuctionDAO extends AbstractDAO{
 
     public AuctionBean getAuctionByID(Long auctionID, long loginTime) throws SQLException{
         String query = "SELECT * " +
-                "FROM auction LEFT JOIN winner ON auction.auctionID = winner.auctionID " +
-                "WHERE auction.auctionID=?";
+                       "FROM auction LEFT JOIN winner ON auction.auctionID = winner.auctionID " +
+                       "WHERE auction.auctionID=?";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, auctionID);
             try (ResultSet result = request.executeQuery()) {
@@ -36,11 +36,8 @@ public class AuctionDAO extends AbstractDAO{
                 if (result.isBeforeFirst()) {
                     result.next();
                     auctionBean.setAuctionID(result.getLong("auctionID"));
-                    if (result.getString("max") != null) {
-                        auctionBean.setMaxOffer(result.getInt("max"));
-                    } else {
-                        auctionBean.setPrice(0);
-                    }
+                    if (result.getString("max") != null) auctionBean.setMaxOffer(result.getInt("max"));
+                    else auctionBean.setPrice(0);
                     auctionBean.setPrice(result.getInt("price"));
                     auctionBean.setRise(result.getInt("rise"));
                     auctionBean.setActive(result.getInt("active"));
@@ -54,12 +51,11 @@ public class AuctionDAO extends AbstractDAO{
         }
     }
 
-
     public List<AuctionBean> getUserAuctions(Long userID, int active, Long loginTime) throws SQLException {
         String query = "SELECT * " +
-                "FROM auction LEFT JOIN winner ON auction.auctionID = winner.auctionID " +
-                "WHERE auction.active=? AND auction.userID=? " +
-                "ORDER BY auction.auctionID ";
+                       "FROM auction LEFT JOIN winner ON auction.auctionID = winner.auctionID " +
+                       "WHERE auction.active=? AND auction.userID=? " +
+                       "ORDER BY auction.auctionID ";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, active);
             request.setLong(2, userID);
@@ -69,11 +65,8 @@ public class AuctionDAO extends AbstractDAO{
                     while (result.next()) {
                         AuctionBean auctionBean = new AuctionBean();
                         auctionBean.setAuctionID(result.getLong("auctionID"));
-                        if (result.getString("max") != null) {
-                            auctionBean.setPrice(result.getInt("max"));
-                        } else {
-                            auctionBean.setPrice(0);
-                        }
+                        if (result.getString("max") != null) auctionBean.setPrice(result.getInt("max"));
+                        else auctionBean.setPrice(0);
                         auctionBean.setRise(result.getInt("rise"));
                         auctionBean.setExpiry(result.getTimestamp("expiry"));
                         List<Integer> timeRem = TimeHandler.getTimeDifference(result.getTimestamp("expiry"), loginTime);
@@ -95,8 +88,7 @@ public class AuctionDAO extends AbstractDAO{
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, auctionID);
             try (ResultSet result = request.executeQuery()) {
-                if (!result.isBeforeFirst())
-                    return null;
+                if (!result.isBeforeFirst()) return null;
                 else {
                     result.next();
                     return result.getLong("userID");
@@ -107,27 +99,23 @@ public class AuctionDAO extends AbstractDAO{
 
     public boolean isAuctionOwner(Long userID, Long auctionID) throws SQLException{
         String query = "SELECT * " +
-                "FROM auction " +
-                "WHERE auction.userID=? AND auction.auctionID=?";
+                       "FROM auction " +
+                       "WHERE auction.userID=? AND auction.auctionID=?";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, userID);
             request.setLong(2, auctionID);
-            try (ResultSet result = request.executeQuery()) {
-                return (result.isBeforeFirst());
-            }
+            try (ResultSet result = request.executeQuery()) return (result.isBeforeFirst());
         }
     }
 
     public boolean isAuctionActive(Long auctionID) throws SQLException{
         String query = "SELECT * " +
-                "FROM auction " +
-                "WHERE auction.auctionID=?";
+                       "FROM auction " +
+                       "WHERE auction.auctionID=?";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setLong(1, auctionID);
             try (ResultSet result = request.executeQuery()) {
-                if (!result.isBeforeFirst()) {
-                    return false;
-                }
+                if (!result.isBeforeFirst()) return false;
                 else {
                     result.next();
                     return result.getInt("active") == 1;
@@ -147,12 +135,8 @@ public class AuctionDAO extends AbstractDAO{
                 if (result.isBeforeFirst()) {
                     while (result.next()) {
                         AuctionBean auctionBean = new AuctionBean();
-                        if (result.getString("max") != null) {
-                            auctionBean.setMaxOffer(result.getInt("max"));
-                        }
-                        else {
-                            auctionBean.setPrice(0);
-                        }
+                        if (result.getString("max") != null) auctionBean.setMaxOffer(result.getInt("max"));
+                        else auctionBean.setPrice(0);
                         auctionBean.setAuctionID(result.getLong("auctionID"));
                         auctionBean.setPrice(result.getInt("price"));
                         auctionBean.setRise(result.getInt("rise"));
@@ -167,9 +151,9 @@ public class AuctionDAO extends AbstractDAO{
     public List<AuctionBean> getAuctionByKeyword(String article, Long userID, Long loginTime) throws SQLException {
         String details = "%" + article + "%";
         String query = "SELECT distinct auction.auctionID, auction.price, expiry " +
-                "FROM auction LEFT JOIN product ON auction.auctionID = product.auctionID " +
-                "WHERE auction.active=1 AND (product.name LIKE ? OR product.description LIKE ?) AND product.userID!=? " +
-                "ORDER BY expiry DESC";
+                       "FROM auction LEFT JOIN product ON auction.auctionID = product.auctionID " +
+                       "WHERE auction.active=1 AND (product.name LIKE ? OR product.description LIKE ?) AND product.userID!=? " +
+                       "ORDER BY expiry DESC";
         try (PreparedStatement request = getConnection().prepareStatement(query)) {
             request.setString(1, details);
             request.setString(2, details);

@@ -16,14 +16,13 @@ public class AuthFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
-        HttpServletRequest hrequest = (HttpServletRequest) request;
-        HttpServletResponse hresponse = (HttpServletResponse) response;
-        HttpSession session = hrequest.getSession();
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+        HttpSession session = httpServletRequest.getSession();
         if (session.isNew() || session.getAttribute("user") == null) {
-            hresponse.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.AUTH_ERROR).addParam("redirect", URLs.GET_LOGIN_PAGE).toString());
+            httpServletResponse.sendRedirect(new PathBuilder(URLs.GET_ERROR_PAGE).addParam("error", Errors.AUTH_ERROR).addParam("redirect", URLs.GET_LOGIN_PAGE).toString());
             return;
         }
-        //filter chain pattern
         chain.doFilter(request, response);
     }
 }
