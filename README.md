@@ -34,7 +34,7 @@ Oltre alla specifica precedente si richiede di implementare:
   seguito dell’evento.
 
 ## _Documentazione_
-La presentazione contenente la documentazione del progetto si trova al seguente [link](https://github.com/Chri060/tiw-2023-rossi-sharoubim/tree/main/deliverables).
+La presentazione contenente la documentazione del progetto si trova al seguente [link](https://github.com/Chri060/tiw-2023-rossi-sharoubim/blob/main/deliverables/Progetto%20TIW%202023.pdf).
 
 ## _Valutazione finale_
 La valutazione finale è risultata pari a 30/30.
